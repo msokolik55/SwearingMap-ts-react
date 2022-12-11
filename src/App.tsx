@@ -15,8 +15,8 @@ function App() {
 		return [position[1], position[0]];
 	};
 
-	const reverseCoords = (coords: Position[]): LatLngExpression[] => {
-		return coords.map((pair) => [pair[1], pair[0]]);
+	const reverseCoords = (coords: Position | Position[] | Position[][]) => {
+		return coords.map(reversePosition);
 	};
 
 	return (
