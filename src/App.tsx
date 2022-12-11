@@ -55,41 +55,46 @@ function App() {
 					const country = getCountry(isoCode);
 
 					return (
-						// TODO: onclick display words
-						// TODO: add unique keys to Polygon
-						<Polygon
-							pathOptions={{
-								color: getColor(isoCode),
-							}}
-							positions={border.geometry.coordinates.map(
-								(positions) =>
-									border.geometry.type === "Polygon"
-										? reverseCoords(positions)
-										: reverseCoords(positions[0])
-							)}
-							eventHandlers={{
-								click: () => {
-									const words = getCountry(isoCode).words;
-									if (words) console.log(words);
-								},
-								mouseover: (e) => {
-									let layer = e.target;
-									layer.setStyle({
-										color: colors.hover,
-									});
-								},
-								mouseout: (e) => {
-									let layer = e.target;
-									layer.setStyle({
-										color: getColor(isoCode),
-									});
-								},
-							}}
-						/>
+						<>
+							{/* TODO: onclick display words
+							TODO: add unique keys to Polygon */}
+							<Polygon
+								pathOptions={{
+									color: getColor(isoCode),
+								}}
+								positions={border.geometry.coordinates.map(
+									(positions) =>
+										border.geometry.type === "Polygon"
+											? reverseCoords(positions)
+											: reverseCoords(positions[0])
+								)}
+								eventHandlers={{
+									click: () => {
+										const words = country.words;
+										if (words) console.log(words);
+									},
+									mouseover: (e) => {
+										let layer = e.target;
+										layer.setStyle({
+											color: colors.hover,
+										});
+									},
+									mouseout: (e) => {
+										let layer = e.target;
+										layer.setStyle({
+											color: getColor(isoCode),
+										});
+									},
+								}}
+							/>
+							<Popup position={center}>
+								{country &&
+									country.words &&
+									country.words.map((word) => <>{word}</>)}
+							</Popup>
+						</>
 					);
 				})}
-
-				<Popup position={center}>Slovakia</Popup>
 			</MapContainer>
 		</div>
 	);
