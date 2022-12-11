@@ -8,6 +8,7 @@ import { IBorder, Position } from "./schema/border";
 
 const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
 
+// TODO: remove type errors
 function App() {
 	const reversePosition = (
 		position: LatLngExpression[]
