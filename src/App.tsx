@@ -1,14 +1,15 @@
-import {} from "react";
+import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Polygon } from "react-leaflet";
 
 import "./App.css";
 
 import Borders from "./data/borders.json";
+import { IBorder, Position } from "./schema/border";
 
-const position = [49.308877665000068, 20.135855754000119];
+const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
 
 function App() {
-	const reverseCoords = (coords: any[]) => {
+	const reverseCoords = (coords: Position[]): LatLngExpression[] => {
 		return coords.map((pair) => [pair[1], pair[0]]);
 	};
 
@@ -26,10 +27,10 @@ function App() {
 				/>
 
 				{/* TODO: rendering multiple polygons */}
-				{Borders.features.map((state) => (
+				{Borders.features.map((border: IBorder) => (
 					<Polygon
 						pathOptions={{ color: "purple" }}
-						positions={state.geometry.coordinates.map(
+						positions={border.geometry.coordinates.map(
 							reverseCoords
 						)}
 					/>
