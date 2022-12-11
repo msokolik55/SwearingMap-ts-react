@@ -9,6 +9,12 @@ import { IBorder, Position } from "./schema/border";
 const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
 
 function App() {
+	const reversePosition = (
+		position: LatLngExpression[]
+	): LatLngExpression[] => {
+		return [position[1], position[0]];
+	};
+
 	const reverseCoords = (coords: Position[]): LatLngExpression[] => {
 		return coords.map((pair) => [pair[1], pair[0]]);
 	};
@@ -17,7 +23,7 @@ function App() {
 		<div id="map">
 			<MapContainer
 				center={position}
-				zoom={5}
+				zoom={4}
 				scrollWheelZoom={true}
 				className="map-container"
 			>
@@ -26,7 +32,6 @@ function App() {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
-				{/* TODO: rendering multiple polygons */}
 				{Borders.features.map((border: IBorder) => (
 					// TODO: onclick display words
 					// TODO: onmousein/out change color
@@ -34,7 +39,10 @@ function App() {
 						// TODO: different colors for countries with/without words
 						pathOptions={{ color: "purple" }}
 						positions={border.geometry.coordinates.map(
-							reverseCoords
+							(positions) =>
+								border.geometry.type === "Polygon"
+									? reverseCoords(positions)
+									: reverseCoords(positions[0])
 						)}
 					/>
 				))}
