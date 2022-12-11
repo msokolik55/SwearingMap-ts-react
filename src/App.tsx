@@ -53,7 +53,6 @@ function App() {
 
 				{Borders.features.map((border: IBorder) => (
 					// TODO: onclick display words
-					// TODO: onmousein/out change color
 					// TODO: add unique keys to Polygon
 					<Polygon
 						pathOptions={{
