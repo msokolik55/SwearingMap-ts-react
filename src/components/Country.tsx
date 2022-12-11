@@ -4,6 +4,7 @@ import { IBorder, Position } from "../schema/border";
 import { ICountry } from "../schema/country";
 
 import Countries from "../data/countries.json";
+import { useState } from "react";
 
 interface ICountryProps {
 	border: IBorder;
@@ -12,6 +13,8 @@ interface ICountryProps {
 const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
 
 const Country = (props: ICountryProps) => {
+	const [showWords, setShowWords] = useState(false);
+
 	const reversePosition = (
 		position: LatLngExpression[]
 	): LatLngExpression[] => {
@@ -24,6 +27,15 @@ const Country = (props: ICountryProps) => {
 
 	const getCountry = (isoCode: string): ICountry => {
 		return Countries[isoCode];
+	};
+
+	const getCenter = (): LatLngExpression => {
+		let position: LatLngExpression =
+			props.border.geometry.type === "Polygon"
+				? props.border.geometry.coordinates[0][0]
+				: props.border.geometry.coordinates[0][0][0];
+
+		return reversePosition(position);
 	};
 
 	const isoCode = props.border.properties.ISO_A3;
@@ -55,7 +67,9 @@ const Country = (props: ICountryProps) => {
 				eventHandlers={{
 					click: () => {
 						const words = country.words;
-						if (words) console.log(words);
+						if (words) {
+							setShowWords(true);
+						}
 					},
 					mouseover: (e) => {
 						let layer = e.target;
@@ -71,11 +85,18 @@ const Country = (props: ICountryProps) => {
 					},
 				}}
 			/>
-			<Popup position={center}>
-				{country &&
-					country.words &&
-					country.words.map((word) => <>{word}</>)}
-			</Popup>
+			{showWords && (
+				<Popup position={getCenter()}>
+					{country &&
+						country.words &&
+						country.words.map((word) => (
+							<>
+								{word}
+								<br />
+							</>
+						))}
+				</Popup>
+			)}
 		</>
 	);
 };
