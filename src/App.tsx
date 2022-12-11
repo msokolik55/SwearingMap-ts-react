@@ -32,10 +32,9 @@ function App() {
 		return Countries[isoCode];
 	};
 
-	const getColor = (isCode: string): string => {
-		return getCountry(isCode) && getCountry(isCode).words
-			? colors.default
-			: colors.disabled;
+	const getColor = (isoCode: string): string => {
+		const country = getCountry(isoCode);
+		return country && country.words ? colors.default : colors.disabled;
 	};
 
 	return (
@@ -53,6 +52,7 @@ function App() {
 
 				{Borders.features.map((border: IBorder) => {
 					const isoCode = border.properties.ISO_A3;
+					const country = getCountry(isoCode);
 
 					return (
 						// TODO: onclick display words
