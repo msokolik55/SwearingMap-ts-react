@@ -28,7 +28,10 @@ function App() {
 
 				{/* TODO: rendering multiple polygons */}
 				{Borders.features.map((border: IBorder) => (
+					// TODO: onclick display words
+					// TODO: onmousein/out change color
 					<Polygon
+						// TODO: different colors for countries with/without words
 						pathOptions={{ color: "purple" }}
 						positions={border.geometry.coordinates.map(
 							reverseCoords
