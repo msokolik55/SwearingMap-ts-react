@@ -1,15 +1,36 @@
 import { LatLngExpression } from "leaflet";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Popup } from "react-leaflet";
 
 import Borders from "../data/borders.json";
+import Countries from "../data/countries.json";
 
 import styles from "./Map.module.css";
 import Country from "./Country";
 import { IBorder } from "../schema/border";
+import { useState } from "react";
+import { ICountry } from "../schema/country";
 
 // TODO: remove type errors
 const Map = () => {
 	const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
+	const [bord, setBord] = useState<IBorder>(Borders.features[0]);
+	const [country, setCountry] = useState<ICountry>(Countries["NOR"]);
+
+	// TODO: duplicity with Country.tsx
+	const reversePosition = (
+		position: LatLngExpression[]
+	): LatLngExpression[] => {
+		return [position[1], position[0]];
+	};
+
+	const getCenter = (): LatLngExpression => {
+		let position: LatLngExpression =
+			bord.geometry.type === "Polygon"
+				? bord.geometry.coordinates[0][0]
+				: bord.geometry.coordinates[0][0][0];
+
+		return reversePosition(position);
+	};
 
 	return (
 		<div id="map">
@@ -28,6 +49,17 @@ const Map = () => {
 					// TODO: add unique keys to <Country />
 					<Country border={border} />
 				))}
+
+				{country && country.words && (
+					<Popup position={getCenter()}>
+						{country.words.map((word) => (
+							<>
+								{word}
+								<br />
+							</>
+						))}
+					</Popup>
+				)}
 			</MapContainer>
 		</div>
 	);
