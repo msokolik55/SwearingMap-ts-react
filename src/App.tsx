@@ -1,5 +1,5 @@
 import { LatLngExpression, setOptions } from "leaflet";
-import { MapContainer, TileLayer, Polygon } from "react-leaflet";
+import { MapContainer, TileLayer, Polygon, Popup } from "react-leaflet";
 
 import "./App.css";
 
@@ -88,6 +88,8 @@ function App() {
 						/>
 					);
 				})}
+
+				<Popup position={center}>Slovakia</Popup>
 			</MapContainer>
 		</div>
 	);
