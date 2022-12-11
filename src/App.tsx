@@ -51,36 +51,43 @@ function App() {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
-				{Borders.features.map((border: IBorder) => (
-					// TODO: onclick display words
-					// TODO: add unique keys to Polygon
-					<Polygon
-						pathOptions={{
-							color: getColor(border.properties.ISO_A3),
-						}}
-						positions={border.geometry.coordinates.map(
-							(positions) =>
-								border.geometry.type === "Polygon"
-									? reverseCoords(positions)
-									: reverseCoords(positions[0])
-						)}
-						eventHandlers={{
-							click: () => {},
-							mouseover: (e) => {
-								let layer = e.target;
-								layer.setStyle({
-									color: colors.hover,
-								});
-							},
-							mouseout: (e) => {
-								let layer = e.target;
-								layer.setStyle({
-									color: getColor(border.properties.ISO_A3),
-								});
-							},
-						}}
-					/>
-				))}
+				{Borders.features.map((border: IBorder) => {
+					const isoCode = border.properties.ISO_A3;
+
+					return (
+						// TODO: onclick display words
+						// TODO: add unique keys to Polygon
+						<Polygon
+							pathOptions={{
+								color: getColor(isoCode),
+							}}
+							positions={border.geometry.coordinates.map(
+								(positions) =>
+									border.geometry.type === "Polygon"
+										? reverseCoords(positions)
+										: reverseCoords(positions[0])
+							)}
+							eventHandlers={{
+								click: () => {
+									const words = getCountry(isoCode).words;
+									if (words) console.log(words);
+								},
+								mouseover: (e) => {
+									let layer = e.target;
+									layer.setStyle({
+										color: colors.hover,
+									});
+								},
+								mouseout: (e) => {
+									let layer = e.target;
+									layer.setStyle({
+										color: getColor(isoCode),
+									});
+								},
+							}}
+						/>
+					);
+				})}
 			</MapContainer>
 		</div>
 	);
