@@ -6,6 +6,9 @@ import "./App.css";
 import Borders from "./data/borders.json";
 import { IBorder, Position } from "./schema/border";
 
+import Countries from "./data/countries.json";
+import { ICountry } from "./schema/country";
+
 const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
 const colors = {
 	default: "orange",
@@ -23,6 +26,16 @@ function App() {
 
 	const reverseCoords = (coords: Position | Position[] | Position[][]) => {
 		return coords.map(reversePosition);
+	};
+
+	const getCountry = (isoCode: string): ICountry => {
+		return Countries[isoCode];
+	};
+
+	const getColor = (isCode: string): string => {
+		return getCountry(isCode) && getCountry(isCode).words
+			? colors.default
+			: colors.disabled;
 	};
 
 	return (
@@ -43,8 +56,9 @@ function App() {
 					// TODO: onmousein/out change color
 					// TODO: add unique keys to Polygon
 					<Polygon
-						// TODO: different colors for countries with/without words
-						pathOptions={{ color: colors.default }}
+						pathOptions={{
+							color: getColor(border.properties.ISO_A3),
+						}}
 						positions={border.geometry.coordinates.map(
 							(positions) =>
 								border.geometry.type === "Polygon"
@@ -52,9 +66,7 @@ function App() {
 									: reverseCoords(positions[0])
 						)}
 						eventHandlers={{
-							click: () => {
-								console.log(border.properties.ADMIN);
-							},
+							click: () => {},
 							mouseover: (e) => {
 								let layer = e.target;
 								layer.setStyle({
@@ -64,7 +76,7 @@ function App() {
 							mouseout: (e) => {
 								let layer = e.target;
 								layer.setStyle({
-									color: colors.default,
+									color: getColor(border.properties.ISO_A3),
 								});
 							},
 						}}
