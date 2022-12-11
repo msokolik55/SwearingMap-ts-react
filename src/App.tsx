@@ -1,4 +1,4 @@
-import { LatLngExpression, setOptions } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Polygon, Popup } from "react-leaflet";
 
 import "./App.css";
