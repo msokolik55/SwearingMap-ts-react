@@ -9,7 +9,7 @@ import { IBorder, Position } from "./schema/border";
 import Countries from "./data/countries.json";
 import { ICountry } from "./schema/country";
 
-const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
+const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
 const colors = {
 	default: "orange",
 	hover: "purple",
@@ -41,7 +41,7 @@ function App() {
 	return (
 		<div id="map">
 			<MapContainer
-				center={position}
+				center={center}
 				zoom={4}
 				scrollWheelZoom={true}
 				className="map-container"
