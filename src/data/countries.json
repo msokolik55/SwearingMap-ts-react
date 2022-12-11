@@ -165,7 +165,7 @@
 	"NFK": { "region": "Oceania" },
 	"MKD": { "region": "Europe" },
 	"MNP": { "region": "Oceania" },
-	"NOR": { "region": "Europe" },
+	"NOR": { "region": "Europe", "words": ["Jævla fitte"] },
 	"OMN": { "region": "Asia" },
 	"PAK": { "region": "Asia" },
 	"PLW": { "region": "Oceania" },
