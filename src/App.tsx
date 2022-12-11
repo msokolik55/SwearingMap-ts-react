@@ -1,4 +1,4 @@
-import { LatLngExpression } from "leaflet";
+import { LatLngExpression, setOptions } from "leaflet";
 import { MapContainer, TileLayer, Polygon } from "react-leaflet";
 
 import "./App.css";
@@ -7,6 +7,11 @@ import Borders from "./data/borders.json";
 import { IBorder, Position } from "./schema/border";
 
 const position: LatLngExpression = [49.308877665000068, 20.135855754000119];
+const colors = {
+	default: "orange",
+	hover: "purple",
+	disabled: "gray",
+};
 
 // TODO: remove type errors
 function App() {
@@ -36,15 +41,33 @@ function App() {
 				{Borders.features.map((border: IBorder) => (
 					// TODO: onclick display words
 					// TODO: onmousein/out change color
+					// TODO: add unique keys to Polygon
 					<Polygon
 						// TODO: different colors for countries with/without words
-						pathOptions={{ color: "purple" }}
+						pathOptions={{ color: colors.default }}
 						positions={border.geometry.coordinates.map(
 							(positions) =>
 								border.geometry.type === "Polygon"
 									? reverseCoords(positions)
 									: reverseCoords(positions[0])
 						)}
+						eventHandlers={{
+							click: () => {
+								console.log(border.properties.ADMIN);
+							},
+							mouseover: (e) => {
+								let layer = e.target;
+								layer.setStyle({
+									color: colors.hover,
+								});
+							},
+							mouseout: (e) => {
+								let layer = e.target;
+								layer.setStyle({
+									color: colors.default,
+								});
+							},
+						}}
 					/>
 				))}
 			</MapContainer>
