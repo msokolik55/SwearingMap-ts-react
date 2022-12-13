@@ -1,10 +1,9 @@
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilValue } from "recoil";
 
 import Borders from "../data/borders.json";
-import Countries from "../data/countries.json";
 
 import styles from "./Map.module.css";
 import Country from "./Country";
