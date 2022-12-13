@@ -35,6 +35,7 @@ const Map = () => {
 				/>
 
 				{/* TODO: JSON schema validation */}
+				{/* @ts-ignore: Unreachable code error */}
 				{Borders.features.map((border: IBorder) => (
 					<Country key={uuidv4()} border={border} />
 				))}
