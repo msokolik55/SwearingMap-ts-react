@@ -1,4 +1,4 @@
-import { LatLngExpression } from "leaflet";
+import { LatLngExpression, LatLngTuple } from "leaflet";
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilValue } from "recoil";
@@ -15,24 +15,14 @@ import { countryAtom } from "../state/Atom";
 const Map = () => {
 	const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
 	const country = useRecoilValue(countryAtom);
-	// const [bord, setBord] = useState<IBorder>(Borders.features[0]);
-	// const [country, setCountry] = useState<ICountry>(Countries["NOR"]);
 
 	// TODO: duplicity with Country.tsx
-	const reversePosition = (
-		position: LatLngExpression[]
-	): LatLngExpression[] => {
+	const reversePosition = (position: LatLngTuple): LatLngExpression => {
 		return [position[1], position[0]];
 	};
 
-	// TODO: add new attribute "center position" to JSON file with countries
 	const getCenter = (): LatLngExpression => {
-		let position: LatLngExpression =
-			bord.geometry.type === "Polygon"
-				? bord.geometry.coordinates[0][0]
-				: bord.geometry.coordinates[0][0][0];
-
-		return reversePosition(position);
+		return reversePosition(country.center);
 	};
 
 	return (
@@ -48,6 +38,7 @@ const Map = () => {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
+				{/* TODO: JSON schema validation */}
 				{Borders.features.map((border: IBorder) => (
 					<Country key={uuidv4()} border={border} />
 				))}
