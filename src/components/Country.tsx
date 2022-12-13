@@ -1,15 +1,20 @@
 import { Polygon } from "react-leaflet";
+import { useSetRecoilState } from "recoil";
+
 import { IBorder } from "../schema/border";
 import { ICountry } from "../schema/country";
 
 import Countries from "../data/countries.json";
 import { reverseCoords } from "../assets/util";
+import { countryAtom } from "../state/Atom";
 
 interface ICountryProps {
 	border: IBorder;
 }
 
 const Country = (props: ICountryProps) => {
+	const setCountry = useSetRecoilState(countryAtom);
+
 	const getCountry = (isoCode: string): ICountry => {
 		return Countries[isoCode];
 	};
@@ -29,34 +34,31 @@ const Country = (props: ICountryProps) => {
 	};
 
 	return (
-		<>
-			{/* TODO: onclick display words */}
-			<Polygon
-				pathOptions={{
-					color: getColor(isoCode),
-				}}
-				positions={props.border.geometry.coordinates.map((positions) =>
-					reverseCoords(positions)
-				)}
-				eventHandlers={{
-					click: () => {
-						const words = country.words;
-					},
-					mouseover: (e) => {
-						let layer = e.target;
-						layer.setStyle({
-							color: colors.hover,
-						});
-					},
-					mouseout: (e) => {
-						let layer = e.target;
-						layer.setStyle({
-							color: getColor(isoCode),
-						});
-					},
-				}}
-			/>
-		</>
+		<Polygon
+			pathOptions={{
+				color: getColor(isoCode),
+			}}
+			positions={props.border.geometry.coordinates.map((positions) =>
+				reverseCoords(positions)
+			)}
+			eventHandlers={{
+				click: () => {
+					setCountry(country);
+				},
+				mouseover: (e) => {
+					let layer = e.target;
+					layer.setStyle({
+						color: colors.hover,
+					});
+				},
+				mouseout: (e) => {
+					let layer = e.target;
+					layer.setStyle({
+						color: getColor(isoCode),
+					});
+				},
+			}}
+		/>
 	);
 };
 
