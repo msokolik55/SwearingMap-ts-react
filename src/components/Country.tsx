@@ -15,12 +15,8 @@ interface ICountryProps {
 const Country = (props: ICountryProps) => {
 	const setCountry = useSetRecoilState(countryAtom);
 
-	const getCountry = (isoCode: string): ICountry => {
-		return Countries[isoCode];
-	};
-
 	const isoCode = props.border.properties.ISO_A3;
-	const country = getCountry(isoCode);
+	const country = Countries[isoCode];
 
 	const colors = {
 		default: "orange",
@@ -28,15 +24,14 @@ const Country = (props: ICountryProps) => {
 		disabled: "gray",
 	};
 
-	const getColor = (isoCode: string): string => {
-		const country = getCountry(isoCode);
+	const getColor = (): string => {
 		return country && country.words ? colors.default : colors.disabled;
 	};
 
 	return (
 		<Polygon
 			pathOptions={{
-				color: getColor(isoCode),
+				color: getColor(),
 			}}
 			positions={props.border.geometry.coordinates.map((positions) =>
 				reverseCoords(positions)
