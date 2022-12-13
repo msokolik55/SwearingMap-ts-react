@@ -6,6 +6,7 @@ Leaflet map for swear words around the world.
 
 -   improve center positions of countries in
 -   no wrapping map (only one instance of tiles)
+-   clicking one more time on the same country
 -   submitting new words
 -   sidebar
     -   filter
