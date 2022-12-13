@@ -16,7 +16,8 @@ const Country = (props: ICountryProps) => {
 	const setCountry = useSetRecoilState(countryAtom);
 
 	const isoCode = props.border.properties.ISO_A3;
-	const country = Countries[isoCode];
+	// @ts-ignore: isoCode is one of the Countries' keys
+	const country: ICountry = Countries[isoCode];
 
 	if (!country || !country.words) {
 		return null;
