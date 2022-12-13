@@ -10,25 +10,22 @@ import styles from "./Map.module.css";
 import Country from "./Country";
 import { IBorder } from "../schema/border";
 import { countryAtom } from "../state/Atom";
+import { reversePosition } from "../assets/util";
 
-// TODO: remove type errors
 const Map = () => {
-	const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
+	const mapCenter: LatLngExpression = [
+		49.308877665000068, 20.135855754000119,
+	];
 	const country = useRecoilValue(countryAtom);
 
-	// TODO: duplicity with Country.tsx
-	const reversePosition = (position: LatLngTuple): LatLngExpression => {
-		return [position[1], position[0]];
-	};
-
-	const getCenter = (): LatLngExpression => {
-		return reversePosition(country.center);
+	const getCenter = (): LatLngExpression | undefined => {
+		return country ? reversePosition(country.center) : undefined;
 	};
 
 	return (
 		<div id="map">
 			<MapContainer
-				center={center}
+				center={mapCenter}
 				zoom={4}
 				scrollWheelZoom={true}
 				className={styles.mapContainer}
