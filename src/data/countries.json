@@ -13,7 +13,8 @@
 	},
 	"DZA": {
 		"region": "Africa",
-		"center": [8.602510428642177, 36.939510763470565]
+		"center": [8.602510428642177, 36.939510763470565],
+		"words": ["Zebi", "Taboun", "Kahba", "Sir thawa", "Zamel", "Lklawi"]
 	},
 	"ASM": {
 		"region": "Oceania",
@@ -203,7 +204,14 @@
 	},
 	"HRV": {
 		"region": "Europe",
-		"center": [16.933929884000094, 42.77094147300012]
+		"center": [16.933929884000094, 42.77094147300012],
+		"words": [
+			"Jebem ti mater",
+			"Idi u pičku materinu",
+			"Jebote",
+			"Puši kurac",
+			"Jebo ti pas mater"
+		]
 	},
 	"CUB": {
 		"region": "America",
@@ -219,7 +227,18 @@
 	},
 	"CZE": {
 		"region": "Europe",
-		"center": [14.39780806400006, 51.01311472600011]
+		"center": [14.39780806400006, 51.01311472600011],
+		"words": [
+			"Kurva",
+			"Skurvysyn",
+			"Do prdele",
+			"Ty vole",
+			"Ty krávo",
+			"Ty hovne",
+			"Čubka",
+			"Kunda",
+			"Jebať"
+		]
 	},
 	"DNK": {
 		"region": "Europe",
@@ -280,11 +299,13 @@
 	},
 	"FIN": {
 		"region": "Europe",
-		"center": [22.443695509000094, 59.85146719000009]
+		"center": [22.443695509000094, 59.85146719000009],
+		"words": ["Vitu", "Paska"]
 	},
 	"FRA": {
 		"region": "Europe",
-		"center": [55.5013126960001, -20.87322356599999]
+		"center": [55.5013126960001, -20.87322356599999],
+		"words": ["Merde", "Putain", "Fait chier", "Trou du cul"]
 	},
 	"GUF": { "region": "America", "center": [0, 0] },
 	"PYF": {
@@ -309,7 +330,15 @@
 	},
 	"DEU": {
 		"region": "Europe",
-		"center": [6.742198113000114, 53.57835521000014]
+		"center": [6.742198113000114, 53.57835521000014],
+		"words": [
+			"Hurensohn",
+			"Hure",
+			"Scheiße",
+			"Fick dich",
+			"Fichser",
+			"Arschloch"
+		]
 	},
 	"GHA": {
 		"region": "Africa",
@@ -378,7 +407,15 @@
 	},
 	"HUN": {
 		"region": "Europe",
-		"center": [20.981488891000083, 48.51685882600006]
+		"center": [20.981488891000083, 48.51685882600006],
+		"words": [
+			"Bazd meg",
+			"Anyád picsája",
+			"Fartúró",
+			"Gecifej",
+			"Kurva anyád",
+			"Faszom"
+		]
 	},
 	"ISL": {
 		"region": "Europe",
@@ -414,7 +451,26 @@
 	},
 	"ITA": {
 		"region": "Europe",
-		"center": [12.621267123000052, 35.49233633000007]
+		"center": [12.621267123000052, 35.49233633000007],
+		"words": [
+			"Vaffanculo",
+			"Fregna (Roma)",
+			"Figa (north)",
+			"Cavalla",
+			"Cazzo",
+			"Fottiti",
+			"Son madonne ",
+			"Sei un dito in culo",
+			"Sborati (north)",
+			"La fica de tu mádre",
+			"Stronzo",
+			"Testa di cazzo",
+			"Imbecille ",
+			"Deficente",
+			"Scemo",
+			"Idiota",
+			"Testa di minchia"
+		]
 	},
 	"JAM": {
 		"region": "America",
@@ -429,7 +485,11 @@
 		"region": "Asia",
 		"center": [39.04632938700013, 32.30849416100003]
 	},
-	"KAZ": { "region": "Asia", "center": [50.6595158210001, 44.9389509140001] },
+	"KAZ": {
+		"region": "Asia",
+		"center": [50.6595158210001, 44.9389509140001],
+		"words": ["Kotak", "Sheshen Amy (Umy)", "Mal", "Sygem", "Kotakbas"]
+	},
 	"KEN": {
 		"region": "Africa",
 		"center": [41.16277103000007, -2.090915622999958]
@@ -539,7 +599,18 @@
 	},
 	"MDA": {
 		"region": "Europe",
-		"center": [27.60687259900004, 48.457818502000165]
+		"center": [27.60687259900004, 48.457818502000165],
+		"words": [
+			"Suge pula",
+			"Pidaras",
+			"Futeo nahui",
+			"Vaflist concinii",
+			"Pashol nahuina ",
+			"Gandon ibanii",
+			"Suka",
+			"Kizda masii",
+			"Pidrila ibanaia"
+		]
 	},
 	"MCO": {
 		"region": "Europe",
@@ -580,7 +651,22 @@
 	},
 	"NLD": {
 		"region": "Europe",
-		"center": [-68.23729407499985, 12.02680084800015]
+		"center": [-68.23729407499985, 12.02680084800015],
+		"words": [
+			"Neuken in de keuken",
+			"Potverdriedubbeltjes",
+			"Kanker",
+			"Hoer",
+			"Potverdikke",
+			"Piemel",
+			"Frikandel",
+			"Tering",
+			"Tyfus",
+			"Klootzak",
+			"Appelflap",
+			"Teringleier",
+			"Godverdomme"
+		]
 	},
 	"NCL": {
 		"region": "Oceania",
@@ -621,7 +707,37 @@
 	"NOR": {
 		"region": "Europe",
 		"center": [11.030528191000087, 59.02081940300012],
-		"words": ["Jævla fitte"]
+		"words": [
+			"Jævla fitte",
+			"Kuksuger",
+			"Hva faen",
+			"Fittefaen",
+			"Faen i helvette",
+			"Hestkuk",
+			"jævla jonny",
+			"Fittesatan ",
+			"Mordi",
+			"Hurpe",
+			"Megge",
+			"Tispe",
+			"Jævla pikk",
+			"Pokker",
+			"Søren",
+			"Fader",
+			"Herregud",
+			"Fytti katta",
+			"Hekkfjell",
+			"Jævla hore",
+			"Fittesatan",
+			"Alø jamon",
+			"Huse",
+			"Hore",
+			"Horesønn",
+			"Fittefaensdrittefaen",
+			"Horpestad",
+			"Jeg er tilbakestående ",
+			"Jeg puler morra mi"
+		]
 	},
 	"OMN": {
 		"region": "Asia",
@@ -653,7 +769,8 @@
 	},
 	"PER": {
 		"region": "America",
-		"center": [-76.17565995399988, -14.288374846999872]
+		"center": [-76.17565995399988, -14.288374846999872],
+		"words": ["Huevon", "Pendejo", "Tarado", "Huevas", "Cheese tress"]
 	},
 	"PHL": {
 		"region": "Asia",
@@ -665,11 +782,27 @@
 	},
 	"POL": {
 		"region": "Europe",
-		"center": [19.00212649800008, 54.34491608300007]
+		"center": [19.00212649800008, 54.34491608300007],
+		"words": [
+			"Kurwa",
+			"Do pierdole",
+			"Kutas",
+			"Pizda",
+			"Za pierdole",
+			"Dupa",
+			"Sraka",
+			"Chuj",
+			"Skurwysyn",
+			"Zajebiściep",
+			"Jebać",
+			"Jebańsko",
+			"Rucham ci starą"
+		]
 	},
 	"PRT": {
 		"region": "Europe",
-		"center": [-16.023101365999963, 30.03229401200015]
+		"center": [-16.023101365999963, 30.03229401200015],
+		"words": ["Caralho", "Fodas-se"]
 	},
 	"PRI": {
 		"region": "America",
@@ -682,7 +815,8 @@
 	"REU": { "region": "Africa", "center": [0, 0] },
 	"ROU": {
 		"region": "Europe",
-		"center": [26.722378784000114, 48.259768575000095]
+		"center": [26.722378784000114, 48.259768575000095],
+		"words": ["Futuc morci moti"]
 	},
 	"RUS": { "region": "Europe", "center": [132.44898522200018, 42.845404364] },
 	"RWA": {
@@ -788,7 +922,23 @@
 	},
 	"ESP": {
 		"region": "Europe",
-		"center": [-17.885121222999942, 27.797919012000037]
+		"center": [-17.885121222999942, 27.797919012000037],
+		"words": [
+			"Puta",
+			"Puta madre",
+			"Hijo de puta",
+			"Gilipollas",
+			"Vete a tomar por culo",
+			"Capullo",
+			"Cabron",
+			"Puta mierda",
+			"Subnormal",
+			"Imbecil",
+			"Idiota",
+			"Estupido",
+			"Inutil",
+			"Fill de puta"
+		]
 	},
 	"LKA": {
 		"region": "Asia",
@@ -848,7 +998,8 @@
 	},
 	"TUR": {
 		"region": "Asia",
-		"center": [26.04004967500012, 39.84503815300015]
+		"center": [26.04004967500012, 39.84503815300015],
+		"words": ["Ananaseky-m"]
 	},
 	"TKM": { "region": "Asia", "center": [53.10206139400006, 38.755072333] },
 	"TCA": {
