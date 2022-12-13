@@ -19,7 +19,7 @@ const Country = (props: ICountryProps) => {
 	const country = Countries[isoCode];
 
 	if (!country || !country.words) {
-		return;
+		return null;
 	}
 
 	const colors = {
