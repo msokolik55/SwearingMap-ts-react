@@ -1,6 +1,7 @@
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
+import { useRecoilValue } from "recoil";
 
 import Borders from "../data/borders.json";
 import Countries from "../data/countries.json";
@@ -8,14 +9,14 @@ import Countries from "../data/countries.json";
 import styles from "./Map.module.css";
 import Country from "./Country";
 import { IBorder } from "../schema/border";
-import { useState } from "react";
-import { ICountry } from "../schema/country";
+import { countryAtom } from "../state/Atom";
 
 // TODO: remove type errors
 const Map = () => {
 	const center: LatLngExpression = [49.308877665000068, 20.135855754000119];
-	const [bord, setBord] = useState<IBorder>(Borders.features[0]);
-	const [country, setCountry] = useState<ICountry>(Countries["NOR"]);
+	const country = useRecoilValue(countryAtom);
+	// const [bord, setBord] = useState<IBorder>(Borders.features[0]);
+	// const [country, setCountry] = useState<ICountry>(Countries["NOR"]);
 
 	// TODO: duplicity with Country.tsx
 	const reversePosition = (
@@ -24,6 +25,7 @@ const Map = () => {
 		return [position[1], position[0]];
 	};
 
+	// TODO: add new attribute "center position" to JSON file with countries
 	const getCenter = (): LatLngExpression => {
 		let position: LatLngExpression =
 			bord.geometry.type === "Polygon"
