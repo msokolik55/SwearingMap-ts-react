@@ -18,6 +18,10 @@ const Country = (props: ICountryProps) => {
 	const isoCode = props.border.properties.ISO_A3;
 	const country = Countries[isoCode];
 
+	if (!country || !country.words) {
+		return;
+	}
+
 	const colors = {
 		default: "orange",
 		hover: "purple",
@@ -49,7 +53,7 @@ const Country = (props: ICountryProps) => {
 				mouseout: (e) => {
 					let layer = e.target;
 					layer.setStyle({
-						color: getColor(isoCode),
+						color: getColor(),
 					});
 				},
 			}}
