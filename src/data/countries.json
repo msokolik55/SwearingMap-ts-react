@@ -304,7 +304,7 @@
 	},
 	"FRA": {
 		"region": "Europe",
-		"center": [55.5013126960001, -20.87322356599999],
+		"center": [1.960634399000071, 42.443715312],
 		"words": ["Merde", "Putain", "Fait chier", "Trou du cul"]
 	},
 	"GUF": { "region": "America", "center": [0, 0] },
@@ -651,7 +651,7 @@
 	},
 	"NLD": {
 		"region": "Europe",
-		"center": [-68.23729407499985, 12.02680084800015],
+		"center": [4.050059441000116, 51.392238674000154],
 		"words": [
 			"Neuken in de keuken",
 			"Potverdriedubbeltjes",
@@ -801,7 +801,7 @@
 	},
 	"PRT": {
 		"region": "Europe",
-		"center": [-16.023101365999963, 30.03229401200015],
+		"center": [-6.488048868999897, 41.65880198200013],
 		"words": ["Caralho", "Fodas-se"]
 	},
 	"PRI": {
@@ -922,7 +922,7 @@
 	},
 	"ESP": {
 		"region": "Europe",
-		"center": [-17.885121222999942, 27.797919012000037],
+		"center": [-1.926584438999925, 43.325873114],
 		"words": [
 			"Puta",
 			"Puta madre",
