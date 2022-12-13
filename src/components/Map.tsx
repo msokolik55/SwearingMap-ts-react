@@ -1,5 +1,6 @@
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
+import { v4 as uuidv4 } from "uuid";
 
 import Borders from "../data/borders.json";
 import Countries from "../data/countries.json";
@@ -46,17 +47,16 @@ const Map = () => {
 				/>
 
 				{Borders.features.map((border: IBorder) => (
-					// TODO: add unique keys to <Country />
-					<Country border={border} />
+					<Country key={uuidv4()} border={border} />
 				))}
 
 				{country && country.words && (
 					<Popup position={getCenter()}>
 						{country.words.map((word) => (
-							<>
+							<div key={uuidv4()}>
 								{word}
 								<br />
-							</>
+							</div>
 						))}
 					</Popup>
 				)}
