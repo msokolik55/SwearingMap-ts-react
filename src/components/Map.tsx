@@ -33,7 +33,6 @@ const Map = () => {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
-				{/* TODO: JSON schema validation */}
 				{Borders.features.map((border) => (
 					<Country key={uuidv4()} border={border} />
 				))}
