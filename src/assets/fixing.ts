@@ -1,6 +1,6 @@
 import Borders from "../data/borders.json";
 
-const getCoords = (isoCode: string) => {
+export const getCoords = (isoCode: string) => {
 	return Borders.features.filter(
 		(feature) => feature.properties.ISO_A3 === isoCode
 	)[0].geometry.coordinates;
