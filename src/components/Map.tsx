@@ -7,7 +7,6 @@ import Borders from "../data/borders.json";
 
 import styles from "./Map.module.css";
 import Country from "./Country";
-import { IBorder } from "../schema/border";
 import { countryAtom } from "../state/Atom";
 import { reversePosition } from "../assets/util";
 
@@ -35,8 +34,7 @@ const Map = () => {
 				/>
 
 				{/* TODO: JSON schema validation */}
-				{/* @ts-ignore: Unreachable code error */}
-				{Borders.features.map((border: IBorder) => (
+				{Borders.features.map((border) => (
 					<Country key={uuidv4()} border={border} />
 				))}
 

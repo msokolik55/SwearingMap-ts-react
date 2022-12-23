@@ -1,9 +1,9 @@
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { LatLngExpression } from "leaflet";
 
-export const reversePosition = (position: LatLngTuple): LatLngExpression => {
+export const reversePosition = (position: number[]): LatLngExpression => {
 	return [position[1], position[0]];
 };
 
-export const reverseCoords = (coords: LatLngTuple[]): LatLngExpression[] => {
+export const reverseCoords = (coords: number[][]): LatLngExpression[] => {
 	return coords.map((coord) => reversePosition(coord));
 };
