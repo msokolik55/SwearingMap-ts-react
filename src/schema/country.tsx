@@ -1,7 +1,8 @@
 import { LatLngTuple } from "leaflet";
 
 export interface ICountry {
+	ISO_A3: string;
 	region: string;
-	center: LatLngTuple;
+	center: number[];
 	words?: string[];
 }
