@@ -1,4 +1,5 @@
 import Borders from "../data/borders.json";
+import Countries from "../data/countries.json";
 import { getCoords } from "./fixing";
 
 const sum = (lst: number[]) => {
@@ -30,4 +31,11 @@ export const showAllCenters = () => {
 		(feature) => feature.properties.ISO_A3
 	);
 	isoCodes.map((isoCode) => showCenter(isoCode));
+};
+
+export const showWords = () => {
+	return Countries.map((country) => {
+		if (!country.words) return;
+		console.log(country.ISO_A3, country.words);
+	});
 };
