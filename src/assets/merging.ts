@@ -39,7 +39,7 @@ const getAdminName = (isoCode: string) => {
 	);
 };
 
-export const printCountriesJSON = () => {
+export const printCountriesJSON = (includeWords: boolean) => {
 	Countries.map((country) => {
 		if (!country.words) return;
 
@@ -47,6 +47,8 @@ export const printCountriesJSON = () => {
 		if (borders.length === 0) return;
 
 		const title = `# [${country.ISO_A3}] ${borders[0].properties.ADMIN} (${country.words.length}):`;
-		printCountry(title, country.words);
+		includeWords
+			? printCountry(title, country.words)
+			: printCountry(title, []);
 	});
 };

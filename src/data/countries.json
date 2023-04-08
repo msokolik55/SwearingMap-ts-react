@@ -17,8 +17,7 @@
 	{
 		"ISO_A3": "DZA",
 		"region": "Africa",
-		"center": [2.824938749241987, 30.78713894788408],
-		"words": ["Zebi", "Taboun", "Kahba", "Sir thawa", "Zamel", "Lklawi"]
+		"center": [2.824938749241987, 30.78713894788408]
 	},
 	{
 		"ISO_A3": "ASM",
@@ -299,7 +298,8 @@
 			"Ty hovne",
 			"Čubka",
 			"Kunda",
-			"Jebať"
+			"Jebať",
+			"Matkomrd"
 		]
 	},
 	{
@@ -325,7 +325,17 @@
 	{
 		"ISO_A3": "ECU",
 		"region": "America",
-		"center": [-80.11510169199994, -2.997979424999855]
+		"center": [-80.11510169199994, -2.997979424999855],
+		"words": [
+			"Chucha/chch ",
+			"Chuchaqui",
+			"Verga",
+			"Mamaverga",
+			"Valesverga",
+			"Sancocho de verga",
+			"Tetrahijueputa",
+			"Me vale verga"
+		]
 	},
 	{
 		"ISO_A3": "EGY",
@@ -381,13 +391,48 @@
 		"ISO_A3": "FIN",
 		"region": "Europe",
 		"center": [24.522420299670337, 63.54901207106336],
-		"words": ["Vitu", "Paska"]
+		"words": [
+			"Vittu",
+			"Paska",
+			"Saatana",
+			"Perkele",
+			"Kusipää",
+			"Paskiainen"
+		]
 	},
 	{
 		"ISO_A3": "FRA",
 		"region": "Europe",
 		"center": [1.3835773040647283, 46.89130919067153],
-		"words": ["Merde", "Putain", "Fait chier", "Trou du cul"]
+		"words": [
+			"Merde",
+			"Putain",
+			"Fait chier",
+			"Trou du cul",
+			"Face de bite",
+			"Nike ton Bebe",
+			"Suce moi",
+			"Espece de grosse pute ",
+			"Tape dans le cul jsuis pas ta mere",
+			"Tape dans le fond je suis pas ta mere",
+			"Bouffe mes couilles",
+			"Va sucer ton père",
+			"T'es finit à la pisse ",
+			"Ta grand mère la reine des putes ",
+			"Sac à foutre ",
+			"Avaleuse de chibres ",
+			"Kiki mou",
+			"Face de bidet",
+			"Couille molle",
+			"C'est dans les vieux pots qu'on fait les meilleures soupes",
+			"Va dormir sur la 4 voies",
+			"(Ta gueule) casse toi tu pus et marche à l'ombre ",
+			"Je suis pleins comme une pute en fin de service ",
+			"Ta mere baise ton grand pere  ",
+			"Bouche a foutre ",
+			"T'es adopté enfoiré",
+			"Je suus plein comme une pute en fin de service"
+		]
 	},
 	{ "ISO_A3": "GUF", "region": "America", "center": [0, 0] },
 	{
@@ -441,7 +486,17 @@
 	{
 		"ISO_A3": "GRC",
 		"region": "Europe",
-		"center": [24.135264519000145, 34.821763414000074]
+		"center": [24.135264519000145, 34.821763414000074],
+		"words": [
+			"Malakas",
+			"Ante gamisou",
+			"Poutanas gie",
+			"Gamo",
+			"Ilithios",
+			"Gamw tin poutana mou",
+			"Tis mana sou to mouni ",
+			"Poutanas yie"
+		]
 	},
 	{
 		"ISO_A3": "GRL",
@@ -576,14 +631,15 @@
 			"Son madonne ",
 			"Sei un dito in culo",
 			"Sborati (north)",
-			"La fica de tu mádre",
+			"La figa de tu mádre",
 			"Stronzo",
 			"Testa di cazzo",
 			"Imbecille ",
 			"Deficente",
 			"Scemo",
 			"Idiota",
-			"Testa di minchia"
+			"Testa di minchia",
+			"Faccia di merda"
 		]
 	},
 	{
@@ -788,7 +844,8 @@
 	{
 		"ISO_A3": "MAR",
 		"region": "Africa",
-		"center": [-5.405490480999902, 35.926519149000015]
+		"center": [-5.405490480999902, 35.926519149000015],
+		"words": ["Zebi", "Taboun", "Kahba", "Sir thawa", "Zamel", "Lklawi"]
 	},
 	{
 		"ISO_A3": "MOZ",
@@ -820,6 +877,7 @@
 		"region": "Europe",
 		"center": [5.488411073778067, 51.81428951138903],
 		"words": [
+			"Je kanker moeder",
 			"Neuken in de keuken",
 			"Potverdriedubbeltjes",
 			"Kanker",
@@ -873,7 +931,19 @@
 	{
 		"ISO_A3": "MKD",
 		"region": "Europe",
-		"center": [22.345023234000053, 42.31343902600014]
+		"center": [22.345023234000053, 42.31343902600014],
+		"words": [
+			"Picka ti mater",
+			"Idi u kurac",
+			"Peder",
+			"Da ti go nacukam ",
+			"Pusi kurac ",
+			"Kreten",
+			"Da ti go nadrvam",
+			"Ti ebam se po spisok",
+			"Na majka ti",
+			"Shupak"
+		]
 	},
 	{
 		"ISO_A3": "MNP",
@@ -984,14 +1054,28 @@
 			"Zajebiściep",
 			"Jebać",
 			"Jebańsko",
-			"Rucham ci starą"
+			"Rucham ci starą",
+			"Skurwie się",
+			"Twój stary pijany",
+			"Wypierdalaj patafianie"
 		]
 	},
 	{
 		"ISO_A3": "PRT",
 		"region": "Europe",
 		"center": [-7.938832700756734, 39.689212509997816],
-		"words": ["Caralho", "Fodas-se"]
+		"words": [
+			"Caralho",
+			"A tua mae no sabeu fazer arroz",
+			"Filho da puta",
+			"Foda-se",
+			"Cabrão",
+			"Azeiteiro",
+			"Burro",
+			"Atrasado",
+			"Anormal",
+			"Otário"
+		]
 	},
 	{
 		"ISO_A3": "PRI",
@@ -1114,7 +1198,20 @@
 	{
 		"ISO_A3": "SVN",
 		"region": "Europe",
-		"center": [16.34342574100009, 46.71417816200005]
+		"center": [16.34342574100009, 46.71417816200005],
+		"words": [
+			"Jebem ti mater",
+			"Kurba",
+			"Puši kurac",
+			"Pizda matrna",
+			"Prosim? Na kurcu te nosim",
+			"Ce si za kej si za en kurac",
+			"Tristo kosmatih",
+			"Kuzla",
+			"Pička",
+			"Odjebi",
+			"Prasica"
+		]
 	},
 	{
 		"ISO_A3": "SLB",
@@ -1159,7 +1256,17 @@
 			"Idiota",
 			"Estupido",
 			"Inutil",
-			"Fill de puta"
+			"Qué cohones",
+			"Hijo de la gran puta ",
+			"Me cago en tus muertos",
+
+			"Fill de puta",
+			"Trompellot",
+			"Turmassot",
+			"Sémila",
+			"Borinot",
+			"Cabut",
+			"Burro "
 		]
 	},
 	{
@@ -1243,7 +1350,15 @@
 		"ISO_A3": "TUR",
 		"region": "Asia",
 		"center": [32.85384804613, 38.39005555430156],
-		"words": ["Ananaseky-m"]
+		"words": [
+			"Ananaseky-m",
+			"Amina koyayim ",
+			"Got contasi",
+			"Amin feryadi",
+			"Got oglani ",
+			"Ibine ",
+			"31 ci "
+		]
 	},
 	{
 		"ISO_A3": "TKM",
