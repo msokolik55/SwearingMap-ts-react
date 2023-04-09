@@ -1,7 +1,12 @@
-import { printCountriesJSON, printCountriesKeep } from "./assets/merging";
+import {
+	printNewBorders,
+	printCountriesJSON,
+	printCountriesKeep,
+} from "./assets/merging";
 import Map from "./components/Map";
 
 function App() {
+	printNewBorders();
 	return <Map />;
 }
 
