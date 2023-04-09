@@ -47,8 +47,6 @@ export const printCountriesJSON = (includeWords: boolean) => {
 		if (borders.length === 0) return;
 
 		const title = `# [${country.ISO_A3}] ${borders[0].properties.ADMIN} (${country.words.length}):`;
-		includeWords
-			? printCountry(title, country.words)
-			: printCountry(title, []);
+		printCountry(title, includeWords ? country.words : []);
 	});
 };
