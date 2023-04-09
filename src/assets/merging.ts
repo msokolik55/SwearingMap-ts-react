@@ -50,22 +50,3 @@ export const printCountriesJSON = (includeWords: boolean) => {
 		printCountry(title, includeWords ? country.words : []);
 	});
 };
-
-export const getMissingBorders = (): string[] => {
-	// countries with words
-	const countriesWords = Countries.filter((country) => country.words).map(
-		(country) => country.ISO_A3
-	);
-
-	// countries with words on the map
-	const bordersWords = Borders.features
-		.filter((border) => countriesWords.includes(border.properties.ISO_A3))
-		.map((border) => border.properties.ISO_A3);
-
-	const missingBorders = countriesWords.filter(
-		(country) => !bordersWords.includes(country)
-	);
-
-	console.log(missingBorders);
-	return missingBorders;
-};
