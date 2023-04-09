@@ -51,7 +51,7 @@ export const printCountriesJSON = (includeWords: boolean) => {
 	});
 };
 
-export const printNewBorders = () => {
+export const getMissingBorders = (): string[] => {
 	// countries with words
 	const countriesWords = Countries.filter((country) => country.words).map(
 		(country) => country.ISO_A3
@@ -62,9 +62,10 @@ export const printNewBorders = () => {
 		.filter((border) => countriesWords.includes(border.properties.ISO_A3))
 		.map((border) => border.properties.ISO_A3);
 
-	const newBorders = countriesWords.filter(
+	const missingBorders = countriesWords.filter(
 		(country) => !bordersWords.includes(country)
 	);
 
-	console.log(newBorders);
+	console.log(missingBorders);
+	return missingBorders;
 };
