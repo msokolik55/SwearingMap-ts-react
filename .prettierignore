@@ -1,0 +1,21 @@
+dist
+node_modules
+.pnpm-store
+coverage
+src/data/*.json
+package-lock.json
+pnpm-lock.yaml
+screenshot.png
+public/logo.jpg
+
+# Legacy formatting debt tracked by TECH-001. Remove entries as files are normalized.
+index.html
+src/assets/fixing.ts
+src/assets/merger.cjs
+src/assets/merging.ts
+src/assets/showing.ts
+src/components/Map.module.css
+src/components/Map.tsx
+src/index.css
+src/index.js
+tsconfig.node.json
