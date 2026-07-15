@@ -47,13 +47,13 @@ const Country = (props: ICountryProps) => {
 					setCountry(country);
 				},
 				mouseover: (e) => {
-					let layer = e.target;
+					const layer = e.target;
 					layer.setStyle({
 						color: colors.hover,
 					});
 				},
 				mouseout: (e) => {
-					let layer = e.target;
+					const layer = e.target;
 					layer.setStyle({
 						color: getColor(),
 					});

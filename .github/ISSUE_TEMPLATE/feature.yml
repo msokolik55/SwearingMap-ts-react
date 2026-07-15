@@ -1,0 +1,29 @@
+name: Feature
+description: Propose a user or business outcome
+title: "[Feature]: "
+labels: ["type: feature", "status: triage"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: Describe the user or business result, not only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Prefer Given/When/Then scenarios.
+    validations:
+      required: true
+  - type: textarea
+    id: non-functional
+    attributes:
+      label: Non-functional requirements
+      description: Security, privacy, accessibility, performance, data, and observability.
+  - type: textarea
+    id: rollout
+    attributes:
+      label: Delivery and rollback
+      description: Feature flag, migration, rollout, and rollback considerations.
