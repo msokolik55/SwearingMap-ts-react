@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.lighthouseci
+.npm-cache
+.pnpm-store
+.vscode
+coverage
+dist
+docs
+logs
+node_modules
+playwright-report
+test-results
+*.log
+*.local
