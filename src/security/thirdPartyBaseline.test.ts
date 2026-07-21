@@ -1,10 +1,8 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
-describe("third-party content baseline", () => {
-	const html = readFileSync(resolve(process.cwd(), "index.html"), "utf8");
+import html from "../../index.html?raw";
 
+describe("third-party content baseline", () => {
 	it("does not load remote scripts or styles before user consent", () => {
 		expect(html).not.toMatch(/<(?:script|link)[^>]+https?:\/\//i);
 	});

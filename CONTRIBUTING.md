@@ -17,6 +17,14 @@
 6. Address review conversations and keep all required checks green.
 7. Squash merge after approval. Do not push directly to `main`.
 
+## Local verification
+
+- `pnpm check` runs formatting, linting, type checking, unit and component tests, the production
+  build, and bundle budgets.
+- `pnpm exec playwright install chromium` installs the local E2E browser once.
+- `pnpm test:e2e` builds the application, starts the production preview, and runs Playwright.
+- CI runs the same Playwright suite after the regular quality gate.
+
 ## Commit examples
 
 - `feat(map): add severity filter`
