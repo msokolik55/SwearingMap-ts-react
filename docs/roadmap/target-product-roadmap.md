@@ -39,25 +39,34 @@ split only for measured scaling or ownership needs.
 3. Introduce Husky, lint-staged, and commit-message validation.
 4. Provide `pnpm push:safe`, which detects the current branch, configures its upstream when needed,
    invokes `git push`, and lets the Husky pre-push gate approve or reject it.
-5. Keep pre-commit fast: format and lint staged files only. Run Fallow regression analysis plus
-   affected type checks and tests at pre-push. Run the complete suite in CI.
+5. Keep all local gates change-aware. Pre-commit formats and lints staged files only. Pre-push
+   compares the branch with its merge base, runs Fallow on the diff, related tests, and Nx affected
+   lint/typecheck/build targets only. It must handle added, modified, renamed, and deleted files.
 6. Store machine-readable Fallow output as a CI artifact; publish SARIF or a sticky PR summary when
    repository permissions allow it.
 7. Start with regression-only enforcement against a committed baseline, then ratchet thresholds as
    existing findings are removed. Do not mass-suppress findings.
+8. Reserve the complete repository suite for merges to `main`, release candidates, scheduled drift
+   checks, manual `verify:full`, or changes to shared build, dependency, CI, Nx, TypeScript, lint, or
+   test configuration that can affect every project.
 
 Planned command contract:
 
 ```text
 pnpm verify:staged   -> lint-staged (Prettier + ESLint)
-pnpm fallow:audit   -> changed-code audit with fail-on-regression
-pnpm verify:push    -> Fallow + affected lint/typecheck/tests
-pnpm verify:ci      -> install policy + format + lint + Fallow + types + tests + build + E2E
+pnpm verify:changed  -> changed files + related tests + Nx affected targets
+pnpm fallow:audit    -> changed-code audit with fail-on-regression
+pnpm verify:push     -> verify:changed against the branch merge base
+pnpm verify:ci       -> affected PR checks selected from the same change graph
+pnpm verify:full     -> explicit complete repository verification
 pnpm push:safe      -> safe cross-platform wrapper around git push; Husky runs verify:push
 ```
 
 Hooks are bypassable developer conveniences, so protected-branch CI repeats their guarantees. CD
-requires the CI result and adds container scanning before promotion.
+requires the CI result and adds container scanning before promotion. Change detection is an
+optimization, not a trust boundary: a central configuration or dependency-graph change expands the
+affected set to the whole workspace, and `main`, scheduled, and release pipelines run the full
+suite. Local affected tasks use bounded parallelism to avoid exhausting developer memory.
 
 ### Phase 2: Application platform and persistence (`ARCH-001`)
 

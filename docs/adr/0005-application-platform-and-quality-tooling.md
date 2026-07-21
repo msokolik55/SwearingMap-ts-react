@@ -23,6 +23,9 @@ module boundaries, developer workflow, cache lifecycle, and every product featur
   workflows.
 - Use Husky only as a fast local feedback layer. CI repeats all required checks and remains the
   trusted merge and release boundary.
+- Scope local checks to staged files, related tests, and Nx affected projects. Expand to the full
+  workspace for shared configuration changes or when impact cannot be determined safely, and run
+  full verification on `main`, release, and scheduled pipelines.
 - Add Storybook and responsive/accessibility browser checks to prevent design-system drift.
 
 ## Consequences
@@ -35,6 +38,8 @@ module boundaries, developer workflow, cache lifecycle, and every product featur
   structure but avoid expensive retrofitting.
 - Service-worker releases require dedicated multi-version E2E tests and careful cache invalidation.
 - Fallow and hooks add feedback time; staged and affected scopes keep common operations bounded.
+- Change-aware execution saves local time and memory but makes affected-project configuration part
+  of the trusted build system; scheduled full runs detect drift in those rules.
 - Hooks can be skipped and therefore never replace protected-branch CI.
 
 ## References
