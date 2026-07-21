@@ -10,7 +10,8 @@
 	},
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build",
+		"build": "tsc && vite build && pnpm check:bundle-budget",
+		"check:bundle-budget": "node scripts/check-bundle-budget.mjs",
 		"preview": "vite preview",
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint . --max-warnings=0",
