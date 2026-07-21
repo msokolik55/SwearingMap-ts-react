@@ -12,6 +12,7 @@ node_modules
 .pnpm-store
 dist
 dist-ssr
+.lighthouseci
 playwright-report
 test-results
 *.local

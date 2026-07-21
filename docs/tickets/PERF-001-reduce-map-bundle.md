@@ -18,6 +18,8 @@ The EPIC-00 production build emits a large-chunk warning. The main JavaScript ar
 - PERF-002 extracts the unchanged GeoJSON into an independently cacheable artifact and adds
   automated raw, gzip, and dataset budgets. Vector tiles, route-level deferral, and Lighthouse CI
   remain open in this parent ticket.
+- PERF-003 adds Lighthouse CI category and layout-stability thresholds. Vector tiles and
+  route-level map deferral remain open in this parent ticket.
 
 ## Acceptance criteria
 
