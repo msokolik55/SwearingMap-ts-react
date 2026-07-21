@@ -1,4 +1,4 @@
-import Borders from "../data/borders.json";
+import Borders from "../../public/data/borders.json";
 import Countries from "../data/countries.json";
 import { getCoords } from "./fixing";
 

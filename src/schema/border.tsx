@@ -6,3 +6,8 @@ export interface IBorder {
 		coordinates: number[][][];
 	};
 }
+
+export interface IBorderCollection {
+	type: "FeatureCollection";
+	features: IBorder[];
+}

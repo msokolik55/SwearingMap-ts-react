@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Map from "./Map";
+import { useBorders } from "../data/useBorders";
+
+vi.mock("../data/useBorders", () => ({
+	useBorders: vi.fn(),
+}));
 
 vi.mock("react-leaflet", () => ({
 	MapContainer: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -40,6 +45,22 @@ vi.mock("./Country", () => ({
 }));
 
 describe("Map", () => {
+	const mockedUseBorders = vi.mocked(useBorders);
+
+	beforeEach(() => {
+		mockedUseBorders.mockReturnValue({
+			borders: [
+				{
+					type: "Feature",
+					properties: { ADMIN: "Czech Republic", ISO_A3: "CZE" },
+					geometry: { type: "Polygon", coordinates: [[[15, 49]]] },
+				},
+			],
+			isLoading: false,
+			error: null,
+		});
+	});
+
 	it("opens the vocabulary popup after a country is selected", () => {
 		render(<Map />);
 
@@ -51,5 +72,25 @@ describe("Map", () => {
 		expect(screen.getByLabelText("Country vocabulary")).toHaveTextContent(
 			"test-word"
 		);
+	});
+
+	it("announces country data loading", () => {
+		mockedUseBorders.mockReturnValue({ borders: [], isLoading: true, error: null });
+
+		render(<Map />);
+
+		expect(screen.getByRole("status")).toHaveTextContent("Loading country data");
+	});
+
+	it("shows a recoverable message when country data fails", () => {
+		mockedUseBorders.mockReturnValue({
+			borders: [],
+			isLoading: false,
+			error: "Country data request failed with status 503.",
+		});
+
+		render(<Map />);
+
+		expect(screen.getByRole("alert")).toHaveTextContent("Reload the page");
 	});
 });

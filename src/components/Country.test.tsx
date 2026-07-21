@@ -1,8 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import Borders from "../data/borders.json";
 import Country from "./Country";
+import type { IBorder } from "../schema/border";
+
+const createBorder = (ISO_A3: string): IBorder => ({
+	type: "Feature",
+	properties: { ADMIN: "Test country", ISO_A3 },
+	geometry: { type: "Polygon", coordinates: [[[15, 49]]] },
+});
 
 vi.mock("react-leaflet", () => ({
 	Polygon: ({ eventHandlers }: { eventHandlers: { click: () => void } }) => (
@@ -15,12 +21,9 @@ vi.mock("react-leaflet", () => ({
 describe("Country", () => {
 	it("selects a country with words when its polygon is clicked", () => {
 		const onSelect = vi.fn();
-		const border = Borders.features.find(
-			(feature) => feature.properties.ISO_A3 === "CZE"
-		);
+		const border = createBorder("CZE");
 
-		expect(border).toBeDefined();
-		render(<Country border={border!} onSelect={onSelect} />);
+		render(<Country border={border} onSelect={onSelect} />);
 		fireEvent.click(screen.getByRole("button", { name: "Select country" }));
 
 		expect(onSelect).toHaveBeenCalledOnce();
@@ -28,12 +31,9 @@ describe("Country", () => {
 	});
 
 	it("does not render a polygon for a country without words", () => {
-		const border = Borders.features.find(
-			(feature) => feature.properties.ISO_A3 === "DZA"
-		);
+		const border = createBorder("DZA");
 
-		expect(border).toBeDefined();
-		const { container } = render(<Country border={border!} onSelect={vi.fn()} />);
+		const { container } = render(<Country border={border} onSelect={vi.fn()} />);
 
 		expect(container).toBeEmptyDOMElement();
 	});

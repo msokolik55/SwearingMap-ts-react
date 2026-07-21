@@ -1,4 +1,4 @@
-import Borders from "../data/borders.json";
+import Borders from "../../public/data/borders.json";
 
 export const getCoords = (isoCode: string) => {
 	return Borders.features.filter(

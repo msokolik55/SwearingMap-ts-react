@@ -13,6 +13,12 @@ dataset and map runtime up front.
 The EPIC-00 production build emits a large-chunk warning. The main JavaScript artifact is about
 2.86 MB minified and 972 kB gzip.
 
+## Progress
+
+- PERF-002 extracts the unchanged GeoJSON into an independently cacheable artifact and adds
+  automated raw, gzip, and dataset budgets. Vector tiles, route-level deferral, and Lighthouse CI
+  remain open in this parent ticket.
+
 ## Acceptance criteria
 
 - The initial JavaScript bundle has an agreed, automated performance budget.
