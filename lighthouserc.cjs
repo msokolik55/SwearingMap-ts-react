@@ -4,12 +4,14 @@ module.exports = {
 	ci: {
 		collect: {
 			chromePath: chromium.executablePath(),
+			isSinglePageApplication: true,
 			numberOfRuns: 3,
 			puppeteerScript: "./scripts/lighthouse-setup.cjs",
-			startServerCommand: "pnpm preview --host 127.0.0.1 --port 4173",
-			startServerReadyPattern: "Local:",
-			startServerReadyTimeout: 120_000,
-			url: ["http://127.0.0.1:4173/"],
+			puppeteerLaunchOptions: process.env.CI
+				? { args: ["--no-sandbox", "--disable-setuid-sandbox"] }
+				: undefined,
+			staticDistDir: "./dist",
+			url: ["http://localhost/"],
 			settings: {
 				preset: "desktop",
 				blockedUrlPatterns: ["*://*.tile.openstreetmap.org/*"],
