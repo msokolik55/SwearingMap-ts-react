@@ -25,9 +25,13 @@
 - `pnpm test:e2e` builds the application, starts the production preview, and runs Playwright.
 - `pnpm test:lighthouse` builds the application and enforces performance, accessibility, SEO, and
   best-practice score thresholds.
+- `pnpm container:build` packages the production build as `swearing-map:local` (Docker required).
+- `pnpm container:smoke` starts that image temporarily and verifies its health endpoint, browser
+  security headers, and cache policies on port 18080.
 - CI runs the same Playwright suite after the regular quality gate.
 - CI runs Lighthouse against the same production build and blocks regressions below the declared
   thresholds.
+- CI builds and smoke-tests the exact production runtime after the browser quality gates pass.
 
 ## Commit examples
 

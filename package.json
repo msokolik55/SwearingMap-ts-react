@@ -24,6 +24,8 @@
 		"test:e2e:ci": "playwright test",
 		"test:lighthouse": "pnpm build && lhci autorun",
 		"test:lighthouse:ci": "lhci autorun",
+		"container:build": "docker build --tag swearing-map:local .",
+		"container:smoke": "node scripts/smoke-container.mjs",
 		"test:watch": "vitest",
 		"audit": "pnpm audit --audit-level high",
 		"check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
