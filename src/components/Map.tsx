@@ -1,20 +1,19 @@
-import { LatLngExpression } from "leaflet";
+import { useState } from "react";
+import type { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
-import { v4 as uuidv4 } from "uuid";
-import { useRecoilValue } from "recoil";
 
 import Borders from "../data/borders.json";
 
 import styles from "./Map.module.css";
 import Country from "./Country";
-import { countryAtom } from "../state/Atom";
 import { reversePosition } from "../assets/util";
+import type { ICountry } from "../schema/country";
 
 const Map = () => {
 	const mapCenter: LatLngExpression = [
 		49.308877665000068, 20.135855754000119,
 	];
-	const country = useRecoilValue(countryAtom);
+	const [country, setCountry] = useState<ICountry | null>(null);
 
 	const getCenter = (): LatLngExpression | undefined => {
 		return country ? reversePosition(country.center) : undefined;
@@ -34,13 +33,17 @@ const Map = () => {
 				/>
 
 				{Borders.features.map((border) => (
-					<Country key={uuidv4()} border={border} />
+					<Country
+						key={border.properties.ISO_A3}
+						border={border}
+						onSelect={setCountry}
+					/>
 				))}
 
 				{country && country.words && (
 					<Popup position={getCenter()}>
-						{country.words.map((word) => (
-							<div key={uuidv4()}>
+						{country.words.map((word, index) => (
+							<div key={`${country.ISO_A3}-${word}-${index}`}>
 								{word}
 								<br />
 							</div>
