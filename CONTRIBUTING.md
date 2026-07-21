@@ -23,7 +23,11 @@
   build, and bundle budgets.
 - `pnpm exec playwright install chromium` installs the local E2E browser once.
 - `pnpm test:e2e` builds the application, starts the production preview, and runs Playwright.
+- `pnpm test:lighthouse` builds the application and enforces performance, accessibility, SEO, and
+  best-practice score thresholds.
 - CI runs the same Playwright suite after the regular quality gate.
+- CI runs Lighthouse against the same production build and blocks regressions below the declared
+  thresholds.
 
 ## Commit examples
 

@@ -58,3 +58,6 @@ jobs:
 
       - name: End-to-end test
         run: pnpm test:e2e:ci
+
+      - name: Lighthouse audit
+        run: pnpm test:lighthouse:ci
