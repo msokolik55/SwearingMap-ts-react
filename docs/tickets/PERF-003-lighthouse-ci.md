@@ -18,7 +18,8 @@ bundle size.
 ## Scope
 
 - Add Lighthouse CI as a development dependency.
-- Audit the Vite production preview with Playwright's pinned Chromium binary.
+- Audit the Vite production output with Playwright's pinned Chromium binary and LHCI's static
+  server.
 - Run three desktop samples to reduce single-run noise.
 - Enforce minimum category scores and a maximum cumulative layout shift.
 - Block public OpenStreetMap tile requests during collection to remove external network variance.
@@ -71,6 +72,11 @@ bundle size.
   subsequent SEO scores improved from 91 to 100.
 - Windows collection reuses an LHCI-managed Puppeteer session, preventing the upstream
   chrome-launcher temporary-profile cleanup failure.
+- CI collection uses LHCI's static server, avoiding fragile parsing of ANSI-formatted Vite startup
+  output. Chromium disables its process sandbox only inside the isolated CI runner because the
+  runner does not expose usable Linux user namespaces; local runs retain the browser sandbox.
+- `CI=true pnpm test:lighthouse:ci`: passed locally with a dynamic LHCI static-server port, CI-only
+  Chromium flags, three completed audits, and all assertions passing.
 - Security overrides: `tmp` 0.2.7 and LHCI's `uuid` 11.1.1; LHCI passed after both overrides.
 - `pnpm peers check`: no peer dependency issues found.
 - `pnpm audit`: no known vulnerabilities.
