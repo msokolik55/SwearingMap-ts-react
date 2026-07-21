@@ -12,6 +12,8 @@ quality gates, routes, domain capabilities, and implementation tickets.
 ## Scope
 
 - Record the target developer workflow for Fallow, Husky, local checks, CI, and CD.
+- Make local verification change-aware to minimize runtime and memory without weakening protected
+  branch and release guarantees.
 - Add Prisma, PWA lifecycle, notifications, design system, responsive design, and i18n work.
 - Define the initial word-rating, submission, moderation, translation, and quiz use cases.
 - List every initial user-facing and administration route required by those use cases.
@@ -22,6 +24,8 @@ quality gates, routes, domain capabilities, and implementation tickets.
 
 - Every requested capability belongs to an epic with acceptance criteria and dependencies.
 - The roadmap distinguishes local feedback, merge gates, and deployment gates.
+- Local commands check staged files, related tests, and affected projects; full checks have explicit
+  escalation rules and remain mandatory for main, releases, and scheduled verification.
 - The proposed domain model supports adding languages and product features without schema rewrites.
 - PWA updates do not require users to clear browser caches.
 - Responsive and accessibility expectations are part of every future UI ticket's Definition of Done.
