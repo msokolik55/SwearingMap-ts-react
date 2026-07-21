@@ -36,5 +36,11 @@ export default tseslint.config(
 		rules: {
 			"@typescript-eslint/no-require-imports": "off",
 		},
+	},
+	{
+		files: ["e2e/**/*.ts", "playwright.config.ts"],
+		languageOptions: {
+			globals: { ...globals.browser, ...globals.node },
+		},
 	}
 );
