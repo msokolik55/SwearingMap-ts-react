@@ -1,6 +1,6 @@
 # DX-001: Local and CI quality gates
 
-- Status: In progress
+- Status: Ready for review
 - Priority: Critical
 - Depends on: OPS-001
 
@@ -59,8 +59,21 @@ quality regressions and unverified artifacts.
 - `pnpm push:safe` rejects `main`, configures a missing upstream, and delegates approval to Husky.
 - The current single-project application uses related Vitest selection and project-level TypeScript
   and build checks; Nx affected targets replace this mapping after ARCH-001.
-- Pull-request CI runs Fallow against complete Git history before the existing full quality suite.
+- Pull-request CI uses the shared change-selection rules to keep the stable `Quality` job mandatory
+  while running browser, Lighthouse, dependency, and container checks only when affected.
+- Pushes to `main`, manual runs, and the weekly Sunday drift check execute the complete quality,
+  browser, Lighthouse, container, dependency, and Fallow verification.
 - CI retains the machine-readable Fallow SARIF report for 14 days even when the audit fails.
+- Reviewed identity baselines for dead code, health, and duplication keep existing debt visible while
+  failing the build on newly introduced findings.
 - The production Docker build copies the prepare-script entrypoint before dependency installation;
   the installer detects the container's missing `.git` directory and skips local hook setup.
-- Affected PR job selection and scheduled full drift verification remain open.
+
+## Verification evidence
+
+- `pnpm test:tooling`: 8/8 change-selection and Docker contract tests passed.
+- `pnpm fallow:ci`: changed-code audit passed and produced `.fallowci/fallow.sarif`.
+- `pnpm fallow:full`: dead-code, health, and duplication regression gates passed against the
+  committed baselines.
+- `pnpm check`: formatting, lint, type checking, 20 tests, production build, and bundle budgets
+  passed locally.

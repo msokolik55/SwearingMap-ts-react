@@ -4,6 +4,9 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 0"
 
 permissions:
   contents: read
@@ -13,10 +16,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Change plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      base: ${{ steps.plan.outputs.base }}
+      full: ${{ steps.plan.outputs.full }}
+      dependencies: ${{ steps.plan.outputs.dependencies }}
+      browser: ${{ steps.plan.outputs.browser }}
+      lighthouse: ${{ steps.plan.outputs.lighthouse }}
+      container: ${{ steps.plan.outputs.container }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Select affected checks
+        id: plan
+        run: node scripts/ci-change-plan.mjs
+
   quality:
     name: Quality
+    needs: changes
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -38,13 +63,21 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Audit dependencies
+        if: needs.changes.outputs.dependencies == 'true'
         run: pnpm run audit
 
       - name: Audit changed code with Fallow
+        if: github.event_name == 'pull_request'
+        env:
+          FALLOW_AUDIT_BASE: ${{ needs.changes.outputs.base }}
         run: pnpm fallow:ci
 
+      - name: Audit complete codebase with Fallow
+        if: github.event_name != 'pull_request'
+        run: pnpm fallow:full
+
       - name: Upload Fallow SARIF report
-        if: always()
+        if: always() && github.event_name == 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: fallow-sarif-${{ github.run_id }}
@@ -52,17 +85,41 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Check formatting
-        run: pnpm format:check
+      - name: Verify complete repository
+        if: needs.changes.outputs.full == 'true'
+        run: pnpm check
 
-      - name: Lint
-        run: pnpm lint
+      - name: Verify affected changes
+        if: needs.changes.outputs.full != 'true'
+        env:
+          VERIFY_BASE: ${{ needs.changes.outputs.base }}
+          VERIFY_MODE: quality
+          VERIFY_SKIP_FALLOW: "true"
+        run: pnpm verify:changed
 
-      - name: Type check
-        run: pnpm typecheck
+  browser:
+    name: Browser quality
+    needs: changes
+    if: needs.changes.outputs.browser == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
 
-      - name: Test
-        run: pnpm test
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.13.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -74,7 +131,28 @@ jobs:
         run: pnpm test:e2e:ci
 
       - name: Lighthouse audit
+        if: needs.changes.outputs.lighthouse == 'true'
         run: pnpm test:lighthouse:ci
+
+  container:
+    name: Production container
+    needs: changes
+    if: needs.changes.outputs.container == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.13.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
 
       - name: Build production container
         run: pnpm container:build
