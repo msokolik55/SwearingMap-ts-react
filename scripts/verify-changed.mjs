@@ -6,7 +6,7 @@ import {
 	requiresFullVerification,
 } from "./changed-verification.mjs";
 
-const pnpm = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
+const pnpmEntrypoint = process.env.npm_execpath;
 
 function spawn(command, args, stdio) {
 	const result = spawnSync(command, args, {
@@ -50,7 +50,12 @@ function readChangedFiles(mergeBase) {
 }
 
 function runPnpm(...args) {
-	run(pnpm, args);
+	if (!pnpmEntrypoint) {
+		throw new Error(
+			"Run this verifier through pnpm so its executable can be resolved safely."
+		);
+	}
+	run(process.execPath, [pnpmEntrypoint, ...args]);
 }
 
 const mergeBase = resolveMergeBase();
