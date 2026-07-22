@@ -7,6 +7,7 @@ WORKDIR /app
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY .husky/install.mjs .husky/install.mjs
 RUN pnpm install --frozen-lockfile
 
 COPY . .
