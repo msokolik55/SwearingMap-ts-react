@@ -61,4 +61,6 @@ quality regressions and unverified artifacts.
   and build checks; Nx affected targets replace this mapping after ARCH-001.
 - Pull-request CI runs Fallow against complete Git history before the existing full quality suite.
 - CI retains the machine-readable Fallow SARIF report for 14 days even when the audit fails.
+- The production Docker build copies the prepare-script entrypoint before dependency installation;
+  the installer detects the container's missing `.git` directory and skips local hook setup.
 - Affected PR job selection and scheduled full drift verification remain open.
