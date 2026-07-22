@@ -1,8 +1,13 @@
 # DX-001: Local and CI quality gates
 
-- Status: Ready for review
+- Status: Done
 - Priority: Critical
 - Depends on: OPS-001
+- Delivered by: [`d2f9110`](https://github.com/msokolik55/SwearingMap-ts-react/commit/d2f9110),
+  [`0a74984`](https://github.com/msokolik55/SwearingMap-ts-react/commit/0a74984),
+  [`488f0ad`](https://github.com/msokolik55/SwearingMap-ts-react/commit/488f0ad),
+  [`5fc61a7`](https://github.com/msokolik55/SwearingMap-ts-react/commit/5fc61a7),
+  [`ca7d47b`](https://github.com/msokolik55/SwearingMap-ts-react/commit/ca7d47b)
 
 ## Outcome
 

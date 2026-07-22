@@ -1,8 +1,10 @@
 # OPS-001: Production container baseline
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Branch: `codex/ops-001-production-container`
+- Delivered by: [`41ec73b`](https://github.com/msokolik55/SwearingMap-ts-react/commit/41ec73b),
+  [`1085863`](https://github.com/msokolik55/SwearingMap-ts-react/commit/1085863)
 
 ## Outcome
 

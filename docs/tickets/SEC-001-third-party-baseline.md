@@ -1,8 +1,9 @@
 # SEC-001: Establish a third-party content baseline
 
-- Status: Ready for review
+- Status: Done
 - Priority: Critical
 - Branch: `codex/sec-001-third-party-baseline`
+- Delivered by: [`3568a2d`](https://github.com/msokolik55/SwearingMap-ts-react/commit/3568a2d)
 
 ## Outcome
 

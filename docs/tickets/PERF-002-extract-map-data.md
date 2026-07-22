@@ -1,9 +1,10 @@
 # PERF-002: Extract map data and enforce a bundle budget
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Parent: `PERF-001`
 - Branch: `codex/perf-002-extract-map-data`
+- Delivered by: [`6f64f87`](https://github.com/msokolik55/SwearingMap-ts-react/commit/6f64f87)
 
 ## Outcome
 

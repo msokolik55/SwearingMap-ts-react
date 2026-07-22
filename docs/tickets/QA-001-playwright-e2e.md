@@ -1,8 +1,9 @@
 # QA-001: Add Playwright end-to-end coverage
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Branch: `codex/qa-001-playwright-e2e`
+- Delivered by: [`ebd0c34`](https://github.com/msokolik55/SwearingMap-ts-react/commit/ebd0c34)
 
 ## Outcome
 

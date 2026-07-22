@@ -1,9 +1,11 @@
 # PERF-003: Enforce Lighthouse quality thresholds
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Parent: `PERF-001`
 - Branch: `codex/perf-003-lighthouse-ci`
+- Delivered by: [`3938a4c`](https://github.com/msokolik55/SwearingMap-ts-react/commit/3938a4c),
+  [`846c157`](https://github.com/msokolik55/SwearingMap-ts-react/commit/846c157)
 
 ## Outcome
 
