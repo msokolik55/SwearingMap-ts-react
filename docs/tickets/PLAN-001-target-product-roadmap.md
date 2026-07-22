@@ -1,8 +1,9 @@
 # PLAN-001: Target product roadmap
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Branch: `codex/plan-001-product-roadmap`
+- Delivered by: [`101d256`](https://github.com/msokolik55/SwearingMap-ts-react/commit/101d256)
 
 ## Outcome
 

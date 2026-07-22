@@ -1,7 +1,8 @@
 # EPIC-00: Engineering foundation
 
-- Status: Ready for review
+- Status: Done
 - Branch: `codex/epic-00-engineering-foundation`
+- Delivered by: [`ad06566`](https://github.com/msokolik55/SwearingMap-ts-react/commit/ad06566)
 
 ## Outcome
 

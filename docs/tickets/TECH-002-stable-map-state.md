@@ -1,8 +1,9 @@
 # TECH-002: Stabilize map state and React keys
 
-- Status: Ready for review
+- Status: Done
 - Priority: High
 - Branch: `codex/tech-002-stable-map-state`
+- Delivered by: [`786ea1b`](https://github.com/msokolik55/SwearingMap-ts-react/commit/786ea1b)
 
 ## Outcome
 
