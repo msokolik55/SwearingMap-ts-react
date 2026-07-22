@@ -13,7 +13,10 @@ const FULL_IMPACT_PATTERNS = [
 	/^commitlint\.config\./u,
 	/^lint-staged\.config\./u,
 	/^\.husky\//u,
+	/^fallow-baselines\//u,
+	/^scripts\/ci-change-plan\.mjs$/u,
 	/^scripts\/changed-verification\.mjs$/u,
+	/^scripts\/fallow-(?:ci|full)\.mjs$/u,
 	/^scripts\/verify-changed\.mjs$/u,
 ];
 
@@ -61,5 +64,25 @@ export function parseNameStatus(output, pathExists = existsSync) {
 	}
 
 	return files;
+}
+
+export function createCiPlan(paths, forceFull = false) {
+	const full = forceFull || requiresFullVerification(paths);
+	const changes = classifyChanges(paths.map((path) => ({ path, deleted: false })));
+	const affected = {
+		dependencies: paths.some((path) =>
+			/^(?:package\.json|pnpm-lock\.yaml)$/u.test(path)
+		),
+		browser: changes.appChanged,
+		lighthouse: paths.some((path) =>
+			/^(?:index\.html$|lighthouserc\.|performance-budget\.json$|public\/|src\/|vite\.config\.)/u.test(
+				path
+			)
+		),
+		container: changes.containerChanged,
+	};
+
+	if (!full) return { full, ...affected };
+	return { full, dependencies: true, browser: true, lighthouse: true, container: true };
 }
 import { existsSync } from "node:fs";

@@ -30,6 +30,7 @@
 		"container:smoke": "node scripts/smoke-container.mjs",
 		"fallow:audit": "fallow audit --base origin/main --gate new-only --threads 2",
 		"fallow:ci": "node scripts/fallow-ci.mjs",
+		"fallow:full": "node scripts/fallow-full.mjs",
 		"verify:staged": "lint-staged",
 		"verify:changed": "node scripts/verify-changed.mjs",
 		"verify:push": "pnpm verify:changed",

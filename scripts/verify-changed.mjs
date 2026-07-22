@@ -78,17 +78,19 @@ if (files.length === 0) {
 }
 
 console.log(`Verifying ${files.length} changed file(s) since ${mergeBase}.`);
-runPnpm(
-	"exec",
-	"fallow",
-	"audit",
-	"--base",
-	mergeBase,
-	"--gate",
-	"new-only",
-	"--threads",
-	"2"
-);
+if (process.env.VERIFY_SKIP_FALLOW !== "true") {
+	runPnpm(
+		"exec",
+		"fallow",
+		"audit",
+		"--base",
+		mergeBase,
+		"--gate",
+		"new-only",
+		"--threads",
+		"2"
+	);
+}
 
 const paths = files.map((file) => file.path);
 if (requiresFullVerification(paths)) {
@@ -108,11 +110,11 @@ if (changes.codePaths.length) {
 	runPnpm("exec", "vitest", "related", "--run", ...changes.codePaths);
 }
 if (changes.typeScriptChanged) runPnpm("typecheck");
-if (changes.appChanged) {
+if (changes.appChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("build");
 	runPnpm("test:e2e:ci");
 }
-if (changes.containerChanged) {
+if (changes.containerChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("container:build");
 	runPnpm("container:smoke");
 }

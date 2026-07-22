@@ -3,12 +3,15 @@ import test from "node:test";
 
 import {
 	classifyChanges,
+	createCiPlan,
 	parseNameStatus,
 	requiresFullVerification,
 } from "./changed-verification.mjs";
 
 test("shared configuration changes require full verification", () => {
 	assert.equal(requiresFullVerification(["package.json"]), true);
+	assert.equal(requiresFullVerification(["scripts/ci-change-plan.mjs"]), true);
+	assert.equal(requiresFullVerification(["fallow-baselines/health.json"]), true);
 	assert.equal(requiresFullVerification(["src/App.tsx"]), false);
 });
 
@@ -36,4 +39,34 @@ test("uses the destination of renamed files", () => {
 
 	assert.equal(result.length, 1);
 	assert.equal(result[0].path, "new-name.ts");
+});
+
+test("selects only relevant expensive CI suites", () => {
+	assert.deepEqual(createCiPlan(["docs/roadmap.md"]), {
+		full: false,
+		dependencies: false,
+		browser: false,
+		lighthouse: false,
+		container: false,
+	});
+	assert.equal(createCiPlan(["src/App.tsx"]).browser, true);
+	assert.equal(createCiPlan(["src/App.tsx"]).lighthouse, true);
+	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
+});
+
+test("shared CI configuration forces every suite", () => {
+	assert.deepEqual(createCiPlan([".github/workflows/ci.yml"]), {
+		full: true,
+		dependencies: true,
+		browser: true,
+		lighthouse: true,
+		container: true,
+	});
+	assert.deepEqual(createCiPlan(["docs/roadmap.md"], true), {
+		full: true,
+		dependencies: true,
+		browser: true,
+		lighthouse: true,
+		container: true,
+	});
 });
