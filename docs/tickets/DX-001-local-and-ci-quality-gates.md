@@ -1,6 +1,6 @@
 # DX-001: Local and CI quality gates
 
-- Status: Backlog
+- Status: In progress
 - Priority: Critical
 - Depends on: OPS-001
 
@@ -50,3 +50,15 @@ quality regressions and unverified artifacts.
   PWA multi-version, and container smoke tests.
 - Safety fallback: missing base refs, ambiguous dependency impact, or change-selector failure causes
   a full check rather than silently passing.
+
+## Implementation progress
+
+- Fallow 3.7 is installed with signed-binary verification and a two-thread changed-code audit.
+- Husky runs lint-staged at pre-commit, commitlint at commit-msg, and change-aware verification at
+  pre-push.
+- `pnpm push:safe` rejects `main`, configures a missing upstream, and delegates approval to Husky.
+- The current single-project application uses related Vitest selection and project-level TypeScript
+  and build checks; Nx affected targets replace this mapping after ARCH-001.
+- Pull-request CI runs Fallow against complete Git history before the existing full quality suite.
+- CI artifact publication, affected PR job selection, and scheduled full drift verification remain
+  open.

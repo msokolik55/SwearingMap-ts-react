@@ -17,10 +17,18 @@
 6. Address review conversations and keep all required checks green.
 7. Squash merge after approval. Do not push directly to `main`.
 
+For the simplest safe push, run `pnpm push:safe`. It pushes the current branch, configures its
+upstream when needed, and lets the Husky pre-push hook run the change-aware verification gate.
+
 ## Local verification
 
 - `pnpm check` runs formatting, linting, type checking, unit and component tests, the production
   build, and bundle budgets.
+- `pnpm verify:staged` formats and lints only staged supported files.
+- `pnpm verify:changed` compares the branch with `origin/main` and verifies only changed files,
+  related tests, and affected application/container targets. Shared configuration safely escalates
+  to `pnpm check`.
+- `pnpm verify:full` explicitly runs the complete local quality and browser suite.
 - `pnpm exec playwright install chromium` installs the local E2E browser once.
 - `pnpm test:e2e` builds the application, starts the production preview, and runs Playwright.
 - `pnpm test:lighthouse` builds the application and enforces performance, accessibility, SEO, and
