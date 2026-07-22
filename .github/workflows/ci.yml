@@ -43,6 +43,15 @@ jobs:
       - name: Audit changed code with Fallow
         run: pnpm fallow:ci
 
+      - name: Upload Fallow SARIF report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fallow-sarif-${{ github.run_id }}
+          path: .fallowci/fallow.sarif
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Check formatting
         run: pnpm format:check
 

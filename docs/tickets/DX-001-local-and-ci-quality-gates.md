@@ -60,5 +60,5 @@ quality regressions and unverified artifacts.
 - The current single-project application uses related Vitest selection and project-level TypeScript
   and build checks; Nx affected targets replace this mapping after ARCH-001.
 - Pull-request CI runs Fallow against complete Git history before the existing full quality suite.
-- CI artifact publication, affected PR job selection, and scheduled full drift verification remain
-  open.
+- CI retains the machine-readable Fallow SARIF report for 14 days even when the audit fails.
+- Affected PR job selection and scheduled full drift verification remain open.
