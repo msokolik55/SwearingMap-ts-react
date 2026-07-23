@@ -60,3 +60,6 @@ in progress until all acceptance criteria are satisfied.
 - `pnpm nx show project map` and a daemon-free static `nx graph` complete successfully.
 - Unit/tooling tests, production build, Playwright, Lighthouse CI, Fallow, and the production
   container smoke test pass. A repeated Nx quality run restores cacheable targets from cache.
+- Security overrides keep Nx transitive `axios` and `brace-expansion` dependencies on patched
+  releases, and the pull-request workflow always produces and uploads a valid Fallow SARIF report
+  even when an earlier independent gate fails.
