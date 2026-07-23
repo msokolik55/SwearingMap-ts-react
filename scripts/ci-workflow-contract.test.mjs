@@ -3,6 +3,18 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+
+test("exposes the CI change planner as a package entry point", () => {
+	assert.equal(
+		packageJson.scripts["ci:change-plan"],
+		"node scripts/ci-change-plan.mjs"
+	);
+	assert.match(
+		workflow,
+		/- name: Select affected checks[\s\S]*?run: pnpm ci:change-plan/u
+	);
+});
 
 test("runs the pull-request Fallow audit after an earlier independent gate fails", () => {
 	assert.match(
