@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 .nx
 **/.next
+**/next-env.d.ts
 **/out
 .npm-cache
 .pnpm-store

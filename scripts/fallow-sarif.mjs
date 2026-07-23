@@ -22,3 +22,23 @@ export function initializeFallowSarif(outputPath) {
 	mkdirSync(dirname(outputPath), { recursive: true });
 	writeFileSync(outputPath, `${JSON.stringify(EMPTY_FALLOW_SARIF, null, 2)}\n`);
 }
+
+function formatFallowSarifFinding(result) {
+	const physicalLocation = result.locations[0].physicalLocation;
+	const line = physicalLocation.region?.startLine;
+	const lineSuffix = line === undefined ? "" : `:${line}`;
+
+	return `[${result.level}] ${result.ruleId} ${physicalLocation.artifactLocation.uri}${lineSuffix} — ${result.message.text}`;
+}
+
+export function formatFallowSarifFindings(report) {
+	const findings = [];
+
+	for (const run of report.runs) {
+		for (const result of run.results) {
+			findings.push(formatFallowSarifFinding(result));
+		}
+	}
+
+	return findings;
+}
