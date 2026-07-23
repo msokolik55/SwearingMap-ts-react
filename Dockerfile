@@ -8,6 +8,7 @@ RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/map/package.json apps/map/package.json
+COPY apps/web/package.json apps/web/package.json
 COPY .husky/install.mjs .husky/install.mjs
 RUN pnpm install --frozen-lockfile
 
@@ -18,7 +19,7 @@ FROM nginxinc/nginx-unprivileged:1.29-alpine AS runtime
 
 COPY --chown=101:101 docker/security-headers.conf /etc/nginx/security-headers.conf
 COPY --chown=101:101 docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build --chown=101:101 /app/apps/map/dist /usr/share/nginx/html
+COPY --from=build --chown=101:101 /app/dist/site /usr/share/nginx/html
 
 EXPOSE 8080
 

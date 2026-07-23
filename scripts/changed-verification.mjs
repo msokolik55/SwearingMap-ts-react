@@ -41,10 +41,10 @@ export function classifyChanges(files) {
 		formatPaths: paths.filter((file) => FORMAT_PATTERN.test(file)),
 		typeScriptChanged: paths.some((file) => TYPESCRIPT_PATTERN.test(file)),
 		appChanged: paths.some((file) =>
-			/^(?:apps\/map\/|e2e\/|playwright\.config\.)/u.test(file)
+			/^(?:apps\/(?:map|web)\/|e2e\/|playwright\.config\.)/u.test(file)
 		),
 		containerChanged: paths.some((file) =>
-			/^(?:Dockerfile$|\.dockerignore$|docker\/|scripts\/smoke-container\.mjs$)/u.test(
+			/^(?:Dockerfile$|\.dockerignore$|docker\/|scripts\/(?:assemble-site|smoke-container)\.mjs$)/u.test(
 				file
 			)
 		),
@@ -76,7 +76,9 @@ export function createCiPlan(paths, forceFull = false) {
 		),
 		browser: changes.appChanged,
 		lighthouse: paths.some((path) =>
-			/^(?:apps\/map\/|lighthouserc\.|performance-budget\.json$)/u.test(path)
+			/^(?:apps\/(?:map|web)\/|lighthouserc\.|performance-budget\.json$)/u.test(
+				path
+			)
 		),
 		container: changes.containerChanged,
 	};

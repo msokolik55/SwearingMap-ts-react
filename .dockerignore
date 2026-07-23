@@ -3,6 +3,8 @@
 .idea
 .lighthouseci
 .nx
+**/.next
+**/out
 .npm-cache
 .pnpm-store
 .vscode
@@ -11,6 +13,7 @@ dist
 docs
 logs
 node_modules
+**/node_modules
 playwright-report
 test-results
 *.log

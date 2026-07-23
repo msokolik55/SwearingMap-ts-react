@@ -53,7 +53,10 @@ test("selects only relevant expensive CI suites", () => {
 	});
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).browser, true);
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).lighthouse, true);
+	assert.equal(createCiPlan(["apps/web/app/page.tsx"]).browser, true);
+	assert.equal(createCiPlan(["apps/web/app/page.tsx"]).lighthouse, true);
 	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
+	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container, true);
 });
 
 test("shared CI configuration forces every suite", () => {

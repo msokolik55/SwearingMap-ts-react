@@ -16,7 +16,7 @@ test("loads the map and opens a country's vocabulary", async ({ page }) => {
 		(response) => response.url().endsWith("/data/borders.json") && response.ok()
 	);
 
-	await page.goto("/");
+	await page.goto("/map/");
 	await borderResponse;
 
 	await expect(page).toHaveTitle("Swearing Map");
@@ -40,7 +40,7 @@ test("shows a recoverable error when country data is unavailable", async ({ page
 		route.fulfill({ status: 503, contentType: "application/json", body: "{}" })
 	);
 
-	await page.goto("/");
+	await page.goto("/map/");
 
 	await expect(page.getByRole("alert")).toContainText(
 		"Country data request failed with status 503. Reload the page to try again."

@@ -1,10 +1,11 @@
 # ARCH-001: Nx, Next.js, NestJS, and Prisma platform
 
 - Status: In progress
-- Slice 1 status: Ready for review
+- Slice 1 status: Done
+- Slice 2 status: Ready for review
 - Priority: Critical
 - Depends on: DX-001
-- Branch: `codex/arch-001-nx-workspace`
+- Branch: `codex/arch-001-next-shell`
 
 ## Outcome
 
@@ -63,3 +64,32 @@ in progress until all acceptance criteria are satisfied.
 - Security overrides keep Nx transitive `axios` and `brace-expansion` dependencies on patched
   releases, and the pull-request workflow always produces and uploads a valid Fallow SARIF report
   even when an earlier independent gate fails.
+
+## Slice 2 acceptance criteria
+
+- A typed Next.js App Router application owns the public product shell and is inferred by the Nx
+  project graph without replacing the existing map implementation.
+- The shell is statically exportable, responsive from mobile through desktop, and contains a clear
+  route into the live product experience.
+- The Vite proof of concept is mounted at `/map/`; its assets, GeoJSON request, SPA deep links,
+  caching, security headers, and browser behavior remain functional.
+- A single deterministic assembly command produces the artifact used by local preview, Lighthouse,
+  Playwright, and the unprivileged production container.
+- Changes in either web application select browser and Lighthouse CI, while unrelated
+  documentation changes continue to skip them.
+
+## Slice 2 implementation evidence
+
+- `apps/web` uses Next.js 16 App Router, static export, TypeScript, the inferred Nx Next plugin, and
+  the official Next core-web-vitals ESLint configuration.
+- `pnpm build` builds both frontend projects and assembles `apps/web/out` with the Vite output under
+  `dist/site/map`; local preview, Lighthouse, and the runtime image all consume that same artifact.
+- The root shell and `/map/` route passed four Playwright scenarios, including the mobile viewport
+  and an end-to-end navigation across the framework boundary.
+- Lighthouse passed all assertions across three runs for each of `/` and `/map/`.
+- Browser visual QA confirmed the desktop hierarchy and a mobile layout without horizontal
+  overflow. The responsive design is guarded by both CSS breakpoints and Playwright.
+- The clean Linux container build and smoke test validate the root shell, map SPA fallback, route
+  assets, GeoJSON caching, immutable asset caching, security headers, and non-root runtime.
+- The dependency audit contains no high-severity findings; the Next transitive `sharp` dependency is
+  pinned from the affected `0.34.5` release to patched `0.35.3`.

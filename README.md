@@ -17,19 +17,25 @@ architecture decisions toward a production product. See the accepted decisions i
 
 ## Workspace
 
-The repository is an Nx-managed pnpm workspace. The existing proof-of-concept map is isolated in
-`apps/map`; upcoming Next.js, NestJS, and shared-library projects will be added beside it without
-coupling their build and test lifecycles.
+The repository is an Nx-managed pnpm workspace. The product shell lives in the Next.js App Router
+project at `apps/web`; the existing proof-of-concept map remains isolated in `apps/map` and is
+assembled under the `/map/` route. Upcoming NestJS and shared-library projects can be added beside
+them without coupling their build and test lifecycles.
 
 Useful workspace commands:
 
 ```sh
 pnpm nx show project map
+pnpm nx show project web
 pnpm nx graph
 pnpm nx affected -t lint typecheck test build --base origin/main --head HEAD --parallel=2
 ```
 
 Nx caches deterministic task outputs in `.nx/cache`. No global Nx installation is required.
+
+`pnpm dev` starts the Next.js product shell. Use `pnpm dev:map` when working on the isolated map.
+`pnpm build` builds both projects and assembles the exact static artifact served by `pnpm preview`
+and the production container.
 
 ## Development
 

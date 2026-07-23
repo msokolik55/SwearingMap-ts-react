@@ -7,7 +7,16 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
 	{
-		ignores: [".nx", ".pnpm-store", "**/coverage/**", "**/dist/**", "node_modules"],
+		ignores: [
+			".nx",
+			".pnpm-store",
+			"**/.next/**",
+			"**/coverage/**",
+			"**/dist/**",
+			"**/out/**",
+			"apps/web/**",
+			"node_modules",
+		],
 	},
 	js.configs.recommended,
 	...tseslint.configs.recommended,
