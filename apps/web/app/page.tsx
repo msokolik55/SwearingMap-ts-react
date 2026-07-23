@@ -34,9 +34,13 @@ export default function Home() {
 					</span>
 					<span>Swearing Map</span>
 				</Link>
-				<nav aria-label="Primary navigation">
-					<a href="#why">Why it matters</a>
-					<a href="#roadmap">Roadmap</a>
+				<nav className="primary-nav" aria-label="Primary navigation">
+					<a className="nav-link" href="#why">
+						Why it matters
+					</a>
+					<a className="nav-link" href="#roadmap">
+						Roadmap
+					</a>
 					<a className="nav-cta" href="/map/">
 						Open map
 					</a>
@@ -100,7 +104,7 @@ export default function Home() {
 					{capabilities.map((capability, index) => (
 						<article className="capability-card" key={capability.title}>
 							<span className="card-number">0{index + 1}</span>
-							<p>{capability.eyebrow}</p>
+							<p className="card-eyebrow">{capability.eyebrow}</p>
 							<h3>{capability.title}</h3>
 							<div className="card-divider" />
 							<p className="card-body">{capability.body}</p>
@@ -117,17 +121,19 @@ export default function Home() {
 				<ol>
 					{roadmap.map((item, index) => (
 						<li key={item}>
-							<span>{index + 1}</span>
+							<span className="roadmap-index">{index + 1}</span>
 							{item}
 						</li>
 					))}
 				</ol>
 			</section>
 
-			<footer>
-				<span>Swearing Map</span>
+			<footer className="site-footer">
+				<span className="footer-brand">Swearing Map</span>
 				<p>Language is culture in motion.</p>
-				<a href="/map/">Start exploring →</a>
+				<a className="footer-link" href="/map/">
+					Start exploring →
+				</a>
 			</footer>
 		</main>
 	);
