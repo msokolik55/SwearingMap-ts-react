@@ -1,11 +1,13 @@
-import { mkdirSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+
+import { initializeFallowSarif } from "./fallow-sarif.mjs";
 
 const pnpmEntrypoint = process.env.npm_execpath;
 if (!pnpmEntrypoint) throw new Error("Run the Fallow CI reporter through pnpm.");
 const base = process.env.FALLOW_AUDIT_BASE || "origin/main";
+const outputPath = ".fallowci/fallow.sarif";
 
-mkdirSync(".fallowci", { recursive: true });
+initializeFallowSarif(outputPath);
 
 const result = spawnSync(
 	process.execPath,
@@ -29,7 +31,7 @@ const result = spawnSync(
 		"--format",
 		"sarif",
 		"--output-file",
-		".fallowci/fallow.sarif",
+		outputPath,
 	],
 	{ stdio: "inherit" }
 );

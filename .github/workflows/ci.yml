@@ -67,13 +67,13 @@ jobs:
         run: pnpm run audit
 
       - name: Audit changed code with Fallow
-        if: github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request'
         env:
           FALLOW_AUDIT_BASE: ${{ needs.changes.outputs.base }}
         run: pnpm fallow:ci
 
       - name: Audit complete codebase with Fallow
-        if: github.event_name != 'pull_request'
+        if: always() && github.event_name != 'pull_request'
         run: pnpm fallow:full
 
       - name: Upload Fallow SARIF report
