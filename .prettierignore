@@ -1,4 +1,6 @@
 dist
+**/.next
+**/out
 node_modules
 .pnpm-store
 coverage

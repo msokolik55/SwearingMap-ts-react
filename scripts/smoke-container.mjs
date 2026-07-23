@@ -70,15 +70,27 @@ try {
 		"X-Content-Type-Options header is missing."
 	);
 	assert(page.headers.get("cache-control") === "no-cache", "HTML must not be cached.");
+	assert(
+		html.includes("Learn the language people use"),
+		"Product shell was not served at the root route."
+	);
 
-	const deepLink = await fetch(`${baseUrl}/countries/slovakia`);
+	const mapPage = await fetch(`${baseUrl}/map/`);
+	const mapHtml = await mapPage.text();
+	assert(mapPage.ok, `Map route returned HTTP ${mapPage.status}.`);
+	assert(
+		mapHtml.includes('<div id="root"></div>'),
+		"Map route did not serve the Vite app."
+	);
+
+	const deepLink = await fetch(`${baseUrl}/map/countries/slovakia`);
 	assert(deepLink.ok, `SPA deep link returned HTTP ${deepLink.status}.`);
 	assert(
 		(await deepLink.text()).includes('<div id="root"></div>'),
 		"SPA deep link did not fall back to index.html."
 	);
 
-	const assetPath = html.match(/(?:src|href)="(\/assets\/[^"]+)"/)?.[1];
+	const assetPath = mapHtml.match(/(?:src|href)="(\/map\/assets\/[^"]+)"/)?.[1];
 	assert(assetPath, "Built asset URL was not found in index.html.");
 
 	const asset = await fetch(`${baseUrl}${assetPath}`, { method: "HEAD" });
@@ -88,7 +100,7 @@ try {
 		"Fingerprint asset does not use immutable caching."
 	);
 
-	const data = await fetch(`${baseUrl}/data/borders.json`, { method: "HEAD" });
+	const data = await fetch(`${baseUrl}/map/data/borders.json`, { method: "HEAD" });
 	assert(data.ok, `GeoJSON data returned HTTP ${data.status}.`);
 	assert(
 		data.headers.get("cache-control")?.includes("stale-while-revalidate"),

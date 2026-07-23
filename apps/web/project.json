@@ -1,0 +1,32 @@
+{
+	"name": "web",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/web/app",
+	"tags": ["scope:web", "type:application"],
+	"targets": {
+		"build": {
+			"cache": true,
+			"outputs": [
+				"{projectRoot}/.next/!(cache)/**/*",
+				"{projectRoot}/.next/!(cache)",
+				"{projectRoot}/out"
+			]
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"options": {
+				"command": "eslint . --max-warnings=0",
+				"cwd": "apps/web"
+			}
+		},
+		"typecheck": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"options": {
+				"command": "tsc --noEmit -p apps/web/tsconfig.json"
+			}
+		}
+	}
+}
