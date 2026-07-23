@@ -18,6 +18,19 @@ test("copies the prepare-script entrypoint before installing dependencies", () =
 	);
 });
 
+test("copies workspace manifests before installing dependencies", () => {
+	const copyMapManifest = dockerfile.indexOf(
+		"COPY apps/map/package.json apps/map/package.json"
+	);
+	const installDependencies = dockerfile.indexOf("RUN pnpm install --frozen-lockfile");
+
+	assert.notEqual(copyMapManifest, -1, "Map workspace manifest must be copied.");
+	assert.ok(
+		copyMapManifest < installDependencies,
+		"Workspace manifests must exist before pnpm install."
+	);
+});
+
 test("keeps the Husky installer in the Docker build context", () => {
 	const ignoredEntries = dockerignore
 		.split(/\r?\n/u)
@@ -26,4 +39,11 @@ test("keeps the Husky installer in the Docker build context", () => {
 
 	assert.equal(ignoredEntries.includes(".husky"), false);
 	assert.equal(ignoredEntries.includes(".husky/install.mjs"), false);
+});
+
+test("copies the Nx map build output into the runtime image", () => {
+	assert.match(
+		dockerfile,
+		/COPY --from=build --chown=101:101 \/app\/apps\/map\/dist \/usr\/share\/nginx\/html/u
+	);
 });

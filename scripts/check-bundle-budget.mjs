@@ -3,10 +3,9 @@ import { gzipSync } from "node:zlib";
 import { resolve } from "node:path";
 
 const root = process.cwd();
+const dist = resolve(root, "apps/map/dist");
 const budget = JSON.parse(readFileSync(resolve(root, "performance-budget.json"), "utf8"));
-const manifest = JSON.parse(
-	readFileSync(resolve(root, "dist/.vite/manifest.json"), "utf8")
-);
+const manifest = JSON.parse(readFileSync(resolve(dist, ".vite/manifest.json"), "utf8"));
 
 const entryKey = Object.keys(manifest).find((key) => manifest[key].isEntry);
 if (!entryKey) {
@@ -29,7 +28,7 @@ visit(entryKey);
 
 const initialJavaScript = [...initialFiles]
 	.filter((file) => file.endsWith(".js"))
-	.map((file) => readFileSync(resolve(root, "dist", file)));
+	.map((file) => readFileSync(resolve(dist, file)));
 const initialJavaScriptBytes = initialJavaScript.reduce(
 	(total, file) => total + file.byteLength,
 	0
@@ -38,7 +37,7 @@ const initialJavaScriptGzipBytes = initialJavaScript.reduce(
 	(total, file) => total + gzipSync(file).byteLength,
 	0
 );
-const borderDataBytes = statSync(resolve(root, "dist/data/borders.json")).size;
+const borderDataBytes = statSync(resolve(dist, "data/borders.json")).size;
 
 const measurements = {
 	initialJavaScriptBytes,

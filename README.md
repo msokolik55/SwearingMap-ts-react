@@ -15,6 +15,22 @@ architecture decisions toward a production product. See the accepted decisions i
 [`docs/adr`](docs/adr) and the current foundation epic in
 [`docs/tickets/EPIC-00-engineering-foundation.md`](docs/tickets/EPIC-00-engineering-foundation.md).
 
+## Workspace
+
+The repository is an Nx-managed pnpm workspace. The existing proof-of-concept map is isolated in
+`apps/map`; upcoming Next.js, NestJS, and shared-library projects will be added beside it without
+coupling their build and test lifecycles.
+
+Useful workspace commands:
+
+```sh
+pnpm nx show project map
+pnpm nx graph
+pnpm nx affected -t lint typecheck test build --base origin/main --head HEAD --parallel=2
+```
+
+Nx caches deterministic task outputs in `.nx/cache`. No global Nx installation is required.
+
 ## Development
 
 Prerequisites are Node.js from `.nvmrc` and Corepack.

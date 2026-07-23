@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 
 import {
 	classifyChanges,
+	createAffectedTargets,
 	parseNameStatus,
 	requiresFullVerification,
 } from "./changed-verification.mjs";
@@ -87,6 +88,12 @@ if (process.env.VERIFY_SKIP_FALLOW !== "true") {
 		mergeBase,
 		"--gate",
 		"new-only",
+		"--dead-code-baseline",
+		"fallow-baselines/dead-code.json",
+		"--health-baseline",
+		"fallow-baselines/health.json",
+		"--dupes-baseline",
+		"fallow-baselines/dupes.json",
 		"--threads",
 		"2"
 	);
@@ -107,11 +114,23 @@ if (changes.formatPaths.length) {
 }
 if (changes.codePaths.length) {
 	runPnpm("exec", "eslint", "--max-warnings=0", ...changes.codePaths);
-	runPnpm("exec", "vitest", "related", "--run", ...changes.codePaths);
 }
-if (changes.typeScriptChanged) runPnpm("typecheck");
+
+const affectedTargets = createAffectedTargets(process.env.VERIFY_MODE === "quality");
+runPnpm(
+	"exec",
+	"nx",
+	"affected",
+	"-t",
+	...affectedTargets,
+	"--base",
+	mergeBase,
+	"--head",
+	"HEAD",
+	"--parallel=2"
+);
+
 if (changes.appChanged && process.env.VERIFY_MODE !== "quality") {
-	runPnpm("build");
 	runPnpm("test:e2e:ci");
 }
 if (changes.containerChanged && process.env.VERIFY_MODE !== "quality") {

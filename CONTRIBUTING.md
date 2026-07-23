@@ -26,8 +26,11 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
   build, and bundle budgets.
 - `pnpm verify:staged` formats and lints only staged supported files.
 - `pnpm verify:changed` compares the branch with `origin/main` and verifies only changed files,
-  related tests, and affected application/container targets. Shared configuration safely escalates
-  to `pnpm check`.
+  Fallow findings, and Nx affected project targets with at most two parallel tasks. Shared
+  configuration safely escalates to `pnpm check`.
+- `pnpm nx show project map` displays the computed project targets and their cache configuration.
+- `pnpm nx graph` visualizes project boundaries; `pnpm nx affected -t <targets>` uses the same graph
+  as local and CI verification.
 - `pnpm verify:full` explicitly runs the complete local quality and browser suite.
 - `pnpm exec playwright install chromium` installs the local E2E browser once.
 - `pnpm test:e2e` builds the application, starts the production preview, and runs Playwright.

@@ -2,21 +2,21 @@ dist
 node_modules
 .pnpm-store
 coverage
-src/data/*.json
-public/data/*.json
+apps/map/src/data/*.json
+apps/map/public/data/*.json
 package-lock.json
 pnpm-lock.yaml
 screenshot.png
-public/logo.jpg
+apps/map/public/logo.jpg
 
 # Legacy formatting debt tracked by TECH-001. Remove entries as files are normalized.
-index.html
-src/assets/fixing.ts
-src/assets/merger.cjs
-src/assets/merging.ts
-src/assets/showing.ts
-src/components/Map.module.css
-src/components/Map.tsx
-src/index.css
-src/index.js
-tsconfig.node.json
+apps/map/index.html
+apps/map/src/assets/fixing.ts
+apps/map/src/assets/merger.cjs
+apps/map/src/assets/merging.ts
+apps/map/src/assets/showing.ts
+apps/map/src/components/Map.module.css
+apps/map/src/components/Map.tsx
+apps/map/src/index.css
+apps/map/src/index.js
+apps/map/tsconfig.node.json
