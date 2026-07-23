@@ -11,6 +11,7 @@
 	"scripts": {
 		"prepare": "node .husky/install.mjs",
 		"nx": "nx",
+		"ci:change-plan": "node scripts/ci-change-plan.mjs",
 		"dev": "nx dev web",
 		"dev:map": "nx dev map",
 		"dev:web": "nx dev web",

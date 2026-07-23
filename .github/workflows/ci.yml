@@ -35,7 +35,7 @@ jobs:
 
       - name: Select affected checks
         id: plan
-        run: node scripts/ci-change-plan.mjs
+        run: pnpm ci:change-plan
 
   quality:
     name: Quality
