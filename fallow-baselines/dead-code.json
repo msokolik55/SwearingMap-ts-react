@@ -1,18 +1,18 @@
 {
 	"unused_files": [
+		"apps/map/src/App.css",
+		"apps/map/src/assets/fixing.ts",
+		"apps/map/src/assets/merger.cjs",
+		"apps/map/src/assets/merging.ts",
+		"apps/map/src/assets/showing.ts",
 		"lighthouserc.cjs",
-		"scripts/lighthouse-setup.cjs",
-		"src/App.css",
-		"src/assets/fixing.ts",
-		"src/assets/merger.cjs",
-		"src/assets/merging.ts",
-		"src/assets/showing.ts"
+		"scripts/lighthouse-setup.cjs"
 	],
 	"unused_exports": [
-		"src/assets/fixing.ts:getCoords",
-		"src/assets/fixing.ts:showBigDifference",
-		"src/data/useBorders.ts:BORDER_DATA_URL",
-		"src/data/useBorders.ts:loadBorders"
+		"apps/map/src/assets/fixing.ts:getCoords",
+		"apps/map/src/assets/fixing.ts:showBigDifference",
+		"apps/map/src/data/useBorders.ts:BORDER_DATA_URL",
+		"apps/map/src/data/useBorders.ts:loadBorders"
 	],
 	"unused_types": [],
 	"private_type_leaks": [],

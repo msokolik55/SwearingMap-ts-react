@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
 	classifyChanges,
+	createAffectedTargets,
 	createCiPlan,
 	parseNameStatus,
 	requiresFullVerification,
@@ -10,6 +11,7 @@ import {
 
 test("shared configuration changes require full verification", () => {
 	assert.equal(requiresFullVerification(["package.json"]), true);
+	assert.equal(requiresFullVerification(["nx.json"]), true);
 	assert.equal(requiresFullVerification(["scripts/ci-change-plan.mjs"]), true);
 	assert.equal(requiresFullVerification(["fallow-baselines/health.json"]), true);
 	assert.equal(requiresFullVerification(["src/App.tsx"]), false);
@@ -17,12 +19,12 @@ test("shared configuration changes require full verification", () => {
 
 test("classifies app, code, and deleted files without checking deleted paths", () => {
 	const result = classifyChanges([
-		{ path: "src/App.tsx", deleted: false },
+		{ path: "apps/map/src/App.tsx", deleted: false },
 		{ path: "docs/old.md", deleted: true },
 	]);
 
-	assert.deepEqual(result.codePaths, ["src/App.tsx"]);
-	assert.deepEqual(result.formatPaths, ["src/App.tsx"]);
+	assert.deepEqual(result.codePaths, ["apps/map/src/App.tsx"]);
+	assert.deepEqual(result.formatPaths, ["apps/map/src/App.tsx"]);
 	assert.equal(result.typeScriptChanged, true);
 	assert.equal(result.appChanged, true);
 });
@@ -49,8 +51,8 @@ test("selects only relevant expensive CI suites", () => {
 		lighthouse: false,
 		container: false,
 	});
-	assert.equal(createCiPlan(["src/App.tsx"]).browser, true);
-	assert.equal(createCiPlan(["src/App.tsx"]).lighthouse, true);
+	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).browser, true);
+	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).lighthouse, true);
 	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
 });
 
@@ -69,4 +71,9 @@ test("shared CI configuration forces every suite", () => {
 		lighthouse: true,
 		container: true,
 	});
+});
+
+test("keeps affected project work bounded by verification mode", () => {
+	assert.deepEqual(createAffectedTargets(), ["lint", "typecheck", "test", "build"]);
+	assert.deepEqual(createAffectedTargets(true), ["lint", "typecheck", "test"]);
 });

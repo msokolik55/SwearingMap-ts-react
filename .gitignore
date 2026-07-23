@@ -8,8 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.nx
 .npm-cache
 .pnpm-store
+coverage
 dist
 dist-ssr
 .lighthouseci
@@ -17,6 +19,7 @@ dist-ssr
 playwright-report
 test-results
 *.local
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*

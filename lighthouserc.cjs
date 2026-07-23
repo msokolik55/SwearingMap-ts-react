@@ -10,7 +10,7 @@ module.exports = {
 			puppeteerLaunchOptions: process.env.CI
 				? { args: ["--no-sandbox", "--disable-setuid-sandbox"] }
 				: undefined,
-			staticDistDir: "./dist",
+			staticDistDir: "./apps/map/dist",
 			url: ["http://localhost/"],
 			settings: {
 				preset: "desktop",

@@ -3,6 +3,7 @@ const FULL_IMPACT_PATTERNS = [
 	/^package\.json$/u,
 	/^pnpm-lock\.yaml$/u,
 	/^pnpm-workspace\.yaml$/u,
+	/^nx\.json$/u,
 	/^eslint\.config\./u,
 	/^tsconfig(?:\.|$)/u,
 	/^vite\.config\./u,
@@ -40,7 +41,7 @@ export function classifyChanges(files) {
 		formatPaths: paths.filter((file) => FORMAT_PATTERN.test(file)),
 		typeScriptChanged: paths.some((file) => TYPESCRIPT_PATTERN.test(file)),
 		appChanged: paths.some((file) =>
-			/^(?:e2e\/|index\.html$|public\/|src\/|playwright\.config\.)/u.test(file)
+			/^(?:apps\/map\/|e2e\/|playwright\.config\.)/u.test(file)
 		),
 		containerChanged: paths.some((file) =>
 			/^(?:Dockerfile$|\.dockerignore$|docker\/|scripts\/smoke-container\.mjs$)/u.test(
@@ -75,14 +76,18 @@ export function createCiPlan(paths, forceFull = false) {
 		),
 		browser: changes.appChanged,
 		lighthouse: paths.some((path) =>
-			/^(?:index\.html$|lighthouserc\.|performance-budget\.json$|public\/|src\/|vite\.config\.)/u.test(
-				path
-			)
+			/^(?:apps\/map\/|lighthouserc\.|performance-budget\.json$)/u.test(path)
 		),
 		container: changes.containerChanged,
 	};
 
 	if (!full) return { full, ...affected };
 	return { full, dependencies: true, browser: true, lighthouse: true, container: true };
+}
+
+export function createAffectedTargets(qualityMode = false) {
+	const targets = ["lint", "typecheck", "test"];
+	if (!qualityMode) targets.push("build");
+	return targets;
 }
 import { existsSync } from "node:fs";
