@@ -25,7 +25,7 @@
 			"executor": "nx:run-commands",
 			"cache": true,
 			"options": {
-				"command": "tsc --noEmit -p apps/web/tsconfig.json"
+				"command": "next typegen apps/web && tsc --noEmit -p apps/web/tsconfig.json"
 			}
 		}
 	}

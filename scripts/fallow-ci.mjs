@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 
-import { initializeFallowSarif } from "./fallow-sarif.mjs";
+import { formatFallowSarifFindings, initializeFallowSarif } from "./fallow-sarif.mjs";
 
 const pnpmEntrypoint = process.env.npm_execpath;
 if (!pnpmEntrypoint) throw new Error("Run the Fallow CI reporter through pnpm.");
@@ -37,4 +38,14 @@ const result = spawnSync(
 );
 
 if (result.error) throw result.error;
-if (result.status !== 0) process.exit(result.status ?? 1);
+if (result.status !== 0) {
+	const report = JSON.parse(readFileSync(outputPath, "utf8"));
+	const findings = formatFallowSarifFindings(report);
+
+	if (findings.length > 0) {
+		console.error("\nFallow findings:");
+		for (const finding of findings) console.error(`- ${finding}`);
+	}
+
+	process.exit(result.status ?? 1);
+}
