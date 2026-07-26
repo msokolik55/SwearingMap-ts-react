@@ -10,6 +10,8 @@ package-lock.json
 pnpm-lock.yaml
 screenshot.png
 apps/map/public/logo.jpg
+libs/api-client/src/generated
+libs/api-client/openapi.json
 
 # Legacy formatting debt tracked by TECH-001. Remove entries as files are normalized.
 apps/map/index.html

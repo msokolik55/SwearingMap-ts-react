@@ -57,6 +57,7 @@ test("selects only relevant expensive CI suites", () => {
 	assert.equal(createCiPlan(["apps/web/app/page.tsx"]).lighthouse, true);
 	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
 	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container, true);
+	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container, true);
 });
 
 test("shared CI configuration forces every suite", () => {
@@ -77,6 +78,17 @@ test("shared CI configuration forces every suite", () => {
 });
 
 test("keeps affected project work bounded by verification mode", () => {
-	assert.deepEqual(createAffectedTargets(), ["lint", "typecheck", "test", "build"]);
-	assert.deepEqual(createAffectedTargets(true), ["lint", "typecheck", "test"]);
+	assert.deepEqual(createAffectedTargets(), [
+		"contract",
+		"lint",
+		"typecheck",
+		"test",
+		"build",
+	]);
+	assert.deepEqual(createAffectedTargets(true), [
+		"contract",
+		"lint",
+		"typecheck",
+		"test",
+	]);
 });

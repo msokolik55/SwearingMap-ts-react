@@ -1,0 +1,11 @@
+{
+	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+	"entry": [
+		"apps/api/src/main.ts",
+		"libs/api-client/src/index.ts",
+		"scripts/generate-openapi.ts",
+		"openapi-ts.config.ts"
+	],
+	"ignorePatterns": ["libs/api-client/src/generated/**"],
+	"ignoreDependencies": ["@nestjs/schematics", "@nx/vitest", "@swc/helpers", "tslib"]
+}

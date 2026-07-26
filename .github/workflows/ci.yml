@@ -170,3 +170,9 @@ jobs:
 
       - name: Smoke-test production container
         run: pnpm container:smoke
+
+      - name: Build production API container
+        run: pnpm container:api:build
+
+      - name: Smoke-test production API container
+        run: pnpm container:api:smoke

@@ -1,22 +1,9 @@
-import { spawnSync } from "node:child_process";
+import { assert, assertNonRootImage, docker } from "./container-smoke.mjs";
 
 const image = process.env.CONTAINER_IMAGE ?? "swearing-map:local";
 const name = `swearing-map-smoke-${process.pid}`;
 const port = process.env.CONTAINER_SMOKE_PORT ?? "18080";
 const baseUrl = `http://127.0.0.1:${port}`;
-
-function docker(...args) {
-	return spawnSync("docker", args, {
-		encoding: "utf8",
-		stdio: ["ignore", "pipe", "pipe"],
-	});
-}
-
-function assert(condition, message) {
-	if (!condition) {
-		throw new Error(message);
-	}
-}
 
 async function waitUntilReady() {
 	for (let attempt = 1; attempt <= 30; attempt += 1) {
@@ -33,12 +20,7 @@ async function waitUntilReady() {
 	throw new Error("Container did not become healthy within 15 seconds.");
 }
 
-const imageUser = docker("image", "inspect", "--format", "{{.Config.User}}", image);
-assert(imageUser.status === 0, `Unable to inspect image:\n${imageUser.stderr.trim()}`);
-assert(
-	!["", "0", "root"].includes(imageUser.stdout.trim()),
-	"Production image must declare a non-root user."
-);
+assertNonRootImage(image, "Production image");
 
 const started = docker(
 	"run",

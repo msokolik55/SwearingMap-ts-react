@@ -2,10 +2,11 @@
 
 - Status: In progress
 - Slice 1 status: Done
-- Slice 2 status: Ready for review
+- Slice 2 status: Done
+- Slice 3 status: Ready for review
 - Priority: Critical
 - Depends on: DX-001
-- Branch: `codex/arch-001-next-shell`
+- Branch: `codex/arch-001-nest-api`
 
 ## Outcome
 
@@ -93,3 +94,29 @@ in progress until all acceptance criteria are satisfied.
   assets, GeoJSON caching, immutable asset caching, security headers, and non-root runtime.
 - The dependency audit contains no high-severity findings; the Next transitive `sharp` dependency is
   pinned from the affected `0.34.5` release to patched `0.35.3`.
+
+## Slice 3 acceptance criteria
+
+- An Nx-managed NestJS 11 application exposes URI-versioned endpoints from feature modules rather
+  than a generic application controller.
+- Swagger publishes a reviewable OpenAPI contract, and Hey API generates a TypeScript 6-compatible
+  Fetch SDK from that contract.
+- Contract and SDK generation is deterministic, does not modify the working tree during checks,
+  and fails local or CI affected verification when committed artifacts drift.
+- Unit and HTTP integration tests cover the first module and the generated client executes the
+  published operation with a typed response.
+- The API builds into a dedicated production image that declares a non-root user and passes a
+  health/OpenAPI smoke test.
+
+## Slice 3 implementation evidence
+
+- `apps/api` is a NestJS modular-monolith boundary with a dedicated health module, strict global
+  validation, `/api/v1` URI versioning, Swagger UI, and a machine-readable OpenAPI endpoint.
+- `libs/api-client` contains the committed OpenAPI document and generated Hey API Fetch SDK; the
+  library depends on the API in the Nx graph and exposes a cacheable contract-drift target.
+- Vitest covers the health service, an in-process HTTP application, Swagger publication, and a
+  typed generated-client request against a controlled Fetch implementation.
+- Local change-aware verification and CI select the contract check and API container for relevant
+  changes, while generated code is excluded from hand-authored lint/format rules.
+- `docker/api.Dockerfile` builds the pruned API dependency graph and runs it as the unprivileged
+  Node user; the smoke test verifies both health and OpenAPI routes.

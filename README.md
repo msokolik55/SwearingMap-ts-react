@@ -19,23 +19,31 @@ architecture decisions toward a production product. See the accepted decisions i
 
 The repository is an Nx-managed pnpm workspace. The product shell lives in the Next.js App Router
 project at `apps/web`; the existing proof-of-concept map remains isolated in `apps/map` and is
-assembled under the `/map/` route. Upcoming NestJS and shared-library projects can be added beside
-them without coupling their build and test lifecycles.
+assembled under the `/map/` route. The versioned NestJS modular-monolith API lives in `apps/api`,
+and its reproducible OpenAPI contract and typed Fetch client live in `libs/api-client`.
 
 Useful workspace commands:
 
 ```sh
 pnpm nx show project map
 pnpm nx show project web
+pnpm nx show project api
+pnpm nx show project api-client
 pnpm nx graph
 pnpm nx affected -t lint typecheck test build --base origin/main --head HEAD --parallel=2
 ```
 
 Nx caches deterministic task outputs in `.nx/cache`. No global Nx installation is required.
 
-`pnpm dev` starts the Next.js product shell. Use `pnpm dev:map` when working on the isolated map.
-`pnpm build` builds both projects and assembles the exact static artifact served by `pnpm preview`
-and the production container.
+`pnpm dev` starts the Next.js product shell. Use `pnpm dev:map` when working on the isolated map,
+or `pnpm dev:api` for the API. The API health endpoint is `/api/v1/health`, Swagger UI is available
+at `/api/docs`, and the machine-readable contract is `/api/openapi.json`. `pnpm build` builds all
+applications and assembles the exact static artifact served by `pnpm preview` and the web
+production container.
+
+Run `pnpm api:client:generate` after changing controllers or DTOs. The generated contract and
+client are committed so consumers get reviewable API changes; `pnpm api:client:check` regenerates
+them in a temporary directory and rejects drift without modifying the working tree.
 
 ## Development
 
