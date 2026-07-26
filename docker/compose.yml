@@ -1,0 +1,37 @@
+services:
+  database:
+    image: postgis/postgis:17-3.5-alpine
+    environment:
+      POSTGRES_DB: swearing_map
+      POSTGRES_USER: swearing_map
+      POSTGRES_PASSWORD: swearing_map
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - swearing-map-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U swearing_map -d swearing_map"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  database-test:
+    image: postgis/postgis:17-3.5-alpine
+    profiles: ["test"]
+    environment:
+      POSTGRES_DB: swearing_map_test
+      POSTGRES_USER: swearing_map_test
+      POSTGRES_PASSWORD: swearing_map_test
+    ports:
+      - "${POSTGRES_TEST_PORT:-5433}:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U swearing_map_test -d swearing_map_test"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  swearing-map-postgres:

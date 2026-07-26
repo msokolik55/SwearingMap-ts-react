@@ -5,6 +5,19 @@
 	"projectType": "application",
 	"tags": ["scope:api", "type:application"],
 	"targets": {
+		"contract": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"inputs": [
+				"{projectRoot}/prisma/**",
+				"{projectRoot}/src/generated/prisma/**",
+				"{workspaceRoot}/prisma.config.ts",
+				"{workspaceRoot}/scripts/check-prisma-client.mjs"
+			],
+			"options": {
+				"command": "node scripts/check-prisma-client.mjs"
+			}
+		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"cache": true,

@@ -2,10 +2,23 @@
 	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
 	"entry": [
 		"apps/api/src/main.ts",
+		"apps/api/prisma/seed.ts",
+		"apps/api/vitest.integration.config.ts",
 		"libs/api-client/src/index.ts",
 		"scripts/generate-openapi.ts",
+		"scripts/check-prisma-client.mjs",
+		"scripts/test-database.mjs",
 		"openapi-ts.config.ts"
 	],
-	"ignorePatterns": ["libs/api-client/src/generated/**"],
-	"ignoreDependencies": ["@nestjs/schematics", "@nx/vitest", "@swc/helpers", "tslib"]
+	"ignorePatterns": [
+		"apps/api/src/generated/prisma/**",
+		"libs/api-client/src/generated/**"
+	],
+	"ignoreDependencies": [
+		"@nestjs/schematics",
+		"@nx/vitest",
+		"@swc/helpers",
+		"pg",
+		"tslib"
+	]
 }

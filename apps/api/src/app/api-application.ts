@@ -16,6 +16,7 @@ export async function createApiApplication(
 	options: ApiApplicationOptions = {}
 ): Promise<NestExpressApplication> {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+		abortOnError: false,
 		logger: options.logger,
 	});
 

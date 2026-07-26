@@ -29,3 +29,13 @@ test("keeps generated API client files out of hand-authored lint", () => {
 	assert.match(rootCommand, /libs\\api-client\\src\\index\.ts/u);
 	assert.doesNotMatch(rootCommand, /generated\\sdk\.gen\.ts/u);
 });
+
+test("keeps generated Prisma files out of hand-authored lint", () => {
+	const generatedFile = "C:\\workspace\\apps\\api\\src\\generated\\prisma\\client.ts";
+	const rootFile = "C:\\workspace\\apps\\api\\src\\main.ts";
+
+	const rootCommand = rootLintTask([generatedFile, rootFile]);
+
+	assert.match(rootCommand, /apps\\api\\src\\main\.ts/u);
+	assert.doesNotMatch(rootCommand, /generated\\prisma\\client\.ts/u);
+});

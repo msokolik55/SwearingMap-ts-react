@@ -3,10 +3,11 @@
 - Status: In progress
 - Slice 1 status: Done
 - Slice 2 status: Done
-- Slice 3 status: Ready for review
+- Slice 3 status: Done
+- Slice 4 status: Ready for review
 - Priority: Critical
 - Depends on: DX-001
-- Branch: `codex/arch-001-nest-api`
+- Branch: `codex/arch-001-prisma-postgis`
 
 ## Outcome
 
@@ -120,3 +121,38 @@ in progress until all acceptance criteria are satisfied.
   changes, while generated code is excluded from hand-authored lint/format rules.
 - `docker/api.Dockerfile` builds the pruned API dependency graph and runs it as the unprivileged
   Node user; the smoke test verifies both health and OpenAPI routes.
+
+## Slice 4 acceptance criteria
+
+- Docker Compose starts a persistent PostgreSQL 17/PostGIS 3.5 development database, while
+  integration tests use a separate disposable database and never read the developer connection.
+- Prisma ORM 7 owns a reviewable relational schema, generated client, initial migration, explicit
+  PostgreSQL invariants, and deterministic idempotent seed data.
+- A clean test database applies every committed migration, seeds representative multilingual
+  content, matches the Prisma schema without drift, and proves PostGIS and rating constraints.
+- NestJS exposes Prisma through a global database module and requires an explicit production
+  `DATABASE_URL`; normal unit and health tests do not require a running database.
+- Prisma client drift and relevant database integration tests are selected through Nx, local
+  changed-file verification, and an isolated GitHub Actions job.
+
+## Slice 4 implementation evidence
+
+- `docker/compose.yml` pins the recommended `postgis/postgis:17-3.5-alpine` image and separates the
+  persistent development service from a `tmpfs` test profile.
+- The initial migration creates all planned platform entities, PostGIS geography support, indexes,
+  foreign keys, and database CHECK constraints for intensity, confidence, equivalence, and quiz
+  invariants.
+- The seed is safe to run repeatedly and creates roles, English and Slovak reference data, two
+  countries, representative published words, meanings, and a reviewed translation-equivalent
+  relationship.
+- `pnpm test:database` applies migrations to an empty uniquely named Compose project, seeds it,
+  rejects schema drift, runs real Prisma/PostGIS tests, and guarantees cleanup after failures.
+- Generated Prisma and OpenAPI artifacts are committed but marked `linguist-generated`; drift
+  checks regenerate both in temporary directories without modifying the working tree.
+- NestJS receives the Prisma client through an explicitly injected global database module, while
+  production startup rejects a missing `DATABASE_URL` and contract generation remains database
+  independent.
+- Dependency overrides keep Prisma and NestJS transitive `find-my-way` and `lodash` releases on
+  patched versions; the production and development audits have no unignored high-severity finding.
+- The full monorepo quality gate, Fallow baseline checks, clean-database integration suite, and
+  non-root API container build and smoke test pass before review.

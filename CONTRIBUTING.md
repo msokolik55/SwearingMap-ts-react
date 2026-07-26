@@ -41,6 +41,10 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
   security headers, and cache policies on port 18080.
 - `pnpm api:client:generate` refreshes the committed OpenAPI contract and typed Fetch client.
 - `pnpm api:client:check` verifies generated API artifacts without changing the working tree.
+- `pnpm db:generate` refreshes the committed Prisma Client after a schema change.
+- `pnpm db:check` verifies Prisma Client generation without modifying the working tree.
+- `pnpm test:database` uses an isolated PostGIS container to apply migrations, seed data, check
+  schema drift, run integration tests, and clean up.
 - `pnpm container:api:build` and `pnpm container:api:smoke` verify the non-root NestJS runtime.
 - CI runs the same Playwright suite after the regular quality gate.
 - CI runs Lighthouse against the same production build and blocks regressions below the declared
@@ -67,3 +71,16 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
 
 Material decisions are recorded as ADRs in `docs/adr`. Accepted ADRs are immutable; a new ADR
 supersedes an earlier decision and links back to it.
+
+## Database changes
+
+1. Start the development database with `pnpm db:up`.
+2. Change `apps/api/prisma/schema.prisma`.
+3. Create a reviewed migration with `pnpm db:migrate:dev -- --name <change-name>`.
+4. Add database invariants that Prisma cannot express as reviewed SQL in that migration.
+5. Run `pnpm db:generate`, `pnpm db:check`, and `pnpm test:database`.
+6. Commit the schema, migration, seed changes, and generated client together.
+
+Never use `prisma db push` for shared environments. Never edit an already deployed migration;
+create a forward-fix migration instead. Production migration execution belongs to the release
+phase and must use `prisma migrate deploy`.

@@ -21,6 +21,8 @@ The repository is an Nx-managed pnpm workspace. The product shell lives in the N
 project at `apps/web`; the existing proof-of-concept map remains isolated in `apps/map` and is
 assembled under the `/map/` route. The versioned NestJS modular-monolith API lives in `apps/api`,
 and its reproducible OpenAPI contract and typed Fetch client live in `libs/api-client`.
+PostgreSQL 17 with PostGIS 3.5 is the primary persistence layer. Prisma ORM 7 owns the relational
+schema, migrations, deterministic seed data, and generated type-safe client.
 
 Useful workspace commands:
 
@@ -45,6 +47,10 @@ Run `pnpm api:client:generate` after changing controllers or DTOs. The generated
 client are committed so consumers get reviewable API changes; `pnpm api:client:check` regenerates
 them in a temporary directory and rejects drift without modifying the working tree.
 
+Generated OpenAPI and Prisma files are committed and marked as generated through `.gitattributes`.
+Run `pnpm db:generate` after changing `apps/api/prisma/schema.prisma`; `pnpm db:check` rejects stale
+generated Prisma code without changing the working tree.
+
 ## Development
 
 Prerequisites are Node.js from `.nvmrc` and Corepack.
@@ -52,8 +58,17 @@ Prerequisites are Node.js from `.nvmrc` and Corepack.
 ```sh
 corepack enable
 pnpm install --frozen-lockfile
+pnpm db:up
+pnpm db:migrate
+pnpm db:seed
 pnpm dev
 ```
+
+Copy `.env.example` to `.env.local` only when local connection settings differ from the documented
+defaults. Never commit local credentials. `pnpm test:database` creates a separate temporary
+PostGIS database, applies migrations, seeds it, checks schema drift, runs integration tests, and
+removes the database automatically. See
+[`docs/runbooks/database-development.md`](docs/runbooks/database-development.md).
 
 Run all local quality gates before opening a pull request:
 
@@ -62,7 +77,7 @@ pnpm check
 ```
 
 Individual commands include `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test`,
-`pnpm test:coverage`, `pnpm audit`, and `pnpm build`.
+`pnpm test:database`, `pnpm test:coverage`, `pnpm audit`, and `pnpm build`.
 
 The ticket, branch, commit, review, and Definition of Done workflow is documented in
 [`CONTRIBUTING.md`](CONTRIBUTING.md).

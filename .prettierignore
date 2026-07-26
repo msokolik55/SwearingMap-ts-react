@@ -10,6 +10,7 @@ package-lock.json
 pnpm-lock.yaml
 screenshot.png
 apps/map/public/logo.jpg
+apps/api/src/generated/prisma
 libs/api-client/src/generated
 libs/api-client/openapi.json
 
