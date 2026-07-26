@@ -15,6 +15,7 @@ export default tseslint.config(
 			"**/dist/**",
 			"**/out/**",
 			"apps/web/**",
+			"libs/api-client/src/generated/**",
 			"node_modules",
 		],
 	},

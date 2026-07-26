@@ -1,11 +1,15 @@
 const quote = (file) => `"${file}"`;
 const isWebFile = (file) => file.replaceAll("\\", "/").includes("/apps/web/");
+const isGeneratedApiClient = (file) =>
+	file.replaceAll("\\", "/").includes("/libs/api-client/src/generated/");
 
 export default {
 	"*.{js,cjs,mjs,jsx,ts,tsx}": [
 		"prettier --write",
 		(files) => {
-			const rootFiles = files.filter((file) => !isWebFile(file));
+			const rootFiles = files.filter(
+				(file) => !isWebFile(file) && !isGeneratedApiClient(file)
+			);
 			return rootFiles.length
 				? `eslint --fix --max-warnings=0 ${rootFiles.map(quote).join(" ")}`
 				: [];

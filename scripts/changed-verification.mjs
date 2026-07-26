@@ -15,6 +15,8 @@ const FULL_IMPACT_PATTERNS = [
 	/^lint-staged\.config\./u,
 	/^\.husky\//u,
 	/^fallow-baselines\//u,
+	/^openapi-ts\.config\.ts$/u,
+	/^scripts\/(?:check-api-client|generate-openapi)\.(?:mjs|ts)$/u,
 	/^scripts\/ci-change-plan\.mjs$/u,
 	/^scripts\/changed-verification\.mjs$/u,
 	/^scripts\/fallow-(?:ci|full)\.mjs$/u,
@@ -44,7 +46,7 @@ export function classifyChanges(files) {
 			/^(?:apps\/(?:map|web)\/|e2e\/|playwright\.config\.)/u.test(file)
 		),
 		containerChanged: paths.some((file) =>
-			/^(?:Dockerfile$|\.dockerignore$|docker\/|scripts\/(?:assemble-site|smoke-container)\.mjs$)/u.test(
+			/^(?:Dockerfile$|\.dockerignore$|apps\/api\/|docker\/|scripts\/(?:assemble-site|smoke-(?:api-)?container)\.mjs$)/u.test(
 				file
 			)
 		),
@@ -88,7 +90,7 @@ export function createCiPlan(paths, forceFull = false) {
 }
 
 export function createAffectedTargets(qualityMode = false) {
-	const targets = ["lint", "typecheck", "test"];
+	const targets = ["contract", "lint", "typecheck", "test"];
 	if (!qualityMode) targets.push("build");
 	return targets;
 }

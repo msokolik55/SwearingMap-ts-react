@@ -7,10 +7,12 @@ WORKDIR /app
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json apps/api/package.json
 COPY apps/map/package.json apps/map/package.json
 COPY apps/web/package.json apps/web/package.json
 COPY .husky/install.mjs .husky/install.mjs
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+  pnpm config set store-dir /pnpm/store && pnpm install --frozen-lockfile
 
 COPY . .
 RUN pnpm build

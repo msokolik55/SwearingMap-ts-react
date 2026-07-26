@@ -39,6 +39,9 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
 - `pnpm container:build` packages the production build as `swearing-map:local` (Docker required).
 - `pnpm container:smoke` starts that image temporarily and verifies its health endpoint, browser
   security headers, and cache policies on port 18080.
+- `pnpm api:client:generate` refreshes the committed OpenAPI contract and typed Fetch client.
+- `pnpm api:client:check` verifies generated API artifacts without changing the working tree.
+- `pnpm container:api:build` and `pnpm container:api:smoke` verify the non-root NestJS runtime.
 - CI runs the same Playwright suite after the regular quality gate.
 - CI runs Lighthouse against the same production build and blocks regressions below the declared
   thresholds.

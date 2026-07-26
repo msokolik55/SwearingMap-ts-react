@@ -13,3 +13,12 @@ on severity and exploitability. Coordinated disclosure will follow after a fix i
 ## Supported versions
 
 Until the first stable release, only the latest commit on `main` is supported.
+
+## Dependency audit policy
+
+CI audits production dependencies at `high` severity without exceptions. Development dependencies
+use the same threshold, with one scoped exception for `GHSA-mh99-v99m-4gvg`: legacy glob tooling
+requires pre-5 `brace-expansion`, while the advisory has no compatible patched release for those
+major versions. The affected packages process repository-controlled glob patterns only and are not
+included in either production container. Compatible 5.x consumers are forced to patched `5.0.8`.
+Remove the exception when upstream ESLint/Lighthouse dependencies stop resolving the legacy major.

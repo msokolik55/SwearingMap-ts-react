@@ -19,3 +19,13 @@ test("routes staged Next.js files through the web ESLint configuration", () => {
 	assert.match(webCommand, /--config apps\/web\/eslint\.config\.js/u);
 	assert.match(webCommand, /apps\\web\\app\\page\.tsx/u);
 });
+
+test("keeps generated API client files out of hand-authored lint", () => {
+	const generatedFile = "C:\\workspace\\libs\\api-client\\src\\generated\\sdk.gen.ts";
+	const rootFile = "C:\\workspace\\libs\\api-client\\src\\index.ts";
+
+	const rootCommand = rootLintTask([generatedFile, rootFile]);
+
+	assert.match(rootCommand, /libs\\api-client\\src\\index\.ts/u);
+	assert.doesNotMatch(rootCommand, /generated\\sdk\.gen\.ts/u);
+});

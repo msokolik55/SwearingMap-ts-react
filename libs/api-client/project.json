@@ -1,0 +1,31 @@
+{
+	"name": "api-client",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/api-client/src",
+	"tags": ["scope:shared", "type:contract"],
+	"implicitDependencies": ["api"],
+	"targets": {
+		"contract": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"inputs": [
+				"{workspaceRoot}/apps/api/src/**/*",
+				"{workspaceRoot}/libs/api-client/**/*",
+				"{workspaceRoot}/openapi-ts.config.ts",
+				"{workspaceRoot}/scripts/check-api-client.mjs",
+				"{workspaceRoot}/scripts/generate-openapi.ts"
+			],
+			"options": {
+				"command": "pnpm api:client:check"
+			}
+		},
+		"typecheck": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"options": {
+				"command": "tsc --noEmit -p libs/api-client/tsconfig.json"
+			}
+		}
+	}
+}
