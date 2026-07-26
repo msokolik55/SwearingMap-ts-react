@@ -37,3 +37,10 @@ test("always uploads the pull-request SARIF artifact and requires it to exist", 
 		/- name: Upload Fallow SARIF report\s+if: always\(\) && github\.event_name == 'pull_request'[\s\S]*?path: \.fallowci\/fallow\.sarif[\s\S]*?if-no-files-found: error/u
 	);
 });
+
+test("runs isolated database migrations and integration tests when selected", () => {
+	assert.match(
+		workflow,
+		/database:\s+name: Database integration[\s\S]*?if: needs\.changes\.outputs\.database == 'true'[\s\S]*?run: pnpm test:database/u
+	);
+});

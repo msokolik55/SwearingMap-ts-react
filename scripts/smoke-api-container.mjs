@@ -28,6 +28,8 @@ const started = docker(
 	"--rm",
 	"--name",
 	name,
+	"--env",
+	"DATABASE_URL=postgresql://smoke:smoke@127.0.0.1:5432/smoke",
 	"--publish",
 	`127.0.0.1:${port}:3000`,
 	image

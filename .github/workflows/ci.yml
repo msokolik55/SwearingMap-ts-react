@@ -27,6 +27,7 @@ jobs:
       browser: ${{ steps.plan.outputs.browser }}
       lighthouse: ${{ steps.plan.outputs.lighthouse }}
       container: ${{ steps.plan.outputs.container }}
+      database: ${{ steps.plan.outputs.database }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -176,3 +177,32 @@ jobs:
 
       - name: Smoke-test production API container
         run: pnpm container:api:smoke
+
+  database:
+    name: Database integration
+    needs: changes
+    if: needs.changes.outputs.database == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.13.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Apply migrations, seed, verify drift, and test PostgreSQL
+        run: pnpm test:database

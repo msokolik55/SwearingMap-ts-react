@@ -16,6 +16,7 @@ const FULL_IMPACT_PATTERNS = [
 	/^\.husky\//u,
 	/^fallow-baselines\//u,
 	/^openapi-ts\.config\.ts$/u,
+	/^prisma\.config\.ts$/u,
 	/^scripts\/(?:check-api-client|generate-openapi)\.(?:mjs|ts)$/u,
 	/^scripts\/ci-change-plan\.mjs$/u,
 	/^scripts\/changed-verification\.mjs$/u,
@@ -47,6 +48,11 @@ export function classifyChanges(files) {
 		),
 		containerChanged: paths.some((file) =>
 			/^(?:Dockerfile$|\.dockerignore$|apps\/api\/|docker\/|scripts\/(?:assemble-site|smoke-(?:api-)?container)\.mjs$)/u.test(
+				file
+			)
+		),
+		databaseChanged: paths.some((file) =>
+			/^(?:apps\/api\/(?:prisma\/|src\/app\/database\/|src\/generated\/prisma\/)|docker\/compose\.yml$|prisma\.config\.ts$|scripts\/(?:check-prisma-client|test-database)\.mjs$)/u.test(
 				file
 			)
 		),
@@ -83,10 +89,18 @@ export function createCiPlan(paths, forceFull = false) {
 			)
 		),
 		container: changes.containerChanged,
+		database: changes.databaseChanged,
 	};
 
 	if (!full) return { full, ...affected };
-	return { full, dependencies: true, browser: true, lighthouse: true, container: true };
+	return {
+		full,
+		dependencies: true,
+		browser: true,
+		lighthouse: true,
+		container: true,
+		database: true,
+	};
 }
 
 export function createAffectedTargets(qualityMode = false) {

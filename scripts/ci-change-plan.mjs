@@ -20,6 +20,7 @@ function fullPlan() {
 		browser: true,
 		lighthouse: true,
 		container: true,
+		database: true,
 	};
 }
 

@@ -133,6 +133,9 @@ runPnpm(
 if (changes.appChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("test:e2e:ci");
 }
+if (changes.databaseChanged && process.env.VERIFY_MODE !== "quality") {
+	runPnpm("test:database");
+}
 if (changes.containerChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("container:build");
 	runPnpm("container:smoke");

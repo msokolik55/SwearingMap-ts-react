@@ -14,6 +14,7 @@ export default tseslint.config(
 			"**/coverage/**",
 			"**/dist/**",
 			"**/out/**",
+			"apps/api/src/generated/prisma/**",
 			"apps/web/**",
 			"libs/api-client/src/generated/**",
 			"node_modules",

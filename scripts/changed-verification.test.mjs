@@ -50,6 +50,7 @@ test("selects only relevant expensive CI suites", () => {
 		browser: false,
 		lighthouse: false,
 		container: false,
+		database: false,
 	});
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).browser, true);
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).lighthouse, true);
@@ -58,6 +59,12 @@ test("selects only relevant expensive CI suites", () => {
 	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
 	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container, true);
 	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container, true);
+	assert.equal(createCiPlan(["apps/api/prisma/schema.prisma"]).database, true);
+	assert.equal(
+		createCiPlan(["apps/api/src/app/database/prisma.service.ts"]).database,
+		true
+	);
+	assert.equal(createCiPlan(["docs/database.md"]).database, false);
 });
 
 test("shared CI configuration forces every suite", () => {
@@ -67,6 +74,7 @@ test("shared CI configuration forces every suite", () => {
 		browser: true,
 		lighthouse: true,
 		container: true,
+		database: true,
 	});
 	assert.deepEqual(createCiPlan(["docs/roadmap.md"], true), {
 		full: true,
@@ -74,6 +82,7 @@ test("shared CI configuration forces every suite", () => {
 		browser: true,
 		lighthouse: true,
 		container: true,
+		database: true,
 	});
 });
 
