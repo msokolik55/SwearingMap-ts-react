@@ -1,0 +1,35 @@
+enum QuizQuestionType {
+  MEANING_TO_WORD
+  WORD_TO_MEANING
+}
+
+model QuizAttempt {
+  id            String         @id @default(uuid()) @db.Uuid
+  userId        String?        @map("user_id") @db.Uuid
+  languageId    String         @map("language_id") @db.Uuid
+  score         Int?           @db.SmallInt
+  questionCount Int            @map("question_count") @db.SmallInt
+  completedAt   DateTime?      @map("completed_at") @db.Timestamptz(3)
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  user          User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  language      Language       @relation(fields: [languageId], references: [id], onDelete: Restrict)
+  questions     QuizQuestion[]
+
+  @@index([userId, createdAt])
+  @@map("quiz_attempts")
+}
+
+model QuizQuestion {
+  id             String           @id @default(uuid()) @db.Uuid
+  attemptId      String           @map("attempt_id") @db.Uuid
+  swearWordId    String           @map("swear_word_id") @db.Uuid
+  type           QuizQuestionType
+  selectedAnswer String?          @map("selected_answer") @db.Text
+  correct        Boolean?
+  position       Int              @db.SmallInt
+  attempt        QuizAttempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  swearWord      SwearWord        @relation(fields: [swearWordId], references: [id], onDelete: Restrict)
+
+  @@unique([attemptId, position])
+  @@map("quiz_questions")
+}

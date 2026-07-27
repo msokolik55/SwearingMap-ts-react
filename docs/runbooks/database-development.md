@@ -27,13 +27,29 @@ volume intentionally survives a normal stop.
 
 ## Schema change workflow
 
-1. Change `apps/api/prisma/schema.prisma`.
+The schema uses Prisma's multi-file layout. `apps/api/prisma/schema.prisma` contains only the
+generator and datasource; models and their enums are grouped by domain in
+`apps/api/prisma/models`:
+
+- `identity.prisma` — users, roles, and sessions
+- `geography.prisma` — languages and countries
+- `vocabulary.prisma` — words, meanings, equivalents, sources, and ratings
+- `moderation.prisma` — submissions and moderation decisions
+- `learning.prisma` — quizzes
+- `notifications.prisma` — in-app and push notification data
+
+1. Change the relevant domain schema file.
 2. Run `pnpm db:migrate:dev -- --name <descriptive-name>`.
 3. Review the generated SQL, locks, backfill needs, and compatibility with the currently deployed
    application.
 4. Add CHECK constraints or PostGIS SQL that Prisma cannot model directly.
-5. Run `pnpm db:generate` and commit the generated client.
+5. Run `pnpm db:generate`. The output under `apps/api/src/generated/prisma` is ignored and must not
+   be committed.
 6. Run `pnpm db:check` and `pnpm test:database`.
+
+`pnpm db:check` validates the complete schema folder and regenerates the client. API build, test,
+development startup, and OpenAPI tasks depend on the same generation step, so a clean checkout does
+not rely on committed generated code.
 
 Do not rewrite a migration after it has reached a shared environment. Correct it with a new
 forward migration. Destructive changes require an expand-and-contract rollout or an explicit

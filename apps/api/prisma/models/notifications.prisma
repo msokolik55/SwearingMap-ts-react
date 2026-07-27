@@ -1,0 +1,50 @@
+enum NotificationType {
+  SUBMISSION_STATUS
+  NEW_LANGUAGE_CONTENT
+  PRODUCT_UPDATE
+}
+
+model Notification {
+  id          String           @id @default(uuid()) @db.Uuid
+  recipientId String           @map("recipient_id") @db.Uuid
+  type        NotificationType
+  title       String           @db.VarChar(180)
+  body        String           @db.Text
+  payload     Json?
+  readAt      DateTime?        @map("read_at") @db.Timestamptz(3)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  recipient   User             @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, readAt, createdAt])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id         String           @id @default(uuid()) @db.Uuid
+  userId     String           @map("user_id") @db.Uuid
+  type       NotificationType
+  languageId String?          @map("language_id") @db.Uuid
+  inApp      Boolean          @default(true) @map("in_app")
+  push       Boolean          @default(false)
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  language   Language?        @relation(fields: [languageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type, languageId])
+  @@index([languageId])
+  @@map("notification_preferences")
+}
+
+model PushSubscription {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  endpoint  String    @unique @db.Text
+  p256dh    String    @db.Text
+  auth      String    @db.Text
+  expiresAt DateTime? @map("expires_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
+}

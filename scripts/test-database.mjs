@@ -37,6 +37,8 @@ function runPnpm(...args) {
 	run(process.execPath, [pnpmEntrypoint, ...args]);
 }
 
+runPnpm("db:generate");
+
 try {
 	run("docker", [...compose, "up", "--detach", "--wait", "database-test"]);
 	runPnpm("exec", "prisma", "migrate", "deploy");
@@ -47,7 +49,7 @@ try {
 		"migrate",
 		"diff",
 		"--from-schema",
-		"apps/api/prisma/schema.prisma",
+		"apps/api/prisma",
 		"--to-config-datasource",
 		"--exit-code"
 	);

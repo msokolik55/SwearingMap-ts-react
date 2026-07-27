@@ -16,5 +16,6 @@ node_modules
 **/node_modules
 playwright-report
 test-results
+apps/api/src/generated/prisma
 *.log
 *.local

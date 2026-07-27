@@ -47,9 +47,12 @@ Run `pnpm api:client:generate` after changing controllers or DTOs. The generated
 client are committed so consumers get reviewable API changes; `pnpm api:client:check` regenerates
 them in a temporary directory and rejects drift without modifying the working tree.
 
-Generated OpenAPI and Prisma files are committed and marked as generated through `.gitattributes`.
-Run `pnpm db:generate` after changing `apps/api/prisma/schema.prisma`; `pnpm db:check` rejects stale
-generated Prisma code without changing the working tree.
+Generated OpenAPI artifacts are committed and marked through `.gitattributes` so API changes remain
+reviewable. Prisma Client is intentionally ignored because it is reproducible and platform-specific.
+The Prisma schema is split by domain under `apps/api/prisma/models`; `schema.prisma` contains only
+the generator and datasource. Run `pnpm db:generate` after schema changes. `pnpm db:check`, API
+builds, tests, local API startup, and OpenAPI generation validate the schema and generate the client
+before consuming it. See the database runbook linked below for the complete workflow.
 
 ## Development
 
