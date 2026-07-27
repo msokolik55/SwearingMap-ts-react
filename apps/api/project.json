@@ -5,17 +5,23 @@
 	"projectType": "application",
 	"tags": ["scope:api", "type:application"],
 	"targets": {
-		"contract": {
+		"generate": {
 			"executor": "nx:run-commands",
 			"cache": true,
-			"inputs": ["{projectRoot}/prisma/**", "{workspaceRoot}/prisma.config.ts"],
+			"inputs": [
+				"{projectRoot}/prisma/schema.prisma",
+				"{projectRoot}/prisma/models/*.prisma",
+				"{workspaceRoot}/prisma.config.ts",
+				"{workspaceRoot}/package.json",
+				"{workspaceRoot}/pnpm-lock.yaml"
+			],
 			"outputs": ["{projectRoot}/src/generated/prisma"],
 			"options": {
 				"command": "pnpm db:check"
 			}
 		},
 		"typecheck": {
-			"dependsOn": ["contract"],
+			"dependsOn": ["generate"],
 			"executor": "nx:run-commands",
 			"cache": true,
 			"options": {
@@ -23,7 +29,7 @@
 			}
 		},
 		"build": {
-			"dependsOn": ["contract"],
+			"dependsOn": ["generate"],
 			"executor": "nx:run-commands",
 			"options": {
 				"command": "webpack-cli build",
@@ -41,7 +47,7 @@
 			}
 		},
 		"test": {
-			"dependsOn": ["contract"]
+			"dependsOn": ["generate"]
 		},
 		"prune-lockfile": {
 			"dependsOn": ["build"],

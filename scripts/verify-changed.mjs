@@ -80,6 +80,7 @@ if (files.length === 0) {
 
 console.log(`Verifying ${files.length} changed file(s) since ${mergeBase}.`);
 if (process.env.VERIFY_SKIP_FALLOW !== "true") {
+	runPnpm("generate");
 	runPnpm(
 		"exec",
 		"fallow",

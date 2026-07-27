@@ -43,16 +43,17 @@ at `/api/docs`, and the machine-readable contract is `/api/openapi.json`. `pnpm 
 applications and assembles the exact static artifact served by `pnpm preview` and the web
 production container.
 
-Run `pnpm api:client:generate` after changing controllers or DTOs. The generated contract and
-client are committed so consumers get reviewable API changes; `pnpm api:client:check` regenerates
-them in a temporary directory and rejects drift without modifying the working tree.
+Run `pnpm generate` after cloning or changing Prisma schemas, controllers, DTOs, or code-generator
+configuration. Nx restores unchanged outputs from `.nx/cache` and otherwise generates the Prisma
+Client, OpenAPI document, and typed Fetch client in dependency order. `pnpm api:openapi` and
+`pnpm api:client:generate` run the corresponding narrower cacheable targets.
 
-Generated OpenAPI artifacts are committed and marked through `.gitattributes` so API changes remain
-reviewable. Prisma Client is intentionally ignored because it is reproducible and platform-specific.
-The Prisma schema is split by domain under `apps/api/prisma/models`; `schema.prisma` contains only
-the generator and datasource. Run `pnpm db:generate` after schema changes. `pnpm db:check`, API
-builds, tests, local API startup, and OpenAPI generation validate the schema and generate the client
-before consuming it. See the database runbook linked below for the complete workflow.
+Generated source artifacts are intentionally ignored and must never be committed. Their reviewed
+sources of truth are the Prisma schemas and migrations, NestJS controllers and DTOs, generator
+configuration and scripts, package manifest, and lockfile. The Prisma schema is split by domain
+under `apps/api/prisma/models`; `schema.prisma` contains only the generator and datasource. Builds,
+tests, Fallow, local API startup, and CI request the generation targets before consuming their
+outputs. See the database runbook linked below for the complete workflow.
 
 ## Development
 

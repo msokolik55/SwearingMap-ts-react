@@ -102,8 +102,7 @@ in progress until all acceptance criteria are satisfied.
   than a generic application controller.
 - Swagger publishes a reviewable OpenAPI contract, and Hey API generates a TypeScript 6-compatible
   Fetch SDK from that contract.
-- Contract and SDK generation is deterministic, does not modify the working tree during checks,
-  and fails local or CI affected verification when committed artifacts drift.
+- Contract and SDK generation is deterministic and available to local and CI verification.
 - Unit and HTTP integration tests cover the first module and the generated client executes the
   published operation with a typed response.
 - The API builds into a dedicated production image that declares a non-root user and passes a
@@ -113,12 +112,12 @@ in progress until all acceptance criteria are satisfied.
 
 - `apps/api` is a NestJS modular-monolith boundary with a dedicated health module, strict global
   validation, `/api/v1` URI versioning, Swagger UI, and a machine-readable OpenAPI endpoint.
-- `libs/api-client` contains the committed OpenAPI document and generated Hey API Fetch SDK; the
-  library depends on the API in the Nx graph and exposes a cacheable contract-drift target.
+- `libs/api-client` exposes the generated Hey API Fetch SDK; the library depends on the API in the
+  Nx graph. The later `DX-002` policy moved reproducible outputs out of Git into cacheable targets.
 - Vitest covers the health service, an in-process HTTP application, Swagger publication, and a
   typed generated-client request against a controlled Fetch implementation.
-- Local change-aware verification and CI select the contract check and API container for relevant
-  changes, while generated code is excluded from hand-authored lint/format rules.
+- Local change-aware verification and CI generate the contract before relevant checks, while
+  generated code is excluded from Git and hand-authored lint/format rules.
 - `docker/api.Dockerfile` builds the pruned API dependency graph and runs it as the unprivileged
   Node user; the smoke test verifies both health and OpenAPI routes.
 
@@ -149,7 +148,7 @@ in progress until all acceptance criteria are satisfied.
   rejects schema drift, runs real Prisma/PostGIS tests, and guarantees cleanup after failures.
 - Prisma models are grouped into identity, geography, vocabulary, moderation, learning, and
   notification schema files. Prisma Client is ignored and generated as a cacheable prerequisite of
-  API tasks; OpenAPI artifacts remain committed and protected by a temporary-directory drift check.
+  API tasks. `DX-002` applies the same policy to OpenAPI and typed-client outputs.
 - NestJS receives the Prisma client through an explicitly injected global database module, while
   production startup rejects a missing `DATABASE_URL` and contract generation remains database
   independent.

@@ -5,7 +5,6 @@ import test from "node:test";
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const compose = readFileSync("docker/compose.yml", "utf8");
 const prismaConfig = readFileSync("prisma.config.ts", "utf8");
-const attributes = readFileSync(".gitattributes", "utf8");
 const gitignore = readFileSync(".gitignore", "utf8");
 const mainSchema = readFileSync("apps/api/prisma/schema.prisma", "utf8");
 const databaseRunner = readFileSync("scripts/test-database.mjs", "utf8");
@@ -51,17 +50,12 @@ test("organizes the Prisma schema by domain", () => {
 	}
 });
 
-test("ignores generated Prisma code while keeping OpenAPI artifacts reviewable", () => {
+test("ignores generated Prisma code", () => {
 	assert.match(gitignore, /^\/apps\/api\/src\/generated\/prisma\/$/mu);
-	assert.doesNotMatch(attributes, /apps\/api\/src\/generated\/prisma/u);
-	assert.match(
-		attributes,
-		/^libs\/api-client\/src\/generated\/\*\* linguist-generated=true$/mu
-	);
 });
 
-test("generates the ignored Prisma client before every Fallow audit", () => {
+test("generates all ignored source artifacts before every Fallow audit", () => {
 	for (const command of ["fallow:audit", "fallow:ci", "fallow:full"]) {
-		assert.match(packageJson.scripts[command], /^pnpm db:generate && /u);
+		assert.match(packageJson.scripts[command], /^pnpm generate && /u);
 	}
 });

@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { createApiApplication } from "../apps/api/src/app/api-application";
 import { createOpenApiDocument } from "../apps/api/src/app/openapi";
 
-const contractRoot = resolve(process.env.API_CONTRACT_ROOT ?? "libs/api-client");
+const contractRoot = resolve("libs/api-client");
 const outputPath = resolve(contractRoot, "openapi.json");
 const app = await createApiApplication({ logger: false, swagger: false });
 

@@ -5,27 +5,54 @@
 	"sourceRoot": "libs/api-client/src",
 	"tags": ["scope:shared", "type:contract"],
 	"implicitDependencies": ["api"],
+	"namedInputs": {
+		"default": [
+			"{projectRoot}/**/*",
+			"!{projectRoot}/openapi.json",
+			"!{projectRoot}/src/generated/**/*"
+		]
+	},
 	"targets": {
-		"contract": {
+		"openapi": {
 			"executor": "nx:run-commands",
 			"cache": true,
+			"dependsOn": ["^generate"],
 			"inputs": [
 				"{workspaceRoot}/apps/api/src/**/*",
-				"{workspaceRoot}/libs/api-client/**/*",
-				"{workspaceRoot}/openapi-ts.config.ts",
-				"{workspaceRoot}/scripts/check-api-client.mjs",
-				"{workspaceRoot}/scripts/generate-openapi.ts"
+				"{workspaceRoot}/apps/api/tsconfig.app.json",
+				"{workspaceRoot}/scripts/generate-openapi.ts",
+				"{workspaceRoot}/package.json",
+				"{workspaceRoot}/pnpm-lock.yaml"
 			],
+			"outputs": ["{projectRoot}/openapi.json"],
 			"options": {
-				"command": "pnpm api:client:check"
+				"command": "pnpm api:openapi:raw"
+			}
+		},
+		"generate": {
+			"executor": "nx:run-commands",
+			"cache": true,
+			"dependsOn": ["openapi"],
+			"inputs": [
+				"{workspaceRoot}/openapi-ts.config.ts",
+				"{workspaceRoot}/package.json",
+				"{workspaceRoot}/pnpm-lock.yaml"
+			],
+			"outputs": ["{projectRoot}/src/generated"],
+			"options": {
+				"command": "openapi-ts"
 			}
 		},
 		"typecheck": {
+			"dependsOn": ["generate"],
 			"executor": "nx:run-commands",
 			"cache": true,
 			"options": {
 				"command": "tsc --noEmit -p libs/api-client/tsconfig.json"
 			}
+		},
+		"test": {
+			"dependsOn": ["generate"]
 		}
 	}
 }

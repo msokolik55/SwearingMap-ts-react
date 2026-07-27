@@ -39,8 +39,10 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
 - `pnpm container:build` packages the production build as `swearing-map:local` (Docker required).
 - `pnpm container:smoke` starts that image temporarily and verifies its health endpoint, browser
   security headers, and cache policies on port 18080.
-- `pnpm api:client:generate` refreshes the committed OpenAPI contract and typed Fetch client.
-- `pnpm api:client:check` verifies generated API artifacts without changing the working tree.
+- `pnpm generate` restores or creates every ignored source artifact through cacheable Nx targets.
+- `pnpm api:openapi` generates only the ignored OpenAPI contract and its Prisma prerequisite.
+- `pnpm api:client:generate` generates the ignored OpenAPI contract and typed Fetch client.
+- `pnpm api:client:check` is a compatibility alias for the same cacheable client generation target.
 - `pnpm db:generate` refreshes the ignored local Prisma Client after a schema change.
 - `pnpm db:check` validates the multi-file schema and generates the local Prisma Client.
 - `pnpm test:database` uses an isolated PostGIS container to apply migrations, seed data, check
@@ -79,9 +81,9 @@ supersedes an earlier decision and links back to it.
    generator and datasource.
 3. Create a reviewed migration with `pnpm db:migrate:dev -- --name <change-name>`.
 4. Add database invariants that Prisma cannot express as reviewed SQL in that migration.
-5. Run `pnpm db:generate`, `pnpm db:check`, and `pnpm test:database`.
-6. Commit the schema, migration, and seed changes. Never force-add
-   `apps/api/src/generated/prisma`; CI and API build targets regenerate it.
+5. Run `pnpm generate`, `pnpm db:check`, and `pnpm test:database`.
+6. Commit the schema, migration, seed, and generator-input changes. Never force-add generated
+   Prisma, OpenAPI, or API-client outputs; CI and consuming Nx targets restore or regenerate them.
 
 Never use `prisma db push` for shared environments. Never edit an already deployed migration;
 create a forward-fix migration instead. Production migration execution belongs to the release
