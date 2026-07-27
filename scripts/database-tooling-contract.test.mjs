@@ -19,6 +19,10 @@ test("provides explicit development and isolated test database commands", () => 
 	assert.match(compose, /database-test:[\s\S]*?tmpfs:/u);
 	assert.match(databaseRunner, /swearing-map-test-\$\{process\.pid\}/u);
 	assert.match(databaseRunner, /finally \{/u);
+	assert.match(
+		databaseRunner,
+		/await waitForTcp\("127\.0\.0\.1", port\);[\s\S]*?prisma", "migrate", "deploy"/u
+	);
 });
 
 test("configures deterministic Prisma migrations and seed execution", () => {
