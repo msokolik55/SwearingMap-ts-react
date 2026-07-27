@@ -137,9 +137,13 @@ if (changes.appChanged && process.env.VERIFY_MODE !== "quality") {
 if (changes.databaseChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("test:database");
 }
-if (changes.containerChanged && process.env.VERIFY_MODE !== "quality") {
+if (changes.webContainerChanged && process.env.VERIFY_MODE !== "quality") {
 	runPnpm("container:build");
 	runPnpm("container:smoke");
+}
+if (changes.apiContainerChanged && process.env.VERIFY_MODE !== "quality") {
+	runPnpm("container:api:build");
+	runPnpm("container:api:smoke");
 }
 
 console.log("Changed-file verification passed.");

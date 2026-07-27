@@ -15,7 +15,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
   pnpm config set store-dir /pnpm/store && pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm build
+RUN pnpm build:site
 
 FROM nginxinc/nginx-unprivileged:1.29-alpine AS runtime
 

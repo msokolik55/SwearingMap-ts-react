@@ -46,8 +46,13 @@ export function classifyChanges(files) {
 		appChanged: paths.some((file) =>
 			/^(?:apps\/(?:map|web)\/|e2e\/|playwright\.config\.)/u.test(file)
 		),
-		containerChanged: paths.some((file) =>
-			/^(?:Dockerfile$|\.dockerignore$|apps\/api\/|docker\/|scripts\/(?:assemble-site|smoke-(?:api-)?container)\.mjs$)/u.test(
+		webContainerChanged: paths.some((file) =>
+			/^(?:Dockerfile$|\.dockerignore$|apps\/(?:map|web)\/|docker\/(?:nginx\.conf|security-headers\.conf)$|scripts\/(?:assemble-site|smoke-container)\.mjs$)/u.test(
+				file
+			)
+		),
+		apiContainerChanged: paths.some((file) =>
+			/^(?:\.dockerignore$|apps\/api\/|docker\/api\.Dockerfile$|scripts\/smoke-api-container\.mjs$)/u.test(
 				file
 			)
 		),
@@ -88,7 +93,8 @@ export function createCiPlan(paths, forceFull = false) {
 				path
 			)
 		),
-		container: changes.containerChanged,
+		container_web: changes.webContainerChanged,
+		container_api: changes.apiContainerChanged,
 		database: changes.databaseChanged,
 	};
 
@@ -98,7 +104,8 @@ export function createCiPlan(paths, forceFull = false) {
 		dependencies: true,
 		browser: true,
 		lighthouse: true,
-		container: true,
+		container_web: true,
+		container_api: true,
 		database: true,
 	};
 }
