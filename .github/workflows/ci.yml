@@ -87,22 +87,19 @@ jobs:
       - name: Generate source artifacts
         run: pnpm generate
 
-      - name: Audit dependencies
-        if: needs.changes.outputs.dependencies == 'true'
-        run: pnpm run audit
-
       - name: Audit changed code with Fallow
-        if: always() && github.event_name == 'pull_request'
+        id: fallow
+        if: github.event_name == 'pull_request'
         env:
           FALLOW_AUDIT_BASE: ${{ needs.changes.outputs.base }}
         run: pnpm fallow:ci:generated
 
       - name: Audit complete codebase with Fallow
-        if: always() && github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         run: pnpm fallow:full:generated
 
       - name: Upload Fallow SARIF report
-        if: always() && github.event_name == 'pull_request'
+        if: always() && steps.fallow.outcome != 'skipped'
         uses: actions/upload-artifact@v7
         with:
           name: fallow-sarif-${{ github.run_id }}
@@ -110,12 +107,16 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Audit dependencies
+        if: ${{ !cancelled() && needs.changes.outputs.dependencies == 'true' }}
+        run: pnpm run audit
+
       - name: Verify complete repository
-        if: needs.changes.outputs.full == 'true'
+        if: ${{ !cancelled() && needs.changes.outputs.full == 'true' }}
         run: pnpm check:quality:generated
 
       - name: Verify affected changes
-        if: needs.changes.outputs.full != 'true'
+        if: ${{ !cancelled() && needs.changes.outputs.full != 'true' }}
         env:
           VERIFY_BASE: ${{ needs.changes.outputs.base }}
           VERIFY_MODE: quality

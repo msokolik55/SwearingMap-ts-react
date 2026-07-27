@@ -38,10 +38,18 @@ test("selects affected checks for pull requests and protected-main pushes", () =
 	assert.match(changePlan, /if \(selectiveEvent\) \{/u);
 });
 
-test("runs the pull-request Fallow audit after an earlier independent gate fails", () => {
+test("runs Fallow directly after successful generation", () => {
 	assert.match(
 		workflow,
-		/- name: Audit changed code with Fallow\s+if: always\(\) && github\.event_name == 'pull_request'/u
+		/- name: Generate source artifacts\s+run: pnpm generate\s+- name: Audit changed code with Fallow/u
+	);
+	assert.match(
+		workflow,
+		/- name: Audit changed code with Fallow\s+id: fallow\s+if: github\.event_name == 'pull_request'/u
+	);
+	assert.match(
+		workflow,
+		/- name: Audit complete codebase with Fallow\s+if: github\.event_name != 'pull_request'/u
 	);
 });
 
@@ -69,10 +77,25 @@ test("restores Nx cache and generates source artifacts before quality checks", (
 	assert.match(qualityJob, /path: \.nx\/cache/u);
 });
 
-test("always uploads the pull-request SARIF artifact and requires it to exist", () => {
+test("uploads an attempted pull-request Fallow audit even when it fails", () => {
 	assert.match(
 		workflow,
-		/- name: Upload Fallow SARIF report\s+if: always\(\) && github\.event_name == 'pull_request'[\s\S]*?path: \.fallowci\/fallow\.sarif[\s\S]*?if-no-files-found: error/u
+		/- name: Upload Fallow SARIF report\s+if: always\(\) && steps\.fallow\.outcome != 'skipped'[\s\S]*?path: \.fallowci\/fallow\.sarif[\s\S]*?if-no-files-found: error/u
+	);
+});
+
+test("continues independent quality diagnostics unless the run was cancelled", () => {
+	assert.match(
+		workflow,
+		/- name: Audit dependencies\s+if: \$\{\{ !cancelled\(\) && needs\.changes\.outputs\.dependencies == 'true' \}\}/u
+	);
+	assert.match(
+		workflow,
+		/- name: Verify complete repository\s+if: \$\{\{ !cancelled\(\) && needs\.changes\.outputs\.full == 'true' \}\}/u
+	);
+	assert.match(
+		workflow,
+		/- name: Verify affected changes\s+if: \$\{\{ !cancelled\(\) && needs\.changes\.outputs\.full != 'true' \}\}/u
 	);
 });
 
