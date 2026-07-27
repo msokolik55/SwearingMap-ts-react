@@ -47,7 +47,7 @@ test("runs the pull-request Fallow audit after an earlier independent gate fails
 
 test("restores Nx cache and generates source artifacts before quality checks", () => {
 	const qualityJob = workflow.match(
-		/^ {2}quality:\r?\n(?<body>[\s\S]*?)(?=^ {2}browser:)/mu
+		/^ {2}quality:\r?\n(?<body>[\s\S]*?)(?=^ {2}site-build:)/mu
 	)?.groups?.body;
 
 	assert.ok(qualityJob, "quality job must exist");
@@ -65,7 +65,7 @@ test("restores Nx cache and generates source artifacts before quality checks", (
 		1,
 		"quality job must explicitly generate source artifacts exactly once"
 	);
-	assert.match(qualityJob, /run: pnpm check:generated/u);
+	assert.match(qualityJob, /run: pnpm check:quality:generated/u);
 	assert.match(qualityJob, /path: \.nx\/cache/u);
 });
 
@@ -83,30 +83,43 @@ test("runs isolated database migrations and integration tests when selected", ()
 	);
 });
 
-test("builds only the deployable site for browser checks", () => {
+test("builds the deployable site once and passes it to browser checks", () => {
 	assert.equal(
 		packageJson.scripts["build:site"],
 		"nx run-many -t build --projects=web,map --parallel=2 && pnpm assemble:site"
 	);
 	assert.match(
 		workflow,
-		/browser:\s+name: Browser quality[\s\S]*?run: pnpm build:site/u
+		/site-build:\s+name: Site build[\s\S]*?run: pnpm build:site[\s\S]*?uses: actions\/upload-artifact@v7[\s\S]*?name: site-\$\{\{ github\.run_id \}\}[\s\S]*?path: dist\/site/u
+	);
+	assert.match(
+		workflow,
+		/browser:\s+name: Browser quality\s+needs: \[changes, site-build\][\s\S]*?uses: actions\/download-artifact@v8[\s\S]*?name: site-\$\{\{ github\.run_id \}\}[\s\S]*?path: dist\/site/u
+	);
+	const browserJob = workflow.match(
+		/^ {2}browser:\r?\n(?<body>[\s\S]*?)(?=^ {2}container-web:)/mu
+	)?.groups?.body;
+	assert.ok(browserJob, "browser job must exist");
+	assert.doesNotMatch(browserJob, /run: pnpm build:site/u);
+	assert.equal(
+		packageJson.scripts["check:quality:generated"],
+		"pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
 	);
 });
 
-test("restores a cross-job-compatible Nx cache for browser builds", () => {
+test("restores a cross-job-compatible Nx cache for site builds", () => {
 	const qualityKey =
 		"key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-quality-${{ github.sha }}";
-	const browserKey =
-		"key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-${{ github.sha }}";
+	const siteKey =
+		"key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-site-${{ github.sha }}";
 	const sharedPrefix = "nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-";
 
 	assert.ok(workflow.includes(qualityKey));
-	assert.ok(workflow.includes(browserKey));
+	assert.ok(workflow.includes(siteKey));
 	assert.equal(
 		workflow.split(sharedPrefix).length - 1 >= 4,
 		true,
-		"quality and browser jobs must share a compatible restore prefix"
+		"quality and site build jobs must share a compatible restore prefix"
 	);
 });
 
