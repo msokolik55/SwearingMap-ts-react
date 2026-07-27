@@ -4,6 +4,7 @@ import test from "node:test";
 
 const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
 const lighthouseConfig = readFileSync("lighthouserc.cjs", "utf8");
+const changePlan = readFileSync("scripts/ci-change-plan.mjs", "utf8");
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const changesJob = workflow.match(
 	/^ {2}changes:\r?\n(?<body>[\s\S]*?)(?=^ {2}quality:)/mu
@@ -23,6 +24,18 @@ test("exposes the CI change planner as a package entry point", () => {
 	assert.ok(pnpmSetup >= 0, "changes job must install pnpm");
 	assert.ok(nodeSetup > pnpmSetup, "changes job must configure Node.js after pnpm");
 	assert.ok(changePlan > nodeSetup, "toolchain must be ready before the change plan");
+});
+
+test("selects affected checks for pull requests and protected-main pushes", () => {
+	assert.match(
+		changePlan,
+		/const selectiveEvent = pullRequest \|\| eventName === "push"/u
+	);
+	assert.match(
+		changePlan,
+		/const baseRef = pullRequest \? `origin\/\$\{process\.env\.GITHUB_BASE_REF\}` : "HEAD\^"/u
+	);
+	assert.match(changePlan, /if \(selectiveEvent\) \{/u);
 });
 
 test("runs the pull-request Fallow audit after an earlier independent gate fails", () => {
