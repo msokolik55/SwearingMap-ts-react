@@ -76,9 +76,10 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .nx/cache
-          key: nx-${{ runner.os }}-quality-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-quality-${{ github.sha }}
           restore-keys: |
-            nx-${{ runner.os }}-quality-${{ hashFiles('pnpm-lock.yaml') }}-
+            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-quality-
+            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -141,6 +142,15 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
+
+      - name: Restore Nx task cache
+        uses: actions/cache@v5
+        with:
+          path: .nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-${{ github.sha }}
+          restore-keys: |
+            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-
+            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
