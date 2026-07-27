@@ -57,6 +57,7 @@ test("excludes host workspace dependency links from the Linux build context", ()
 });
 
 test("copies the assembled Next.js shell and map into the runtime image", () => {
+	assert.match(dockerfile, /^RUN pnpm build:site$/mu);
 	assert.match(
 		dockerfile,
 		/COPY --from=build --chown=101:101 \/app\/dist\/site \/usr\/share\/nginx\/html/u

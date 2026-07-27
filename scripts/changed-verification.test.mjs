@@ -32,7 +32,8 @@ test("classifies app, code, and deleted files without checking deleted paths", (
 test("selects container checks independently", () => {
 	const result = classifyChanges([{ path: "docker/nginx.conf", deleted: false }]);
 
-	assert.equal(result.containerChanged, true);
+	assert.equal(result.webContainerChanged, true);
+	assert.equal(result.apiContainerChanged, false);
 	assert.equal(result.appChanged, false);
 });
 
@@ -49,16 +50,19 @@ test("selects only relevant expensive CI suites", () => {
 		dependencies: false,
 		browser: false,
 		lighthouse: false,
-		container: false,
+		container_web: false,
+		container_api: false,
 		database: false,
 	});
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).browser, true);
 	assert.equal(createCiPlan(["apps/map/src/App.tsx"]).lighthouse, true);
 	assert.equal(createCiPlan(["apps/web/app/page.tsx"]).browser, true);
 	assert.equal(createCiPlan(["apps/web/app/page.tsx"]).lighthouse, true);
-	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
-	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container, true);
-	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container, true);
+	assert.equal(createCiPlan(["docker/nginx.conf"]).container_web, true);
+	assert.equal(createCiPlan(["docker/nginx.conf"]).container_api, false);
+	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container_web, true);
+	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container_web, false);
+	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container_api, true);
 	assert.equal(
 		createCiPlan(["apps/api/prisma/models/vocabulary.prisma"]).database,
 		true
@@ -76,7 +80,8 @@ test("shared CI configuration forces every suite", () => {
 		dependencies: true,
 		browser: true,
 		lighthouse: true,
-		container: true,
+		container_web: true,
+		container_api: true,
 		database: true,
 	});
 	assert.deepEqual(createCiPlan(["docs/roadmap.md"], true), {
@@ -84,7 +89,8 @@ test("shared CI configuration forces every suite", () => {
 		dependencies: true,
 		browser: true,
 		lighthouse: true,
-		container: true,
+		container_web: true,
+		container_api: true,
 		database: true,
 	});
 });

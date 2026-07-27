@@ -19,7 +19,8 @@ function fullPlan() {
 		dependencies: true,
 		browser: true,
 		lighthouse: true,
-		container: true,
+		container_web: true,
+		container_api: true,
 		database: true,
 	};
 }

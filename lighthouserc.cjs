@@ -1,11 +1,16 @@
 const { chromium } = require("@playwright/test");
 
+const numberOfRuns = Number(process.env.LIGHTHOUSE_RUNS ?? 3);
+if (!Number.isInteger(numberOfRuns) || numberOfRuns < 1) {
+	throw new Error("LIGHTHOUSE_RUNS must be a positive integer.");
+}
+
 module.exports = {
 	ci: {
 		collect: {
 			chromePath: chromium.executablePath(),
 			isSinglePageApplication: false,
-			numberOfRuns: 3,
+			numberOfRuns,
 			puppeteerScript: "./scripts/lighthouse-setup.cjs",
 			puppeteerLaunchOptions: process.env.CI
 				? { args: ["--no-sandbox", "--disable-setuid-sandbox"] }
