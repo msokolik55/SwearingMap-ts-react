@@ -59,3 +59,9 @@ test("ignores generated Prisma code while keeping OpenAPI artifacts reviewable",
 		/^libs\/api-client\/src\/generated\/\*\* linguist-generated=true$/mu
 	);
 });
+
+test("generates the ignored Prisma client before every Fallow audit", () => {
+	for (const command of ["fallow:audit", "fallow:ci", "fallow:full"]) {
+		assert.match(packageJson.scripts[command], /^pnpm db:generate && /u);
+	}
+});
