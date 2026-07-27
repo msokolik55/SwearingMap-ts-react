@@ -121,6 +121,21 @@ test("uses fewer Lighthouse runs for pull requests", () => {
 	);
 });
 
+test("caches Playwright Chromium while installing system dependencies on every runner", () => {
+	assert.match(
+		workflow,
+		/- name: Restore Playwright browser cache\s+id: playwright-cache\s+uses: actions\/cache@v5[\s\S]*?path: ~\/\.cache\/ms-playwright[\s\S]*?key: playwright-\$\{\{ runner\.os \}\}-\$\{\{ hashFiles\('pnpm-lock\.yaml'\) \}\}/u
+	);
+	assert.match(
+		workflow,
+		/- name: Install Playwright system dependencies\s+run: pnpm exec playwright install-deps chromium/u
+	);
+	assert.match(
+		workflow,
+		/- name: Install Playwright browser\s+if: steps\.playwright-cache\.outputs\.cache-hit != 'true'\s+run: pnpm exec playwright install chromium/u
+	);
+});
+
 test("builds web and API containers independently with persistent Buildx caches", () => {
 	assert.match(
 		workflow,
