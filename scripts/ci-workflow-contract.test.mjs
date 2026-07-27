@@ -150,6 +150,18 @@ test("restores a cross-job-compatible Nx cache for site builds", () => {
 	);
 });
 
+test("persists the Next.js compiler cache between site builds", () => {
+	const siteBuildJob = workflow.match(
+		/^ {2}site-build:\r?\n(?<body>[\s\S]*?)(?=^ {2}browser:)/mu
+	)?.groups?.body;
+
+	assert.ok(siteBuildJob, "site build job must exist");
+	assert.match(
+		siteBuildJob,
+		/- name: Restore Next\.js build cache\s+uses: actions\/cache@v5\s+with:\s+path: apps\/web\/\.next\/cache\s+key: next-\$\{\{ runner\.os \}\}-\$\{\{ hashFiles\('pnpm-lock\.yaml'\) \}\}-\$\{\{ hashFiles\('apps\/web\/\*\*', 'tsconfig\.base\.json'\) \}\}\s+restore-keys: \|\s+next-\$\{\{ runner\.os \}\}-\$\{\{ hashFiles\('pnpm-lock\.yaml'\) \}\}-/u
+	);
+});
+
 test("uses fewer Lighthouse runs for pull requests", () => {
 	assert.match(
 		workflow,
