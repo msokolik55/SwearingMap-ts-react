@@ -91,14 +91,14 @@ test("shared CI configuration forces every suite", () => {
 
 test("keeps affected project work bounded by verification mode", () => {
 	assert.deepEqual(createAffectedTargets(), [
-		"contract",
+		"generate",
 		"lint",
 		"typecheck",
 		"test",
 		"build",
 	]);
 	assert.deepEqual(createAffectedTargets(true), [
-		"contract",
+		"generate",
 		"lint",
 		"typecheck",
 		"test",

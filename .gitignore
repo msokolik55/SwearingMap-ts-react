@@ -24,8 +24,10 @@ test-results
 *.local
 *.tsbuildinfo
 
-# Prisma Client is generated from apps/api/prisma before API checks and builds.
+# Reproducible source artifacts are restored from Nx cache or generated locally.
 /apps/api/src/generated/prisma/
+/libs/api-client/openapi.json
+/libs/api-client/src/generated/
 
 # Editor directories and files
 .vscode/*

@@ -43,13 +43,14 @@ generator and datasource; models and their enums are grouped by domain in
 3. Review the generated SQL, locks, backfill needs, and compatibility with the currently deployed
    application.
 4. Add CHECK constraints or PostGIS SQL that Prisma cannot model directly.
-5. Run `pnpm db:generate`. The output under `apps/api/src/generated/prisma` is ignored and must not
-   be committed.
+5. Run `pnpm generate`. Prisma Client, the OpenAPI document, and the typed API client are ignored
+   outputs and must not be committed.
 6. Run `pnpm db:check` and `pnpm test:database`.
 
 `pnpm db:check` validates the complete schema folder and regenerates the client. API build, test,
 development startup, and OpenAPI tasks depend on the same generation step, so a clean checkout does
-not rely on committed generated code.
+not rely on committed generated code. Nx caches each declared output and restores it when all
+reviewed generator inputs are unchanged.
 
 Do not rewrite a migration after it has reached a shared environment. Correct it with a new
 forward migration. Destructive changes require an expand-and-contract rollout or an explicit

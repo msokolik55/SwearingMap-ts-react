@@ -104,7 +104,7 @@ export function createCiPlan(paths, forceFull = false) {
 }
 
 export function createAffectedTargets(qualityMode = false) {
-	const targets = ["contract", "lint", "typecheck", "test"];
+	const targets = ["generate", "lint", "typecheck", "test"];
 	if (!qualityMode) targets.push("build");
 	return targets;
 }

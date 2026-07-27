@@ -31,6 +31,24 @@ test("runs the pull-request Fallow audit after an earlier independent gate fails
 	);
 });
 
+test("restores Nx cache and generates source artifacts before quality checks", () => {
+	const qualityJob = workflow.match(
+		/^ {2}quality:\r?\n(?<body>[\s\S]*?)(?=^ {2}browser:)/mu
+	)?.groups?.body;
+
+	assert.ok(qualityJob, "quality job must exist");
+	const cache = qualityJob.indexOf("uses: actions/cache@v5");
+	const install = qualityJob.indexOf("run: pnpm install --frozen-lockfile");
+	const generate = qualityJob.indexOf("run: pnpm generate");
+	const fallow = qualityJob.indexOf("run: pnpm fallow:ci");
+
+	assert.ok(cache >= 0, "quality job must restore the Nx task cache");
+	assert.ok(install > cache, "dependencies must be installed after cache restore");
+	assert.ok(generate > install, "source generation must run after installation");
+	assert.ok(fallow > generate, "Fallow must run after source generation");
+	assert.match(qualityJob, /path: \.nx\/cache/u);
+});
+
 test("always uploads the pull-request SARIF artifact and requires it to exist", () => {
 	assert.match(
 		workflow,
