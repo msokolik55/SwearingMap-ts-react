@@ -112,7 +112,7 @@ jobs:
 
       - name: Verify complete repository
         if: needs.changes.outputs.full == 'true'
-        run: pnpm check:generated
+        run: pnpm check:quality:generated
 
       - name: Verify affected changes
         if: needs.changes.outputs.full != 'true'
@@ -122,12 +122,12 @@ jobs:
           VERIFY_SKIP_FALLOW: "true"
         run: pnpm verify:changed
 
-  browser:
-    name: Browser quality
+  site-build:
+    name: Site build
     needs: changes
     if: needs.changes.outputs.browser == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -147,16 +147,54 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .nx/cache
-          key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-${{ github.sha }}
+          key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-site-${{ github.sha }}
           restore-keys: |
-            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-
+            nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-site-
             nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Build site
         run: pnpm build:site
+
+      - name: Upload site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-${{ github.run_id }}
+          path: dist/site
+          include-hidden-files: true
+          retention-days: 1
+
+  browser:
+    name: Browser quality
+    needs: [changes, site-build]
+    if: needs.changes.outputs.browser == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.13.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download site
+        uses: actions/download-artifact@v8
+        with:
+          name: site-${{ github.run_id }}
+          path: dist/site
 
       - name: Restore Playwright browser cache
         id: playwright-cache

@@ -63,7 +63,8 @@
 		"test:watch": "nx test map --watch",
 		"audit": "pnpm --config.auditConfig.ignoreGhsas=[] audit --prod --audit-level high && pnpm audit --dev --audit-level high",
 		"check": "pnpm generate && pnpm check:generated",
-		"check:generated": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+		"check:generated": "pnpm check:quality:generated && pnpm build",
+		"check:quality:generated": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "21.2.1",
