@@ -94,6 +94,22 @@ test("builds only the deployable site for browser checks", () => {
 	);
 });
 
+test("restores a cross-job-compatible Nx cache for browser builds", () => {
+	const qualityKey =
+		"key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-quality-${{ github.sha }}";
+	const browserKey =
+		"key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-browser-${{ github.sha }}";
+	const sharedPrefix = "nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-";
+
+	assert.ok(workflow.includes(qualityKey));
+	assert.ok(workflow.includes(browserKey));
+	assert.equal(
+		workflow.split(sharedPrefix).length - 1 >= 4,
+		true,
+		"quality and browser jobs must share a compatible restore prefix"
+	);
+});
+
 test("uses fewer Lighthouse runs for pull requests", () => {
 	assert.match(
 		workflow,
