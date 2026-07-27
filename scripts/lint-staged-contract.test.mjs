@@ -12,7 +12,11 @@ const webLintTask = config["apps/web/**/*.{js,cjs,mjs,jsx,ts,tsx}"];
 test("does not lint Nx project files twice during full lint", () => {
 	assert.equal(
 		packageJson.scripts.lint,
-		'nx run-many -t lint --parallel=2 && eslint . --ignore-pattern "apps/**" --ignore-pattern "libs/**" --max-warnings=0'
+		"nx run-many -t lint --parallel=2 && pnpm lint:workspace"
+	);
+	assert.equal(
+		packageJson.scripts["lint:workspace"],
+		'eslint . --ignore-pattern "apps/**" --ignore-pattern "libs/**" --max-warnings=0'
 	);
 });
 

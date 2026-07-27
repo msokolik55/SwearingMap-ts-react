@@ -32,10 +32,13 @@
 		"build:site": "nx run-many -t build --projects=web,map --parallel=2 && pnpm assemble:site",
 		"assemble:site": "node scripts/assemble-site.mjs",
 		"check:bundle-budget": "node scripts/check-bundle-budget.mjs",
+		"check:quality:projects": "nx run-many -t lint typecheck test --parallel=4",
 		"preview": "vite preview --outDir dist/site",
-		"typecheck": "nx run-many -t typecheck --parallel=2 && tsc --noEmit -p tsconfig.e2e.json",
-		"lint": "nx run-many -t lint --parallel=2 && eslint . --ignore-pattern \"apps/**\" --ignore-pattern \"libs/**\" --max-warnings=0",
+		"typecheck": "nx run-many -t typecheck --parallel=2 && pnpm typecheck:e2e",
+		"typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
+		"lint": "nx run-many -t lint --parallel=2 && pnpm lint:workspace",
 		"lint:fix": "eslint . --fix",
+		"lint:workspace": "eslint . --ignore-pattern \"apps/**\" --ignore-pattern \"libs/**\" --max-warnings=0",
 		"format": "prettier . --write",
 		"format:check": "prettier . --check",
 		"test": "nx run-many -t test --parallel=2 && pnpm test:tooling",
@@ -65,7 +68,7 @@
 		"audit": "pnpm --config.auditConfig.ignoreGhsas=[] audit --prod --audit-level high && pnpm audit --dev --audit-level high",
 		"check": "pnpm generate && pnpm check:generated",
 		"check:generated": "pnpm check:quality:generated && pnpm build",
-		"check:quality:generated": "pnpm generated:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+		"check:quality:generated": "pnpm generated:check && pnpm format:check && pnpm check:quality:projects && pnpm lint:workspace && pnpm typecheck:e2e && pnpm test:tooling"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "21.2.1",
