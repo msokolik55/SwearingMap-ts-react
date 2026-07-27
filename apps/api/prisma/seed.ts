@@ -77,6 +77,17 @@ async function seedReferenceData(): Promise<void> {
 		},
 	});
 
+	await prisma.$executeRaw`
+		UPDATE "countries"
+		SET "map_center" = ST_SetSRID(ST_MakePoint(17.1077, 48.1486), 4326)::geography
+		WHERE "id" = ${slovakia.id}::uuid
+	`;
+	await prisma.$executeRaw`
+		UPDATE "countries"
+		SET "map_center" = ST_SetSRID(ST_MakePoint(-98.5795, 39.8283), 4326)::geography
+		WHERE "id" = ${unitedStates.id}::uuid
+	`;
+
 	await prisma.countryLanguage.upsert({
 		where: {
 			countryId_languageId: {

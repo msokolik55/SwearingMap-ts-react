@@ -41,7 +41,9 @@ Nx caches deterministic task outputs in `.nx/cache`. No global Nx installation i
 or `pnpm dev:api` for the API. The API health endpoint is `/api/v1/health`, Swagger UI is available
 at `/api/docs`, and the machine-readable contract is `/api/openapi.json`. `pnpm build` builds all
 applications and assembles the exact static artifact served by `pnpm preview` and the web
-production container.
+production container. Authentication setup, token lifecycle, and production-secret requirements
+are documented in
+[`docs/runbooks/authentication.md`](docs/runbooks/authentication.md).
 
 Run `pnpm generate` after cloning or changing Prisma schemas, controllers, DTOs, or code-generator
 configuration. Nx restores unchanged outputs from `.nx/cache` and otherwise generates the Prisma

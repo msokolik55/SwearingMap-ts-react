@@ -1,13 +1,14 @@
 # ARCH-001: Nx, Next.js, NestJS, and Prisma platform
 
-- Status: In progress
+- Status: Ready for review
 - Slice 1 status: Done
 - Slice 2 status: Done
 - Slice 3 status: Done
-- Slice 4 status: Ready for review
+- Slice 4 status: Done
+- Slice 5 status: Ready for review
 - Priority: Critical
 - Depends on: DX-001
-- Branch: `codex/arch-001-prisma-postgis`
+- Slice 5 branch: `codex/arch-001-auth-repositories`
 
 ## Outcome
 
@@ -40,7 +41,8 @@ microservice split.
 5. Add authentication, role authorization, repository boundaries, and geospatial integration tests.
 
 Each slice must leave `main` deployable and receives an independent pull request. ARCH-001 remains
-in progress until all acceptance criteria are satisfied.
+in progress until all acceptance criteria are satisfied; slice 5 completes those criteria and
+moves the ticket to review.
 
 ## Slice 1 acceptance criteria
 
@@ -156,3 +158,33 @@ in progress until all acceptance criteria are satisfied.
   patched versions; the production and development audits have no unignored high-severity finding.
 - The full monorepo quality gate, Fallow baseline checks, clean-database integration suite, and
   non-root API container build and smoke test pass before review.
+
+## Slice 5 acceptance criteria
+
+- Registration and sign-in hash passwords with Argon2id, issue bounded JWT access tokens, and
+  persist only digests of rotating opaque refresh tokens.
+- API routes are authenticated by default; anonymous routes are explicit, roles are enforced by a
+  reusable guard, and abusive authentication traffic is throttled.
+- Domain services depend on repository contracts. Static checks prevent direct Prisma access
+  outside database infrastructure, repository adapters, and integration tests.
+- PostGIS proximity lookup is isolated behind a geospatial repository and uses only parameterized
+  tagged raw queries.
+- Unit, HTTP, and isolated real-database tests cover configuration, credentials, roles, refresh
+  rotation and revocation, authorization defaults, and spatial distance behavior.
+
+## Slice 5 implementation evidence
+
+- The authentication module exposes registration, sign-in, refresh, logout, and identity endpoints
+  through generated OpenAPI contracts. Production rejects missing or weak JWT signing secrets.
+- Passwords use OWASP's Argon2id baseline cost; refresh tokens are random, single-use, atomically
+  rotated, and stored only as SHA-256 digests. The browser-token transport constraint is recorded
+  in the authentication runbook before UI integration.
+- Global JWT, role, and throttling guards make new API endpoints private and rate-limited by
+  default. `@Public()` and `@Roles(...)` make deviations reviewable in source.
+- Authentication and geography services depend on injected repository interfaces. ESLint and a
+  workspace contract test reject persistence bypasses and unsafe Prisma raw-query APIs.
+- A dedicated Prisma migration adds password credentials and case-normalized email uniqueness.
+  Deterministic seed coordinates let the PostGIS repository prove distance ordering and radius
+  filtering against an isolated migrated database.
+- The complete monorepo check, Fallow baselines, dependency audit, isolated PostGIS suite, and
+  pruned non-root API container build and smoke test pass before review.
