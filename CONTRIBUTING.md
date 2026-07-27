@@ -42,7 +42,6 @@ upstream when needed, and lets the Husky pre-push hook run the change-aware veri
 - `pnpm generate` restores or creates every ignored source artifact through cacheable Nx targets.
 - `pnpm api:openapi` generates only the ignored OpenAPI contract and its Prisma prerequisite.
 - `pnpm api:client:generate` generates the ignored OpenAPI contract and typed Fetch client.
-- `pnpm api:client:check` is a compatibility alias for the same cacheable client generation target.
 - `pnpm db:generate` refreshes the ignored local Prisma Client after a schema change.
 - `pnpm db:check` validates the multi-file schema and generates the local Prisma Client.
 - `pnpm test:database` uses an isolated PostGIS container to apply migrations, seed data, check

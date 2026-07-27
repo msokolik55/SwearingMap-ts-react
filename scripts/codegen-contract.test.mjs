@@ -34,6 +34,11 @@ test("defines cacheable generation targets with explicit outputs", () => {
 	]);
 	assert.deepEqual(clientProject.targets.generate.dependsOn, ["openapi"]);
 	assert.equal(packageJson.scripts.generate, "nx run-many -t generate --parallel=2");
+	assert.equal(
+		packageJson.scripts["api:client:generate"],
+		"nx run api-client:generate"
+	);
+	assert.equal(packageJson.scripts["api:client:check"], undefined);
 });
 
 test("keeps generated source artifacts out of Git and Docker contexts", () => {
