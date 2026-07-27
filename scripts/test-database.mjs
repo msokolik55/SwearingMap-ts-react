@@ -1,4 +1,6 @@
 import { execFileSync } from "node:child_process";
+import { createConnection } from "node:net";
+import { setTimeout as delay } from "node:timers/promises";
 
 const pnpmEntrypoint = process.env.npm_execpath;
 if (!pnpmEntrypoint) {
@@ -37,10 +39,42 @@ function runPnpm(...args) {
 	run(process.execPath, [pnpmEntrypoint, ...args]);
 }
 
+function canConnect(host, targetPort) {
+	return new Promise((resolve) => {
+		const socket = createConnection({ host, port: Number(targetPort) });
+		let settled = false;
+
+		const finish = (reachable) => {
+			if (settled) return;
+			settled = true;
+			socket.destroy();
+			resolve(reachable);
+		};
+
+		socket.once("connect", () => finish(true));
+		socket.once("error", () => finish(false));
+		socket.setTimeout(1_000, () => finish(false));
+	});
+}
+
+async function waitForTcp(host, targetPort, timeoutMs = 30_000) {
+	const deadline = Date.now() + timeoutMs;
+
+	while (Date.now() < deadline) {
+		if (await canConnect(host, targetPort)) return;
+		await delay(250);
+	}
+
+	throw new Error(
+		`Database did not become reachable at ${host}:${targetPort} within ${timeoutMs}ms.`
+	);
+}
+
 runPnpm("db:generate");
 
 try {
 	run("docker", [...compose, "up", "--detach", "--wait", "database-test"]);
+	await waitForTcp("127.0.0.1", port);
 	runPnpm("exec", "prisma", "migrate", "deploy");
 	runPnpm("exec", "prisma", "db", "seed");
 	runPnpm(
