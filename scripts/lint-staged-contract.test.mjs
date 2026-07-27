@@ -1,11 +1,20 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import config from "../lint-staged.config.mjs";
 
+const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const codeTasks = config["*.{js,cjs,mjs,jsx,ts,tsx}"];
 const rootLintTask = codeTasks[1];
 const webLintTask = config["apps/web/**/*.{js,cjs,mjs,jsx,ts,tsx}"];
+
+test("does not lint Nx project files twice during full lint", () => {
+	assert.equal(
+		packageJson.scripts.lint,
+		'nx run-many -t lint --parallel=2 && eslint . --ignore-pattern "apps/**" --ignore-pattern "libs/**" --max-warnings=0'
+	);
+});
 
 test("routes staged Next.js files through the web ESLint configuration", () => {
 	const webFile = "C:\\workspace\\apps\\web\\app\\page.tsx";

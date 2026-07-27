@@ -34,7 +34,7 @@
 		"check:bundle-budget": "node scripts/check-bundle-budget.mjs",
 		"preview": "vite preview --outDir dist/site",
 		"typecheck": "nx run-many -t typecheck --parallel=2 && tsc --noEmit -p tsconfig.e2e.json",
-		"lint": "nx run-many -t lint --parallel=2 && eslint . --max-warnings=0",
+		"lint": "nx run-many -t lint --parallel=2 && eslint . --ignore-pattern \"apps/**\" --ignore-pattern \"libs/**\" --max-warnings=0",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier . --write",
 		"format:check": "prettier . --check",
