@@ -1,0 +1,43 @@
+model Language {
+  id                String                   @id @default(uuid()) @db.Uuid
+  code              String                   @unique @db.VarChar(10)
+  name              String                   @db.VarChar(100)
+  nativeName        String                   @map("native_name") @db.VarChar(100)
+  active            Boolean                  @default(true)
+  createdAt         DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+  countries         CountryLanguage[]
+  words             SwearWord[]
+  submissions       Submission[]
+  quizAttempts      QuizAttempt[]
+  notificationPrefs NotificationPreference[]
+
+  @@map("languages")
+}
+
+model Country {
+  id          String                                @id @default(uuid()) @db.Uuid
+  iso2        String                                @unique @db.Char(2)
+  iso3        String                                @unique @db.Char(3)
+  slug        String                                @unique @db.VarChar(100)
+  name        String                                @db.VarChar(100)
+  mapCenter   Unsupported("geography(Point,4326)")? @map("map_center")
+  createdAt   DateTime                              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
+  languages   CountryLanguage[]
+  words       SwearWord[]
+  submissions Submission[]
+
+  @@map("countries")
+}
+
+model CountryLanguage {
+  countryId  String   @map("country_id") @db.Uuid
+  languageId String   @map("language_id") @db.Uuid
+  primary    Boolean  @default(false)
+  country    Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+
+  @@id([countryId, languageId])
+  @@map("country_languages")
+}

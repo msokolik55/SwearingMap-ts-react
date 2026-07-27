@@ -52,7 +52,7 @@ export function classifyChanges(files) {
 			)
 		),
 		databaseChanged: paths.some((file) =>
-			/^(?:apps\/api\/(?:prisma\/|src\/app\/database\/|src\/generated\/prisma\/)|docker\/compose\.yml$|prisma\.config\.ts$|scripts\/(?:check-prisma-client|test-database)\.mjs$)/u.test(
+			/^(?:apps\/api\/(?:prisma\/|src\/app\/database\/)|docker\/compose\.yml$|prisma\.config\.ts$|scripts\/test-database\.mjs$)/u.test(
 				file
 			)
 		),

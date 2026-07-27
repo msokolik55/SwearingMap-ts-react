@@ -1,3 +1,2 @@
 libs/api-client/openapi.json linguist-generated=true
 libs/api-client/src/generated/** linguist-generated=true
-apps/api/src/generated/prisma/** linguist-generated=true whitespace=-trailing-space

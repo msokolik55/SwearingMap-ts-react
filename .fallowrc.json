@@ -6,7 +6,6 @@
 		"apps/api/vitest.integration.config.ts",
 		"libs/api-client/src/index.ts",
 		"scripts/generate-openapi.ts",
-		"scripts/check-prisma-client.mjs",
 		"scripts/test-database.mjs",
 		"openapi-ts.config.ts"
 	],

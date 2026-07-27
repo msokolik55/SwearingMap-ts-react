@@ -59,7 +59,10 @@ test("selects only relevant expensive CI suites", () => {
 	assert.equal(createCiPlan(["docker/nginx.conf"]).container, true);
 	assert.equal(createCiPlan(["scripts/assemble-site.mjs"]).container, true);
 	assert.equal(createCiPlan(["apps/api/src/main.ts"]).container, true);
-	assert.equal(createCiPlan(["apps/api/prisma/schema.prisma"]).database, true);
+	assert.equal(
+		createCiPlan(["apps/api/prisma/models/vocabulary.prisma"]).database,
+		true
+	);
 	assert.equal(
 		createCiPlan(["apps/api/src/app/database/prisma.service.ts"]).database,
 		true

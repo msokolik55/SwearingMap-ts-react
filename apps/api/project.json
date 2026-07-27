@@ -8,17 +8,14 @@
 		"contract": {
 			"executor": "nx:run-commands",
 			"cache": true,
-			"inputs": [
-				"{projectRoot}/prisma/**",
-				"{projectRoot}/src/generated/prisma/**",
-				"{workspaceRoot}/prisma.config.ts",
-				"{workspaceRoot}/scripts/check-prisma-client.mjs"
-			],
+			"inputs": ["{projectRoot}/prisma/**", "{workspaceRoot}/prisma.config.ts"],
+			"outputs": ["{projectRoot}/src/generated/prisma"],
 			"options": {
-				"command": "node scripts/check-prisma-client.mjs"
+				"command": "pnpm db:check"
 			}
 		},
 		"typecheck": {
+			"dependsOn": ["contract"],
 			"executor": "nx:run-commands",
 			"cache": true,
 			"options": {
@@ -26,6 +23,7 @@
 			}
 		},
 		"build": {
+			"dependsOn": ["contract"],
 			"executor": "nx:run-commands",
 			"options": {
 				"command": "webpack-cli build",
@@ -41,6 +39,9 @@
 					}
 				}
 			}
+		},
+		"test": {
+			"dependsOn": ["contract"]
 		},
 		"prune-lockfile": {
 			"dependsOn": ["build"],

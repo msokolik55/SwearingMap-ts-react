@@ -1,0 +1,107 @@
+enum ContentStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+model SwearWord {
+  id                 String                  @id @default(uuid()) @db.Uuid
+  languageId         String                  @map("language_id") @db.Uuid
+  countryId          String?                 @map("country_id") @db.Uuid
+  submittedById      String?                 @map("submitted_by_id") @db.Uuid
+  term               String                  @db.VarChar(160)
+  normalizedTerm     String                  @map("normalized_term") @db.VarChar(160)
+  slug               String                  @db.VarChar(180)
+  status             ContentStatus           @default(DRAFT)
+  editorialIntensity Int?                    @map("editorial_intensity") @db.SmallInt
+  createdAt          DateTime                @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime                @updatedAt @map("updated_at") @db.Timestamptz(3)
+  language           Language                @relation(fields: [languageId], references: [id], onDelete: Restrict)
+  country            Country?                @relation(fields: [countryId], references: [id], onDelete: Restrict)
+  submittedBy        User?                   @relation("SubmittedWords", fields: [submittedById], references: [id], onDelete: SetNull)
+  meanings           Meaning[]
+  usageExamples      UsageExample[]
+  sources            Source[]
+  sourceEquivalents  TranslationEquivalent[] @relation("SourceWord")
+  targetEquivalents  TranslationEquivalent[] @relation("TargetWord")
+  ratings            IntensityRating[]
+  quizQuestions      QuizQuestion[]
+
+  @@unique([languageId, countryId, normalizedTerm])
+  @@unique([languageId, slug])
+  @@index([status, languageId])
+  @@map("swear_words")
+}
+
+model Meaning {
+  id          String    @id @default(uuid()) @db.Uuid
+  swearWordId String    @map("swear_word_id") @db.Uuid
+  definition  String    @db.Text
+  locale      String    @default("en") @db.VarChar(10)
+  position    Int       @default(0) @db.SmallInt
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  swearWord   SwearWord @relation(fields: [swearWordId], references: [id], onDelete: Cascade)
+
+  @@unique([swearWordId, locale, position])
+  @@map("meanings")
+}
+
+model UsageExample {
+  id          String    @id @default(uuid()) @db.Uuid
+  swearWordId String    @map("swear_word_id") @db.Uuid
+  example     String    @db.Text
+  translation String?   @db.Text
+  locale      String    @default("en") @db.VarChar(10)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  swearWord   SwearWord @relation(fields: [swearWordId], references: [id], onDelete: Cascade)
+
+  @@index([swearWordId])
+  @@map("usage_examples")
+}
+
+model Source {
+  id          String    @id @default(uuid()) @db.Uuid
+  swearWordId String    @map("swear_word_id") @db.Uuid
+  title       String    @db.VarChar(255)
+  url         String?   @db.VarChar(2048)
+  citation    String?   @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  swearWord   SwearWord @relation(fields: [swearWordId], references: [id], onDelete: Cascade)
+
+  @@index([swearWordId])
+  @@map("sources")
+}
+
+model TranslationEquivalent {
+  id           String        @id @default(uuid()) @db.Uuid
+  sourceWordId String        @map("source_word_id") @db.Uuid
+  targetWordId String        @map("target_word_id") @db.Uuid
+  confidence   Float?
+  notes        String?       @db.Text
+  status       ContentStatus @default(PENDING_REVIEW)
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  sourceWord   SwearWord     @relation("SourceWord", fields: [sourceWordId], references: [id], onDelete: Cascade)
+  targetWord   SwearWord     @relation("TargetWord", fields: [targetWordId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceWordId, targetWordId])
+  @@index([targetWordId, status])
+  @@map("translation_equivalents")
+}
+
+model IntensityRating {
+  userId      String    @map("user_id") @db.Uuid
+  swearWordId String    @map("swear_word_id") @db.Uuid
+  value       Int       @db.SmallInt
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  swearWord   SwearWord @relation(fields: [swearWordId], references: [id], onDelete: Cascade)
+
+  @@id([userId, swearWordId])
+  @@index([swearWordId])
+  @@map("intensity_ratings")
+}
