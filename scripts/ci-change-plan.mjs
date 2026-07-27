@@ -25,14 +25,18 @@ function fullPlan() {
 	};
 }
 
-const pullRequest = process.env.GITHUB_EVENT_NAME === "pull_request";
+const eventName = process.env.GITHUB_EVENT_NAME;
+const pullRequest = eventName === "pull_request";
+const selectiveEvent = pullRequest || eventName === "push";
 const baseRef = pullRequest ? `origin/${process.env.GITHUB_BASE_REF}` : "HEAD^";
 let plan = fullPlan();
 let mergeBase = baseRef;
 
-if (pullRequest) {
-	const mergeBaseResult = git("merge-base", "HEAD", baseRef);
-	mergeBase = mergeBaseResult.stdout.trim();
+if (selectiveEvent) {
+	if (pullRequest) {
+		const mergeBaseResult = git("merge-base", "HEAD", baseRef);
+		mergeBase = mergeBaseResult.stdout.trim();
+	}
 	const diff =
 		mergeBase &&
 		git("diff", "--name-only", "--diff-filter=ACMRD", `${mergeBase}...HEAD`);
