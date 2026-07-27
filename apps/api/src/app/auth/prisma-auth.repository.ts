@@ -3,6 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { RoleKey } from "../../generated/prisma/enums";
 import { PrismaService } from "../database/prisma.service";
 import type { AuthRepository, CreateAuthUser } from "./auth.repository";
+import { mapSelectedAuthUser } from "./auth-user.mapper";
 import type { AuthSession, AuthUser } from "./auth.types";
 
 type AuthDatabaseClient = Pick<PrismaService, "session" | "user">;
@@ -18,24 +19,6 @@ const authUserSelection = {
 		},
 	},
 } as const;
-
-type SelectedAuthUser = {
-	displayName: string | null;
-	email: string;
-	id: string;
-	passwordHash: string | null;
-	roles: Array<{ roleKey: RoleKey }>;
-};
-
-function mapUser(user: SelectedAuthUser): AuthUser {
-	return {
-		displayName: user.displayName,
-		email: user.email,
-		id: user.id,
-		passwordHash: user.passwordHash,
-		roles: user.roles.map(({ roleKey }) => roleKey),
-	};
-}
 
 @Injectable()
 export class PrismaAuthRepository implements AuthRepository {
@@ -64,7 +47,7 @@ export class PrismaAuthRepository implements AuthRepository {
 			select: authUserSelection,
 		});
 
-		return mapUser(user);
+		return mapSelectedAuthUser(user);
 	}
 
 	async findUserByEmail(email: string): Promise<AuthUser | null> {
@@ -73,7 +56,7 @@ export class PrismaAuthRepository implements AuthRepository {
 			select: authUserSelection,
 		});
 
-		return user ? mapUser(user) : null;
+		return user ? mapSelectedAuthUser(user) : null;
 	}
 
 	async createSession(input: {
@@ -100,7 +83,7 @@ export class PrismaAuthRepository implements AuthRepository {
 					id: session.id,
 					revokedAt: session.revokedAt,
 					tokenHash: session.tokenHash,
-					user: mapUser(session.user),
+					user: mapSelectedAuthUser(session.user),
 				}
 			: null;
 	}

@@ -12,6 +12,7 @@ import { hash, verify, argon2id } from "argon2";
 
 import type { AuthRepository } from "./auth.repository";
 import { AUTH_REPOSITORY } from "./auth.repository";
+import { toPublicAuthUser } from "./auth-user.mapper";
 import { resolveAuthConfig } from "./auth-config";
 import type { AuthUser, IssuedSession } from "./auth.types";
 import type { RegisterDto } from "./dto/register.dto";
@@ -32,15 +33,6 @@ function normalizeEmail(email: string): string {
 
 function hashRefreshToken(token: string): string {
 	return createHash("sha256").update(token, "utf8").digest("base64url");
-}
-
-function publicUser(user: AuthUser): Omit<AuthUser, "passwordHash"> {
-	return {
-		displayName: user.displayName,
-		email: user.email,
-		id: user.id,
-		roles: user.roles,
-	};
 }
 
 function isUniqueConstraintError(error: unknown): boolean {
@@ -107,7 +99,7 @@ export class AuthService {
 			accessToken: await this.createAccessToken(session.user),
 			expiresIn: this.config.accessTokenTtlSeconds,
 			refreshToken: nextRefreshToken,
-			user: publicUser(session.user),
+			user: toPublicAuthUser(session.user),
 		};
 	}
 
@@ -149,7 +141,7 @@ export class AuthService {
 			accessToken: await this.createAccessToken(user),
 			expiresIn: this.config.accessTokenTtlSeconds,
 			refreshToken,
-			user: publicUser(user),
+			user: toPublicAuthUser(user),
 		};
 	}
 
