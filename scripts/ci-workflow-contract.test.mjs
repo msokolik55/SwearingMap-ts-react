@@ -125,8 +125,12 @@ test("builds the deployable site once and passes it to browser checks", () => {
 	assert.ok(browserJob, "browser job must exist");
 	assert.doesNotMatch(browserJob, /run: pnpm build:site/u);
 	assert.equal(
+		packageJson.scripts["check:quality:projects"],
+		"nx run-many -t lint typecheck test --parallel=4"
+	);
+	assert.equal(
 		packageJson.scripts["check:quality:generated"],
-		"pnpm generated:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+		"pnpm generated:check && pnpm format:check && pnpm check:quality:projects && pnpm lint:workspace && pnpm typecheck:e2e && pnpm test:tooling"
 	);
 });
 
