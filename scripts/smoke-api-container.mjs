@@ -30,6 +30,8 @@ const started = docker(
 	name,
 	"--env",
 	"DATABASE_URL=postgresql://smoke:smoke@127.0.0.1:5432/smoke",
+	"--env",
+	"AUTH_ACCESS_TOKEN_SECRET=smoke-only-access-secret-with-32-characters",
 	"--publish",
 	`127.0.0.1:${port}:3000`,
 	image

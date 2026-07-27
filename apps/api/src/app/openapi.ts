@@ -6,6 +6,7 @@ export function createOpenApiDocument(app: INestApplication): OpenAPIObject {
 		.setTitle("Swearing Map API")
 		.setDescription("Public contract for the Swearing Map product platform.")
 		.setVersion("1.0.0")
+		.addBearerAuth()
 		.build();
 
 	return SwaggerModule.createDocument(app, config);

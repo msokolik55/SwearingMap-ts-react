@@ -34,6 +34,13 @@ describe("health API", () => {
 			.expect(200);
 
 		expect(response.body.paths).toHaveProperty("/api/v1/health");
+		expect(response.body.paths).toHaveProperty("/api/v1/auth/register");
+		expect(response.body.paths).toHaveProperty("/api/v1/auth/me");
+		expect(response.body.paths).toHaveProperty("/api/v1/countries/nearby");
 		expect(response.body.paths["/api/v1/health"].get.operationId).toBe("getHealth");
+	});
+
+	it("protects authenticated routes by default", async () => {
+		await request(app.getHttpServer()).get("/api/v1/auth/me").expect(401);
 	});
 });

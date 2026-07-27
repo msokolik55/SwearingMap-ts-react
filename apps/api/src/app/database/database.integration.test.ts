@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { PrismaGeospatialRepository } from "../geography/prisma-geospatial.repository";
 import { createPrismaClient } from "./prisma-client";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -46,6 +47,22 @@ describe("Prisma PostgreSQL integration", () => {
 		expect(words).toHaveLength(2);
 		expect(words.every(({ meanings }) => meanings.length === 1)).toBe(true);
 		expect(equivalents).toHaveLength(1);
+	});
+
+	it("isolates parameterized PostGIS proximity queries behind a repository", async () => {
+		const repository = new PrismaGeospatialRepository(prisma);
+
+		const nearby = await repository.findCountriesNear(
+			{ latitude: 48.1486, longitude: 17.1077 },
+			50_000
+		);
+
+		expect(nearby).toHaveLength(1);
+		expect(nearby[0]).toMatchObject({
+			name: "Slovakia",
+			slug: "slovakia",
+		});
+		expect(nearby[0]?.distanceMeters).toBeLessThan(1);
 	});
 
 	it("enforces the one-to-five intensity invariant in PostgreSQL", async () => {
