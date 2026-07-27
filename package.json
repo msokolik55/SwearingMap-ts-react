@@ -27,7 +27,6 @@
 		"api:openapi": "nx run api-client:openapi",
 		"api:openapi:raw": "tsx --tsconfig apps/api/tsconfig.app.json scripts/generate-openapi.ts",
 		"api:client:generate": "nx run api-client:generate",
-		"api:client:check": "nx run api-client:generate",
 		"build": "nx run-many -t build --parallel=2 && pnpm assemble:site",
 		"assemble:site": "node scripts/assemble-site.mjs",
 		"check:bundle-budget": "node scripts/check-bundle-budget.mjs",
