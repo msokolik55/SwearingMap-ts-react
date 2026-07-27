@@ -17,7 +17,7 @@ const FULL_IMPACT_PATTERNS = [
 	/^fallow-baselines\//u,
 	/^openapi-ts\.config\.ts$/u,
 	/^prisma\.config\.ts$/u,
-	/^scripts\/(?:check-api-client|generate-openapi)\.(?:mjs|ts)$/u,
+	/^scripts\/(?:check-api-client|generate-openapi|generated-sources-state)\.(?:mjs|ts)$/u,
 	/^scripts\/ci-change-plan\.mjs$/u,
 	/^scripts\/changed-verification\.mjs$/u,
 	/^scripts\/fallow-(?:ci|full)\.mjs$/u,

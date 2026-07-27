@@ -126,7 +126,7 @@ test("builds the deployable site once and passes it to browser checks", () => {
 	assert.doesNotMatch(browserJob, /run: pnpm build:site/u);
 	assert.equal(
 		packageJson.scripts["check:quality:generated"],
-		"pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+		"pnpm generated:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
 	);
 });
 

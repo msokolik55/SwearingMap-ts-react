@@ -13,6 +13,7 @@ test("shared configuration changes require full verification", () => {
 	assert.equal(requiresFullVerification(["package.json"]), true);
 	assert.equal(requiresFullVerification(["nx.json"]), true);
 	assert.equal(requiresFullVerification(["scripts/ci-change-plan.mjs"]), true);
+	assert.equal(requiresFullVerification(["scripts/generated-sources-state.mjs"]), true);
 	assert.equal(requiresFullVerification(["fallow-baselines/health.json"]), true);
 	assert.equal(requiresFullVerification(["src/App.tsx"]), false);
 });

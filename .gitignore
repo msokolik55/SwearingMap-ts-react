@@ -28,6 +28,7 @@ test-results
 /apps/api/src/generated/prisma/
 /libs/api-client/openapi.json
 /libs/api-client/src/generated/
+/.generated-sources.json
 
 # Editor directories and files
 .vscode/*

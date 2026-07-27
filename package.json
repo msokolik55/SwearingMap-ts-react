@@ -23,7 +23,8 @@
 		"db:migrate": "prisma migrate deploy",
 		"db:migrate:dev": "prisma migrate dev",
 		"db:seed": "prisma db seed",
-		"generate": "nx run-many -t generate --parallel=2",
+		"generate": "nx run-many -t generate --parallel=2 && node scripts/generated-sources-state.mjs write",
+		"generated:check": "node scripts/generated-sources-state.mjs check",
 		"api:openapi": "nx run api-client:openapi",
 		"api:openapi:raw": "tsx --tsconfig apps/api/tsconfig.app.json scripts/generate-openapi.ts",
 		"api:client:generate": "nx run api-client:generate",
@@ -51,9 +52,9 @@
 		"container:api:smoke": "node scripts/smoke-api-container.mjs",
 		"fallow:audit": "pnpm generate && fallow audit --base origin/main --gate new-only --threads 2",
 		"fallow:ci": "pnpm generate && pnpm fallow:ci:generated",
-		"fallow:ci:generated": "node scripts/fallow-ci.mjs",
+		"fallow:ci:generated": "pnpm generated:check && node scripts/fallow-ci.mjs",
 		"fallow:full": "pnpm generate && pnpm fallow:full:generated",
-		"fallow:full:generated": "node scripts/fallow-full.mjs",
+		"fallow:full:generated": "pnpm generated:check && node scripts/fallow-full.mjs",
 		"verify:staged": "lint-staged",
 		"verify:changed": "node scripts/verify-changed.mjs",
 		"verify:push": "pnpm verify:changed",
@@ -64,7 +65,7 @@
 		"audit": "pnpm --config.auditConfig.ignoreGhsas=[] audit --prod --audit-level high && pnpm audit --dev --audit-level high",
 		"check": "pnpm generate && pnpm check:generated",
 		"check:generated": "pnpm check:quality:generated && pnpm build",
-		"check:quality:generated": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+		"check:quality:generated": "pnpm generated:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "21.2.1",
