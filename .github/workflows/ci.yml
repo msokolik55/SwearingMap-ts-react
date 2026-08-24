@@ -71,7 +71,7 @@ jobs:
           cache: pnpm
 
       - name: Restore Nx task cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx/cache
           key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-quality-${{ github.sha }}
@@ -143,7 +143,7 @@ jobs:
           cache: pnpm
 
       - name: Restore Nx task cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx/cache
           key: nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-site-${{ github.sha }}
@@ -152,7 +152,7 @@ jobs:
             nx-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Restore Next.js build cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: apps/web/.next/cache
           key: next-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('apps/web/**', 'tsconfig.base.json') }}
@@ -205,7 +205,7 @@ jobs:
 
       - name: Restore Playwright browser cache
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
